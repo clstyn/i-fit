@@ -4,12 +4,12 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        "c-hijaumuda": "#2bb3ca",
-        "c-hijaumedium": "#deeb74",
-        "c-hijautua": "#1c4c74",
-        "c-orenmuda": "#5ba487",
-        "c-orentua": "#f95223",
-        "c-birdong": "#f95223",
+        "c-hijaumuda": "#B0FFE9",
+        "c-hijaumedium": "#4CC2C4",
+        "c-hijautua": "#4C9D8C",
+        "c-orenmuda": "#F8905B",
+        "c-orentua": "#DF622C",
+        "c-birdong": "#022249",
       },
       fontFamily: {
         poppins: ["Poppins", "sans-serif"],
