@@ -1,5 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
 @import url("https://fonts.googleapis.com/css2?family=Kaushan+Script&family=Poppins:wght@400;500;600;700&display=swap");
+.custom-shadow {
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5);
+  /* x: 0, y: 0, blur: 20, warna item, opacity 50% */
+}
