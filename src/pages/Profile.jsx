@@ -97,54 +97,56 @@ const Profile = () => {
       </div>
 
       <div className="w-5/6 mx-auto grid grid-cols-3 gap-16 my-24">
-        <div className="flex flex-col gap-12">
-          <form className="rounded-lg shadow-md p-8 flex flex-col gap-2">
-            <input
-              className="px-2 py-1 border-b border-c-birdong"
-              type="text"
-              value={user.name}
-              name="name"
-            />
-            <input
-              className="px-2 py-1 border-b border-c-birdong"
-              type="username"
-              value={user.username}
-              name="username"
-            />
-            <input
-              className="px-2 py-1 border-b border-c-birdong"
-              type="email"
-              value={user.email}
-              name="email"
-            />
-            <button className="bg-c-hijautua rounded-full p-4 text-white font-bold mt-4 w-fit mx-auto">
-              Ubah Profil
-            </button>
-          </form>
+        <div>
+          <div className="sticky top-28 flex flex-col gap-12">
+            <form className="rounded-lg shadow-md p-8 flex flex-col gap-2">
+              <input
+                className="px-2 py-1 border-b border-c-birdong"
+                type="text"
+                value={user.name}
+                name="name"
+              />
+              <input
+                className="px-2 py-1 border-b border-c-birdong"
+                type="username"
+                value={user.username}
+                name="username"
+              />
+              <input
+                className="px-2 py-1 border-b border-c-birdong"
+                type="email"
+                value={user.email}
+                name="email"
+              />
+              <button className="bg-c-hijautua rounded-full p-4 text-white font-bold mt-4 w-fit mx-auto">
+                Ubah Profil
+              </button>
+            </form>
 
-          <form className="rounded-lg shadow-md p-8 flex flex-col gap-2">
-            <input
-              className="px-2 py-1 border-b border-c-birdong"
-              type="text"
-              placeholder="Kata sandi lama"
-              name="oldpass"
-            />
-            <input
-              className="px-2 py-1 border-b border-c-birdong"
-              type="text"
-              placeholder="Kata sandi baru"
-              name="newpass"
-            />
-            <input
-              className="px-2 py-1 border-b border-c-birdong"
-              type="text"
-              placeholder="Konfirmasi kata sandi baru"
-              name="comfirmpass"
-            />
-            <button className="bg-c-hijaumedium rounded-full p-4 text-white font-bold mt-4 w-fit mx-auto">
-              Ubah Kata Sandi
-            </button>
-          </form>
+            <form className="rounded-lg shadow-md p-8 flex flex-col gap-2">
+              <input
+                className="px-2 py-1 border-b border-c-birdong"
+                type="text"
+                placeholder="Kata sandi lama"
+                name="oldpass"
+              />
+              <input
+                className="px-2 py-1 border-b border-c-birdong"
+                type="text"
+                placeholder="Kata sandi baru"
+                name="newpass"
+              />
+              <input
+                className="px-2 py-1 border-b border-c-birdong"
+                type="text"
+                placeholder="Konfirmasi kata sandi baru"
+                name="comfirmpass"
+              />
+              <button className="bg-c-hijaumedium rounded-full p-4 text-white font-bold mt-4 w-fit mx-auto">
+                Ubah Kata Sandi
+              </button>
+            </form>
+          </div>
         </div>
 
         <div className="col-span-2 flex flex-col gap-20">
