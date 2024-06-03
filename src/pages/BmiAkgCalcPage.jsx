@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "../index.css";
 import { Man, Woman } from "@mui/icons-material";
+import InputNum from "../components/InputNum";
 
 const BmiAkgCalculator = () => {
   const [selectedOption, setSelectedOption] = useState(null);
@@ -64,6 +65,7 @@ const BmiAkgCalculator = () => {
                 ></Woman>
               </label>
             </div>
+            <InputNum></InputNum>
           </div>
           <div className="bg-white custom-shadow rounded-lg p-6 m-4 w-2/5">
             {/* Konten kotak kedua */}
