@@ -19,6 +19,9 @@ module.exports = {
         "header-profile": "url('/src/assets/bg-profile.png')",
         "oren-linear": "url('/src/assets/orenlinear.png')",
         "hijau-linear": "url('/src/assets/hijaulinear.png')",
+        "header-rekom": "url('/src/assets/bg-rekom1.png')",
+        "makanan-rekom": "url('/src/assets/bg-rekom2.png')",
+        "detail-rekom": "url('/src/assets/bg-detailrekom.png')",
         // untuk gambar background taruh di sini
       }),
     },

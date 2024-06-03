@@ -10,7 +10,7 @@ const Navbar = () => {
           <Link to={"/"}>
             <p>Home</p>
           </Link>
-          <Link to={"/"}>
+          <Link to={"/kalkulatorBMIAKG"}>
             <p>BMI/AKG</p>
           </Link>
           <Link to={"/"}>
@@ -19,15 +19,17 @@ const Navbar = () => {
           <Link to={"/"}>
             <p>Resep</p>
           </Link>
-          <Link to={"/"}>
+          <Link to={"/check-in"}>
             <p>CheckIn</p>
           </Link>
         </div>
         <div>
-          <AccountCircleOutlined
-            className="text-c-orentua"
-            style={{ fontSize: "38px" }}
-          ></AccountCircleOutlined>
+          <Link to={"/profile"}>
+            <AccountCircleOutlined
+              className="text-c-orentua"
+              style={{ fontSize: "38px" }}
+            ></AccountCircleOutlined>
+          </Link>
         </div>
       </div>
     </nav>
