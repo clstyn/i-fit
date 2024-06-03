@@ -4,8 +4,13 @@ import Landing from "./pages/Landing";
 import BmiAkgCalculator from "./pages/BmiAkgCalcPage";
 import Profile from "./pages/Profile";
 import Rekomendasi from "./pages/Rekomendasi";
+import Kalori from "./pages/Kalori";
 import DetailRekom from "./pages/DetailRekom";
 import Checkin from "./pages/Checkin";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import ForgotPassword from "./pages/ForgotPassword";
+import RecoverAccount from "./pages/RecoverAccount";
 
 function App() {
   return (
@@ -17,6 +22,11 @@ function App() {
         <Route path="/rekomendasi" element={<Rekomendasi />} />
         <Route path="/detail" element={<DetailRekom />} />
         <Route path="/check-in" element={<Checkin />} />
+        <Route path="/kalori" element={<Kalori />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/forgotPassword" element={<ForgotPassword />} />
+        <Route path="/recoverAccount" element={<RecoverAccount />} />
       </Routes>
     </Router>
   );

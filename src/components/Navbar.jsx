@@ -13,7 +13,7 @@ const Navbar = () => {
           <Link to={"/kalkulatorBMIAKG"}>
             <p>BMI/AKG</p>
           </Link>
-          <Link to={"/"}>
+          <Link to={"/kalori"}>
             <p>Kalori</p>
           </Link>
           <Link to={"/"}>
