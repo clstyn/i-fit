@@ -84,14 +84,22 @@ const Rekomendasi = () => {
         </div>
       </div>
 
-      <div className="flex justify-center w-full mt-8 animate-bounce">
+      <div
+        className="flex mx-auto mt-8 animate-bounce w-fit"
+        onClick={() => {
+          document.getElementById("olahraga").scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+          });
+        }}
+      >
         <ArrowDropDownCircle
           className="cursor-pointer text-c-hijautua"
           style={{ fontSize: "40px" }}
         ></ArrowDropDownCircle>
       </div>
 
-      <div className="flex w-5/6 mx-auto my-20">
+      <div id="olahraga" className="flex w-5/6 mx-auto my-20 justify-around">
         <div className="flex flex-col gap-4">
           <h2 className="text-3xl font-semibold">Olahraga</h2>
           <p className="text-6xl font-kaushan">Forearm Plank</p>
@@ -99,18 +107,26 @@ const Rekomendasi = () => {
             Baca Selengkapnya
           </button>
         </div>
+        <div className="w-1/2">
+          <Slider />
+        </div>
       </div>
 
-      <Slider />
-
-      <div className="flex justify-center w-full mt-8 animate-bounce">
+      <div
+        className="flex mx-auto mt-8 animate-bounce w-fit"
+        onClick={() => {
+          document.getElementById("makanan").scrollIntoView({
+            behavior: "smooth",
+          });
+        }}
+      >
         <ArrowDropDownCircle
           className="cursor-pointer text-c-orentua"
           style={{ fontSize: "36px" }}
         ></ArrowDropDownCircle>
       </div>
 
-      <div className="bg-makanan-rekom bg-cover py-36">
+      <div id="makanan" className="bg-makanan-rekom bg-cover pt-40 py-24">
         <h2 className="font-kaushan text-6xl text-center">Makanan</h2>
         <div className="grid h-[560px] grid-cols-3 grid-row-3 w-5/6 mx-auto gap-4 mt-12">
           {foods.map((food) => (
