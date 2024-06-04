@@ -6,6 +6,7 @@ import {
   Add,
   ArrowDropUp,
   ArrowDropDown,
+  Close,
 } from "@mui/icons-material";
 
 const AddResep = () => {
@@ -196,6 +197,7 @@ const InputBahan = (nomor, value) => {
         className="rounded-lg border-2 border-c-hijautua p-4 text-xl w-1/4"
         placeholder="Kalori"
       />
+      <Close className="text-c-hijautua" style={{ fontSize: "40px" }}></Close>
     </div>
   );
 };
@@ -210,6 +212,7 @@ const InputLangkah = ({ nomor, value }) => {
         className="rounded-lg border-2 border-c-hijautua p-4 text-xl w-full"
         placeholder="Masukkan langkah pembuatan"
       />
+      <Close className="text-c-hijautua" style={{ fontSize: "40px" }}></Close>
     </div>
   );
 };
