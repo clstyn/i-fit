@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import {
   ControlPoint,
@@ -17,9 +18,12 @@ const Resep = () => {
         </div>
       </div>
 
-      <div className="fixed right-24 bottom-24 text-c-orentua cursor-pointer hover:scale-105">
+      <Link
+        to={"/tambah-resep"}
+        className="fixed right-24 bottom-24 text-c-orentua cursor-pointer hover:scale-105"
+      >
         <ControlPoint style={{ fontSize: "78px" }}></ControlPoint>
-      </div>
+      </Link>
 
       <div className="w-5/6 mx-auto flex justify-between">
         <div className="flex gap-4 text-lg font-semibold">
