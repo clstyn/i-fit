@@ -11,6 +11,8 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import ForgotPassword from "./pages/ForgotPassword";
 import RecoverAccount from "./pages/RecoverAccount";
+import Resep from "./pages/Resep";
+import AddResep from "./pages/AddResep";
 
 function App() {
   return (
@@ -27,6 +29,8 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/forgotPassword" element={<ForgotPassword />} />
         <Route path="/recoverAccount" element={<RecoverAccount />} />
+        <Route path="/resep" element={<Resep />} />
+        <Route path="/tambah-resep" element={<AddResep />} />
       </Routes>
     </Router>
   );
