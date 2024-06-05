@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import bmiInd from "../assets/bmiInd.png";
 import PicKalori from "../assets/pic-kalori.png";
@@ -108,9 +109,9 @@ const Landing = () => {
                   index % 2 === 0 ? "ml-0 mr-auto" : "ml-auto mr-0"
                 }`}
               >
-                <a href={feature.link}>
+                <Link to={`${feature.link}`}>
                   <BasicButton text={feature.btnText}></BasicButton>
-                </a>
+                </Link>
               </div>
             </div>
           </div>
