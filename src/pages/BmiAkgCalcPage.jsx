@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import "../index.css";
-import { Man, Woman, KeyboardArrowDown } from "@mui/icons-material";
+import { Icon } from "@iconify-icon/react";
 import InputNum from "../components/InputNum";
 import BasicButton from "../components/BasicButton";
 import Navbar from "../components/Navbar";
@@ -96,14 +95,16 @@ const BmiAkgCalculator = () => {
                     checked={selectedGender === "male"}
                     onChange={() => handleOptionChange("male")}
                   />
-                  <Man
+                  <Icon
+                    icon="material-symbols:man"
                     className={
                       selectedGender === "male"
                         ? "text-c-hijautua"
                         : "text-c-hijaumuda"
                     }
-                    style={{ fontSize: "80px" }}
-                  ></Man>
+                    width={"full"}
+                    height={80}
+                  />
                 </label>
                 <label className="inline-flex items-center cursor-pointer">
                   <input
@@ -115,14 +116,16 @@ const BmiAkgCalculator = () => {
                     checked={selectedGender === "female"}
                     onChange={() => handleOptionChange("female")}
                   />
-                  <Woman
+                  <Icon
+                    icon="material-symbols:woman"
                     className={
                       selectedGender === "female"
                         ? "text-c-hijautua"
                         : "text-c-hijaumuda"
                     }
-                    style={{ fontSize: "80px" }}
-                  ></Woman>
+                    width={"full"}
+                    height={80}
+                  />
                 </label>
               </div>
             </div>
@@ -175,7 +178,12 @@ const BmiAkgCalculator = () => {
                   className="w-full bg-c-hijautua text-xl font-poppins font-semibold text-white py-2 px-4 rounded-md flex justify-between items-center"
                 >
                   {selectedActivity || "Pilih tingkat aktivitas"}
-                  <KeyboardArrowDown className="text-white" />
+                  <Icon
+                    icon="material-symbols:keyboard-arrow-down"
+                    className="text-white"
+                    width={25}
+                    height={25}
+                  />
                 </button>
                 {isOpen && (
                   <ul className="absolute z-10 w-full bg-c-hijautua text-white rounded-[20px] mt-1 text-xl font-poppins text-white">
