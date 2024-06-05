@@ -9,6 +9,11 @@ const BmiAkgCalculator = () => {
   const [selectedGender, setSelectedGender] = useState(null);
   const [selectedActivity, setSelectedActivity] = useState("");
   const [isOpen, setIsOpen] = useState(false);
+  const [weight, setWeight] = useState();
+  const [height, setHeight] = useState();
+  const [age, setAge] = useState();
+  const [bmi, setBmi] = useState(0);
+  const [bmiCategory, setBmiCategory] = useState("-");
 
   const handleOptionChange = (value) => {
     setSelectedGender(value);
@@ -27,6 +32,42 @@ const BmiAkgCalculator = () => {
     setIsOpen(false);
   };
 
+  const handleCalculate = () => {
+    console.log("Button clicked!");
+    console.log(weight, height);
+    if (weight > 0 && height > 0) {
+      console.log("Msuk");
+      const heightInMeters = height / 100;
+      const bmiValue = weight / (heightInMeters * heightInMeters);
+      setBmi(bmiValue.toFixed(1));
+
+      if (bmiValue < 18.5) {
+        setBmiCategory("Underweight");
+      } else if (bmiValue >= 18.5 && bmiValue < 24.9) {
+        setBmiCategory("Normal");
+      } else if (bmiValue >= 25 && bmiValue < 29.9) {
+        setBmiCategory("Overweight");
+      } else {
+        setBmiCategory("Obese");
+      }
+    }
+  };
+
+  const getBgImageClass = () => {
+    switch (bmiCategory) {
+      case "Underweight":
+        return "bg-bmi-under";
+      case "Normal":
+        return "bg-bmi-normal";
+      case "Overweight":
+        return "bg-bmi-over";
+      case "Obese":
+        return "bg-bmi-obese";
+      default:
+        return "bg-bmi";
+    }
+  };
+
   return (
     <div>
       <header className="bg-gray-200 h-20 flex items-center justify-between px-8">
@@ -34,7 +75,7 @@ const BmiAkgCalculator = () => {
       </header>
       <body>
         <div className="h-44 flex items-center justify-center">
-          <p className="text-c-birdong text-8xl font-kaushan">
+          <p className="text-c-birdong text-7xl font-kaushan">
             Kalkulator BMI & AKG
           </p>
         </div>
@@ -92,7 +133,10 @@ const BmiAkgCalculator = () => {
                 </p>
               </div>
               <div class="flex-none w-1/3 ">
-                <InputNum></InputNum>
+                <InputNum
+                  value={weight}
+                  onChange={(value) => setWeight(value)}
+                ></InputNum>
               </div>
             </div>
             <div className="flex justify-center">
@@ -102,7 +146,10 @@ const BmiAkgCalculator = () => {
                 </p>
               </div>
               <div class="flex-none w-1/3 justify-items-end">
-                <InputNum></InputNum>
+                <InputNum
+                  value={height}
+                  onChange={(value) => setHeight(value)}
+                ></InputNum>
               </div>
             </div>
             <div className="flex justify-center">
@@ -112,7 +159,10 @@ const BmiAkgCalculator = () => {
                 </p>
               </div>
               <div class="flex-auto w-1/3 content-end">
-                <InputNum></InputNum>
+                <InputNum
+                  value={age}
+                  onChange={(value) => setAge(value)}
+                ></InputNum>
               </div>
             </div>
             <div className="space-y-2 mb-16">
@@ -143,13 +193,16 @@ const BmiAkgCalculator = () => {
               </div>
               <div className="h-56"></div>
             </div>
-            <BasicButton text={"Hitung"}></BasicButton>
+            <BasicButton
+              text={"Hitung"}
+              onClick={handleCalculate}
+            ></BasicButton>
           </div>
           <div className="bg-white custom-shadow rounded-[20px] p-6 m-4 w-2/5 gap">
             <p className="text-c-birdong text-5xl text-center font-poppins font-bold">
               Hasil
             </p>
-            <div className="needle-container">
+            <div className={`needle-container ${getBgImageClass()}`}>
               <p className="ind1 text-c-birdong text-xs text-center font-poppins font-normal">
                 18.5
               </p>
@@ -159,18 +212,15 @@ const BmiAkgCalculator = () => {
               <p className="ind3 text-c-birdong text-xs text-center font-poppins font-normal">
                 30.0
               </p>
-              <div className="needle" style={{ "--score": 50 }}>
-                {/* Teks persentase */}
-              </div>
               <div className="result w-28 h-36 space-y-1">
                 <p className="text-c-birdong text-base text-center font-poppins font-bold">
                   BMI
                 </p>
                 <p className="text-c-birdong text-4xl text-center font-poppins font-bold">
-                  24.1
+                  {bmi}
                 </p>
                 <p className="text-c-birdong text-xl text-center font-poppins font-normal">
-                  Normal
+                  {bmiCategory}
                 </p>
               </div>
             </div>

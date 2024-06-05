@@ -23,32 +23,8 @@ input[type="number"]::-webkit-inner-spin-button {
   height: 400px;
   border-radius: 50%;
   margin: 20px auto;
-  background-image: url("assets/bmi.png");
   background-size: 100%;
   position: relative;
-  .needle {
-    position: absolute;
-    width: 310px;
-    height: 310px;
-    padding: 150px;
-    left: 11.5%;
-    top: 11%;
-    border-radius: 50%;
-    background: conic-gradient(
-          from 150deg at 50% 50%,
-          #fff 61deg,
-          blue 3deg 7deg,
-          #ccc 8deg 10deg,
-          rgba(0, 255, 0, 0) 0%
-        )
-        0 -155px no-repeat,
-      radial-gradient(pink 0 50%, #ccc 50%) content-box;
-    rotate: calc(cos(var(--score) * 1.8deg) * -90deg);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1;
-  }
 }
 
 .result {

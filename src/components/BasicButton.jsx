@@ -9,6 +9,7 @@ function BasicButton({ text, onClick }) {
 
   return (
     <button
+      type="submit"
       onClick={onClick}
       className="py-2 px-4 text-white font-poppins text-xl font-semibold w-full h-16"
       style={buttonStyle}

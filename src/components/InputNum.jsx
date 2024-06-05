@@ -1,25 +1,20 @@
-import React, { useState } from "react";
+import React from "react";
 import { Add, Remove } from "@mui/icons-material";
 
-function InputNum() {
-  const [value, setValue] = useState("");
-
+function InputNum({ value, onChange }) {
   const handleIncrement = () => {
-    setValue((prevValue) =>
-      prevValue === "" ? 1 : parseInt(prevValue, 10) + 1
-    );
+    const newValue = value === "" ? 1 : parseInt(value, 10) + 1;
+    onChange(newValue);
   };
 
   const handleDecrement = () => {
-    setValue((prevValue) => {
-      const newValue = prevValue === "" ? 0 : parseInt(prevValue, 10) - 1;
-      return newValue < 0 ? 0 : newValue;
-    });
+    const newValue = value === "" ? 0 : parseInt(value, 10) - 1;
+    onChange(newValue);
   };
 
   const handleChange = (e) => {
-    const value = e.target.value;
-    setValue(value === "" ? "" : Math.max(0, parseInt(value, 10)));
+    const newValue = e.target.value;
+    onChange(newValue);
   };
 
   return (
