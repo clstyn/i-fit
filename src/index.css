@@ -32,7 +32,6 @@ input[type="number"]::-webkit-inner-spin-button {
   top: 25%;
   left: 36%;
   background: white;
-  rotate: calc(cos(var(--score) * 180deg/100) * 90deg);
   z-index: 2;
 }
 
