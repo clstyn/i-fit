@@ -8,11 +8,43 @@ const Kalori = () => {
     { namaMakanan: "Dendeng balado", berat: 40, porsi: 1, kalori: 337 },
     { namaMakanan: "Nasi putih", berat: 150, porsi: 1, kalori: 230 },
     { namaMakanan: "Ayam goreng", berat: 100, porsi: 1, kalori: 350 },
+    // Tambahkan lebih banyak data makanan jika diperlukan
   ];
 
-  const selectedFood = [
-    { namaMakanan: "Abon sapi", berat: 50, porsi: 1, kalori: 158 },
-  ];
+  const [selectedFood, setSelectedFood] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [currPage, setCurrPage] = useState(1);
+  const itemsPerPage = 2; // Jumlah item per halaman
+
+  const handleAddFood = (food) => {
+    if (!selectedFood.find(item => item.namaMakanan === food.namaMakanan)) {
+      setSelectedFood([...selectedFood, { ...food, porsi: 1 }]);
+    }
+  };
+
+  const handleRemoveFood = (food) => {
+    setSelectedFood(selectedFood.filter(item => item.namaMakanan !== food.namaMakanan));
+  };
+
+  const handlePorsiChange = (index, newPorsi) => {
+    const newSelectedFood = [...selectedFood];
+    newSelectedFood[index].porsi = newPorsi;
+    setSelectedFood(newSelectedFood);
+  };
+
+  const filteredFoodData = foodData.filter(item =>
+    item.namaMakanan.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const totalItems = filteredFoodData.length;
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+  const startIdx = (currPage - 1) * itemsPerPage;
+  const endIdx = startIdx + itemsPerPage;
+  const paginatedFoodData = filteredFoodData.slice(startIdx, endIdx);
+
+  const totalBerat = selectedFood.reduce((sum, item) => sum + item.berat * item.porsi, 0);
+  const totalPorsi = selectedFood.reduce((sum, item) => sum + item.porsi, 0);
+  const totalKalori = selectedFood.reduce((sum, item) => sum + item.kalori * item.porsi, 0);
 
   return (
     <div className="font-poppins text-c-birdong bg-header-kalori bg-cover min-h-screen">
@@ -24,7 +56,7 @@ const Kalori = () => {
         </div>
       </div>
 
-      <form className="max-w-xl mx-auto">
+      <form className="max-w-xl mx-auto" onSubmit={(e) => e.preventDefault()}>
         <label htmlFor="default-search" className="mb-2 text-sm font-medium sr-only">
           Search
         </label>
@@ -34,6 +66,8 @@ const Kalori = () => {
             id="default-search"
             className="block w-full p-4 ps-10 text-sm border border-gray-300 rounded-lg focus:border-c-orentua focus:outline-none"
             placeholder="Cari makanan..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
           />
           <button
             type="submit"
@@ -64,7 +98,7 @@ const Kalori = () => {
             </tr>
           </thead>
           <tbody>
-            {foodData.map((row, index) => (
+            {paginatedFoodData.map((row, index) => (
               <tr key={index} className="bg-white border-b hover:bg-gray-50">
                 <th scope="row" className="px-6 py-4 font-medium whitespace-nowrap">
                   {row.namaMakanan}
@@ -73,18 +107,17 @@ const Kalori = () => {
                 <td className="px-6 py-4">{row.porsi}</td>
                 <td className="px-6 py-4">{row.kalori}</td>
                 <td className="px-6 py-4 text-right text-c-orenmuda">
-                  {/* Add button or logic to handle selection */}
-                  <button>Tambah</button>
+                  <button onClick={() => handleAddFood(row)}>Tambah</button>
                 </td>
               </tr>
             ))}
           </tbody>
-        </table>        
+        </table>
       </div>
       <PaginationControls
-        currPage={1}
-        totalPages={5}
-        handlePagination={() => {}}
+        currPage={currPage}
+        totalPages={totalPages}
+        handlePagination={(newPage) => setCurrPage(newPage)}
       />
 
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg m-16 mb-5">
@@ -112,26 +145,33 @@ const Kalori = () => {
                 <th scope="row" className="px-6 py-4 font-medium whitespace-nowrap">
                   {row.namaMakanan}
                 </th>
-                <td className="px-6 py-4">{row.berat}</td>
-                <td className="px-6 py-4">{row.porsi}</td>
-                <td className="px-6 py-4">{row.kalori}</td>
+                <td className="px-6 py-4">{row.berat * row.porsi}</td>
+                <td className="px-6 py-4">
+                  <input
+                    type="number"
+                    value={row.porsi}
+                    onChange={(e) => handlePorsiChange(index, parseInt(e.target.value))}
+                    className="w-16 p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-c-orentua"
+                    min="1"
+                  />
+                </td>
+                <td className="px-6 py-4">{row.kalori * row.porsi}</td>
                 <td className="px-6 py-4 text-right text-c-orenmuda">
-                  {/* Remove button or logic to handle deselection */}
-                  <button>Hapus</button>
+                  <button onClick={() => handleRemoveFood(row)}>Hapus</button>
                 </td>
               </tr>
             ))}
           </tbody>
           <tfoot>
-            <tr class="font-semibold text-c-orentua">
-              <th scope="row" class="px-6 py-3 text-base">Total</th>
-              <td class="px-6 py-3">115</td>
-              <td class="px-6 py-3">2</td>
-              <td class="px-6 py-3">526</td>
-              <td class="px-6 py-3"></td>
+            <tr className="font-semibold text-c-orentua">
+              <th scope="row" className="px-6 py-3 text-base">Total</th>
+              <td className="px-6 py-3">{totalBerat}</td>
+              <td className="px-6 py-3">{totalPorsi}</td>
+              <td className="px-6 py-3">{totalKalori}</td>
+              <td className="px-6 py-3"></td>
             </tr>
           </tfoot>
-        </table>        
+        </table>
       </div>
 
     </div>
