@@ -57,27 +57,21 @@ const Rekomendasi = () => {
       kalori: 34,
       picUrl: "src/assets/brokoli.png",
     },
-    {
-      id: 6,
-      title: "Brokoli",
-      kalori: 34,
-      picUrl: "src/assets/brokoli.png",
-    },
   ]);
 
   return (
-    <div className="font-poppins text-c-birdong">
+    <div className="font-poppins text-c-birdong bg-header-rekom bg-cover min-h-screen">
       <Navbar />
 
-      <div className="h-[376px] w-full bg-header-rekom bg-cover">
+      <div className="h-[216px] w-full pb-20">
         <div className="flex w-full h-full items-center justify-center">
-          <h1 className="font-kaushan text-7xl">Hasil Rekomendasi</h1>
+          <h1 className="font-kaushan text-5xl lg:text-7xl mt-32">Hasil Rekomendasi</h1>
         </div>
       </div>
 
-      <div className="bg-white/70 rounded-xl shadow-lg -translate-y-20 w-5/6 mx-auto p-12">
-        <h2 className="text-center font-semibold text-4xl">Jenis Diet</h2>
-        <div className="grid grid-cols-3 gap-8 mt-8">
+      <div className="bg-white/80 rounded-xl shadow-lg w-5/6 mx-auto p-12">
+        <h2 className="text-center font-semibold text-3xl lg:text-4xl pb-5">Jenis Diet</h2>
+        <div className="flex lg:flex-row flex-col gap-3">
           {diets.map((diet) => (
             <CardDiet key={diet.id} diet={diet} />
           ))}
@@ -99,15 +93,15 @@ const Rekomendasi = () => {
         ></ArrowDropDownCircle>
       </div>
 
-      <div id="olahraga" className="flex w-5/6 mx-auto my-20 justify-around">
-        <div className="flex flex-col gap-4">
-          <h2 className="text-3xl font-semibold">Olahraga</h2>
-          <p className="text-6xl font-kaushan">Forearm Plank</p>
-          <button className="font-semibold text-xl text-white bg-gradient-to-br from-[#FEB38E] to-c-orenmuda mt-4 rounded-full p-4 w-fit">
+      <div id="olahraga" className="flex flex-col lg:flex-row gap-5 w-5/6 mx-auto my-20 justify-around">
+        <div className="flex flex-col gap-4 items-center lg:items-start">
+          <h2 className="text-xl lg:text-3xl font-semibold">Olahraga</h2>
+          <p className="text-4xl lg:text-6xl font-kaushan text-center">Forearm Plank</p>
+          <button className="font-semibold text-md lg:text-xl text-white bg-gradient-to-br from-[#FEB38E] to-c-orenmuda mt-4 rounded-full p-3 lg:p-4 w-fit">
             Baca Selengkapnya
           </button>
         </div>
-        <div className="w-1/2">
+        <div className="w-full lg:w-1/2">
           <Slider />
         </div>
       </div>
@@ -127,13 +121,14 @@ const Rekomendasi = () => {
       </div>
 
       <div id="makanan" className="bg-makanan-rekom bg-cover pt-40 py-24">
-        <h2 className="font-kaushan text-6xl text-center">Makanan</h2>
-        <div className="grid h-[560px] grid-cols-3 grid-row-3 w-5/6 mx-auto gap-4 mt-12">
+        <h2 className="font-kaushan text-4xl lg:text-6xl text-center">Makanan</h2>
+        <div className="grid min-h-fit grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 w-5/6 mx-auto gap-4 mt-12">
           {foods.map((food) => (
             <CardFood key={food.id} food={food} />
           ))}
         </div>
       </div>
+
     </div>
   );
 };
@@ -141,11 +136,11 @@ const Rekomendasi = () => {
 const CardDiet = ({ diet }) => {
   return (
     <div className="rounded-lg border border-c-birdong/50 p-8 flex flex-col">
-      <p className="font-semibold text-4xl">{diet.title}</p>
+      <p className="font-semibold text-2xl lg:text-3xl text-center">{diet.title}</p>
 
-      <p className="my-4">{diet.description}</p>
+      <p className="my-4 text-center">{diet.description}</p>
 
-      <button className="font-semibold text-xl rounded-full shadow bg-gradient-to-br from-[#AED9DA] to-c-hijaumedium text-white py-2 px-4 w-fit self-end">
+      <button className="font-semibold text-md lg:text-xl rounded-full shadow bg-gradient-to-br from-[#AED9DA] to-c-hijaumedium text-white py-2 px-4 w-fit self-center">
         Selengkapnya
       </button>
     </div>
