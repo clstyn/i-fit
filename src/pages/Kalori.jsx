@@ -131,6 +131,13 @@ const Kalori = () => {
             </tr>
           </thead>
           <tbody>
+            {foodsData.length === 0 && (
+              <tr className="bg-white border-b hover:bg-gray-50">
+                <td colSpan="5" className="text-center py-4">
+                  Memuat data makanan...
+                </td>
+              </tr>
+            )}
             {foodsData.map((row, index) => (
               <tr key={index} className="bg-white border-b hover:bg-gray-50">
                 <td className="px-6 py-4 text-right text-c-orenmuda">
