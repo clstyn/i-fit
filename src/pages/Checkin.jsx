@@ -180,14 +180,15 @@ const Checkin = () => {
   return (
     <div className="font-poppins text-c-birdong">
       <Navbar />
-      <div className="h-[376px] w-full bg-header-profile bg-cover">
+
+      <div className="h-[316px] w-full pb-32  bg-header-profile bg-cover">
         <div className="flex w-full h-full items-center justify-center">
-          <h1 className="font-kaushan text-7xl">Check-In Harian</h1>
+          <h1 className="font-kaushan text-5xl lg:text-7xl mt-32">Check-In Harian</h1>
         </div>
       </div>
 
-      <div className="w-5/6 mx-auto grid grid-cols-3 gap-16 my-12 -translate-y-24">
-        <div>
+      <div className="w-5/6 mx-auto flex flex-col lg:flex-row gap-16 my-12 -translate-y-32">
+        <div className="lg:w-1/4">
           <div className="flex flex-col gap-12">
             <div className="rounded-lg bg-white/50 shadow-md p-4 flex flex-col gap-2">
               <div className="bg-c-hijaumedium rounded-lg text-white font-semibold w-full text-center p-2 mx-auto text-xl">
@@ -230,7 +231,7 @@ const Checkin = () => {
             </div>
           </div>
         </div>
-        <div className="col-span-2">
+        <div className="col-span-2 lg:w-3/4">
           <div>
             <div className="flex flex-col gap-12">
               <div className="rounded-lg bg-white/50 shadow-md p-4 flex flex-col gap-2">
@@ -252,7 +253,7 @@ const Checkin = () => {
                     Hadiah
                   </div>
                 </div>
-                <p className="font-medium text-xl my-3">
+                <p className="font-medium text-md lg:text-xl my-3">
                   {mode === "tantangan"
                     ? "Lakukan tantangan harian untuk mendapatkan lebih banyak poin!"
                     : "Tukar poin dengan voucher menarik!"}
@@ -313,8 +314,8 @@ const CardChallenge = ({ item, doChallenge, loading }) => {
 
 const CardPrize = ({ prize, redeemPrize, loading }) => {
   return (
-    <div className="grid grid-cols-3 w-full border border-c-birdong/50 rounded-xl p-6 mb-4">
-      <div className="flex flex-col place-self-start">
+    <div className="flex flex-col lg:flex-row justify-around gap-3 w-full border border-c-birdong/50 rounded-xl p-6 mb-4">
+      <div className="flex flex-row lf:flex-col place-self-center gap-2">
         <p className="text-2xl font-medium">
           Rp{new Intl.NumberFormat("id-ID").format(prize.nominal)}
         </p>
@@ -327,7 +328,7 @@ const CardPrize = ({ prize, redeemPrize, loading }) => {
       <button
         disabled={loading}
         onClick={() => redeemPrize(prize._id)}
-        className="bg-gradient-to-br from-[#F8A27D] to-c-orentua rounded-full text-white text-xl font-medium w-fit py-2 px-4 place-self-end"
+        className="bg-gradient-to-br from-[#F8A27D] to-c-orentua rounded-full text-white text-xl font-medium w-fit py-2 px-4 place-self-center"
       >
         {loading ? "Loading..." : "Tukar"}
       </button>
