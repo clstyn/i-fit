@@ -10,6 +10,7 @@ const Register = () => {
     confirmPassword: "",
   });
 
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
@@ -43,6 +44,7 @@ const Register = () => {
 
     setError("");
     setSuccess("");
+    setLoading(true);
 
     try {
       const response = await axios.post(
@@ -55,10 +57,8 @@ const Register = () => {
         }
       );
 
-      if (response.data.success) {
-        setSuccess(
-          "Registration successful! Please check your email to verify your account."
-        );
+      if (response.status === 200) {
+        setSuccess(response.data.message);
       } else {
         setError(response.data.message || "Registration failed");
       }
@@ -179,10 +179,11 @@ const Register = () => {
                 )}
                 <div className="flex items-center justify-between my-4">
                   <button
+                    disabled={loading}
                     type="submit"
                     className="w-full bg-c-orentua hover:bg-c-orenmuda text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                   >
-                    Register
+                    {loading ? "Loading..." : "Register"}
                   </button>
                 </div>
               </form>

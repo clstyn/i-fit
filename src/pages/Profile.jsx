@@ -1,9 +1,13 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { Navigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { AppContext } from "../context/appContext";
 import Navbar from "../components/Navbar";
 import DummyPp from "../assets/pp-dummy.png";
 import PaginationControls from "../components/Pagination";
 
 const Profile = () => {
+  const { logout, userId, isLogged } = useContext(AppContext);
   const [user, setUser] = useState({
     name: "Siti Nur Khodijah",
     joined: "April 2024",
@@ -80,6 +84,16 @@ const Profile = () => {
     },
   ]);
 
+  const handleLogout = () => {
+    localStorage.clear();
+    logout(userId);
+    toast.success("Anda keluar");
+  };
+
+  if (!isLogged) {
+    return <Navigate replace to="/" />;
+  }
+
   return (
     <div className="font-poppins">
       <Navbar />
@@ -146,6 +160,14 @@ const Profile = () => {
                 Ubah Kata Sandi
               </button>
             </form>
+
+            <button
+              onClick={handleLogout}
+              type="button"
+              className="w-full bg-c-orentua rounded-lg text-center text-white text-xl font-semibold p-4"
+            >
+              Log Out
+            </button>
           </div>
         </div>
 

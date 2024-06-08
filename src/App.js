@@ -1,5 +1,9 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 import Landing from "./pages/Landing";
 import BmiAkgCalculator from "./pages/BmiAkgCalcPage";
 import Profile from "./pages/Profile";
@@ -15,26 +19,33 @@ import Resep from "./pages/Resep";
 import AddResep from "./pages/AddResep";
 import DetailResep from "./pages/DetailResep";
 
+import { AppProvider } from "./context/appContext";
+
 function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Landing />} />{" "}
-        <Route path="/profile" element={<Profile />} />{" "}
-        <Route path="/kalkulatorBMIAKG" element={<BmiAkgCalculator />} />{" "}
-        <Route path="/rekomendasi" element={<Rekomendasi />} />{" "}
-        <Route path="/detail" element={<DetailRekom />} />{" "}
-        <Route path="/check-in" element={<Checkin />} />{" "}
-        <Route path="/kalori" element={<Kalori />} />{" "}
-        <Route path="/login" element={<Login />} />{" "}
-        <Route path="/register" element={<Register />} />{" "}
-        <Route path="/forgotPassword" element={<ForgotPassword />} />{" "}
-        <Route path="/recoverAccount" element={<RecoverAccount />} />{" "}
-        <Route path="/resep" element={<Resep />} />{" "}
-        <Route path="/tambah-resep" element={<AddResep />} />{" "}
-        <Route path="/detail-resep" element={<DetailResep />} />{" "}
-      </Routes>{" "}
-    </Router>
+    <>
+      <ToastContainer />
+      <AppProvider>
+        <Router>
+          <Routes>
+            <Route path="/" element={<Landing />} />{" "}
+            <Route path="/profile" element={<Profile />} />{" "}
+            <Route path="/kalkulatorBMIAKG" element={<BmiAkgCalculator />} />{" "}
+            <Route path="/rekomendasi" element={<Rekomendasi />} />{" "}
+            <Route path="/detail" element={<DetailRekom />} />{" "}
+            <Route path="/check-in" element={<Checkin />} />{" "}
+            <Route path="/kalori" element={<Kalori />} />{" "}
+            <Route path="/login" element={<Login />} />{" "}
+            <Route path="/register" element={<Register />} />{" "}
+            <Route path="/forgotPassword" element={<ForgotPassword />} />{" "}
+            <Route path="/recoverAccount" element={<RecoverAccount />} />{" "}
+            <Route path="/resep" element={<Resep />} />{" "}
+            <Route path="/tambah-resep" element={<AddResep />} />{" "}
+            <Route path="/detail-resep" element={<DetailResep />} />{" "}
+          </Routes>{" "}
+        </Router>
+      </AppProvider>
+    </>
   );
 }
 
