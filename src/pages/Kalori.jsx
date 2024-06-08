@@ -52,11 +52,11 @@ const Kalori = () => {
 
       <div className="h-[276px] w-full">
         <div className="flex w-full h-full items-center justify-center">
-          <h1 className="font-kaushan text-7xl mt-32">Kalkulator Kalori</h1>
+          <h1 className="font-kaushan text-5xl lg:text-7xl mt-32">Kalkulator Kalori</h1>
         </div>
       </div>
 
-      <form className="max-w-xl mx-auto" onSubmit={(e) => e.preventDefault()}>
+      <form className="max-w-xl lg:mx-auto mx-10" onSubmit={(e) => e.preventDefault()}>
         <label htmlFor="default-search" className="mb-2 text-sm font-medium sr-only">
           Search
         </label>
@@ -78,10 +78,11 @@ const Kalori = () => {
         </div>
       </form>
 
-      <div className="relative overflow-x-auto shadow-md sm:rounded-lg m-16 mb-5">
+      <div className="relative overflow-x-auto shadow-md rounded-lg m-10 lg:m-20 mb-5">
         <table className="w-full text-sm text-left rtl:text-right">
           <thead className="text-xs text-white uppercase bg-c-hijautua">
-            <tr>
+            <tr>              
+              <th scope="col" className="px-6 py-3"></th>
               <th scope="col" className="px-6 py-3">
                 Nama Makanan
               </th>
@@ -94,21 +95,20 @@ const Kalori = () => {
               <th scope="col" className="px-6 py-3">
                 Kalori (kal)
               </th>
-              <th scope="col" className="px-6 py-3"></th>
             </tr>
           </thead>
           <tbody>
             {paginatedFoodData.map((row, index) => (
               <tr key={index} className="bg-white border-b hover:bg-gray-50">
+                <td className="px-6 py-4 text-right text-c-orenmuda">
+                  <button onClick={() => handleAddFood(row)}>Tambah</button>
+                </td>
                 <th scope="row" className="px-6 py-4 font-medium whitespace-nowrap">
                   {row.namaMakanan}
                 </th>
                 <td className="px-6 py-4">{row.berat}</td>
                 <td className="px-6 py-4">{row.porsi}</td>
-                <td className="px-6 py-4">{row.kalori}</td>
-                <td className="px-6 py-4 text-right text-c-orenmuda">
-                  <button onClick={() => handleAddFood(row)}>Tambah</button>
-                </td>
+                <td className="px-6 py-4">{row.kalori}</td>                
               </tr>
             ))}
           </tbody>
@@ -120,10 +120,11 @@ const Kalori = () => {
         handlePagination={(newPage) => setCurrPage(newPage)}
       />
 
-      <div className="relative overflow-x-auto shadow-md sm:rounded-lg m-16 mb-5">
+      <div className="relative overflow-x-auto shadow-md rounded-lg m-10 lg:m-20 mb-5">
         <table className="w-full text-sm text-left rtl:text-right">
           <thead className="text-xs text-white uppercase bg-c-hijautua">
-            <tr>
+            <tr>              
+              <th scope="col" className="px-6 py-3"></th>
               <th scope="col" className="px-6 py-3">
                 Nama Makanan
               </th>
@@ -136,12 +137,14 @@ const Kalori = () => {
               <th scope="col" className="px-6 py-3">
                 Kalori (kal)
               </th>
-              <th scope="col" className="px-6 py-3"></th>
             </tr>
           </thead>
           <tbody>
-            {selectedFood.map((row, index) => (
+            {selectedFood.map((row, index) => (              
               <tr key={index} className="bg-white border-b hover:bg-gray-50">
+                <td className="px-6 py-4 text-right text-c-orenmuda">
+                  <button onClick={() => handleRemoveFood(row)}>Hapus</button>
+                </td>
                 <th scope="row" className="px-6 py-4 font-medium whitespace-nowrap">
                   {row.namaMakanan}
                 </th>
@@ -155,20 +158,17 @@ const Kalori = () => {
                     min="1"
                   />
                 </td>
-                <td className="px-6 py-4">{row.kalori * row.porsi}</td>
-                <td className="px-6 py-4 text-right text-c-orenmuda">
-                  <button onClick={() => handleRemoveFood(row)}>Hapus</button>
-                </td>
+                <td className="px-6 py-4">{row.kalori * row.porsi}</td>                
               </tr>
             ))}
           </tbody>
           <tfoot>
-            <tr className="font-semibold text-c-orentua">
+            <tr className="font-semibold text-c-orentua bg-white">              
+              <td className="px-6 py-3"></td>
               <th scope="row" className="px-6 py-3 text-base">Total</th>
               <td className="px-6 py-3">{totalBerat}</td>
               <td className="px-6 py-3">{totalPorsi}</td>
               <td className="px-6 py-3">{totalKalori}</td>
-              <td className="px-6 py-3"></td>
             </tr>
           </tfoot>
         </table>

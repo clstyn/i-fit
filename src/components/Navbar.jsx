@@ -14,7 +14,7 @@ const Navbar = () => {
 
   return (
     <nav className="bg-white border-gray-200 fixed top-0 left-0 w-full z-50">
-      <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+      <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-5">
         <div className="flex items-center space-x-3">
           <div className="text-3xl font-kaushan text-c-birdong">I-Fit</div>
         </div>
@@ -45,7 +45,7 @@ const Navbar = () => {
           } w-full md:block md:w-auto`}
           id="navbar-default"
         >
-          <ul className="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white">
+          <ul className="font-medium md:text-xl flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white">
             <li>
               <Link
                 to="/"
@@ -92,31 +92,33 @@ const Navbar = () => {
               >
                 Resep
               </Link>
-            </li>
-            <li>
-              <Link
-                to="/check-in"
-                className={`block py-2 px-3 ${
-                  location.pathname === "/check-in"
-                    ? "text-c-orentua"
-                    : "text-gray-900"
-                } rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-c-orentua md:p-0`}
-              >
-                CheckIn
-              </Link>
-            </li>
+            </li>            
             {isLogged ? (
-              <li>
-                <Link
-                  to="/profile"
-                  className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:p-0"
-                >
-                  <AccountCircleOutlined
-                    className="text-c-birdong"
-                    style={{ fontSize: "32px" }}
-                  />
-                </Link>
-              </li>
+              <>
+                <li>
+                  <Link
+                    to="/check-in"
+                    className={`block py-2 px-3 ${
+                      location.pathname === "/check-in"
+                        ? "text-c-orentua"
+                        : "text-gray-900"
+                    } rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-c-orentua md:p-0`}
+                  >
+                    CheckIn
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/profile"
+                    className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:p-0"
+                  >
+                    <AccountCircleOutlined
+                      className="text-c-birdong"
+                      style={{ fontSize: "32px" }}
+                    />
+                  </Link>
+                </li>
+              </>              
             ) : (
               <>
                 <li>
@@ -130,7 +132,7 @@ const Navbar = () => {
                 <li>
                   <Link
                     to="/register"
-                    className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:p-0 bg-c-birdong text-white rounded-xl"
+                    className="block py-2 px-3 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-c-birdong md:border-0 md:p-0 md:px-3 bg-c-birdong text-white rounded-xl"
                   >
                     Daftar
                   </Link>
