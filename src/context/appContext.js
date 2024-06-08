@@ -6,6 +6,7 @@ const initialState = {
   isLogged: !!token,
   token: token,
   userId: localStorage.getItem("userId") || null,
+  user: JSON.parse(localStorage.getItem("user")) || null,
 };
 
 const reducer = (state, action) => {
@@ -21,6 +22,11 @@ const reducer = (state, action) => {
         ...state,
         userId: null,
         isLogged: false,
+      };
+    case "SET_USER":
+      return {
+        ...state,
+        user: action.payload,
       };
     default:
       return state;
@@ -40,8 +46,12 @@ const AppProvider = ({ children }) => {
     dispatch({ type: "LOGOUT", payload: val });
   };
 
+  const setGlobalUser = (val) => {
+    dispatch({ type: "SET_USER", payload: val });
+  };
+
   return (
-    <AppContext.Provider value={{ ...state, login, logout }}>
+    <AppContext.Provider value={{ ...state, login, logout, setGlobalUser }}>
       {children}
     </AppContext.Provider>
   );

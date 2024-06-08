@@ -8,7 +8,8 @@ import DummyPp from "../assets/pp-dummy.png";
 import PaginationControls from "../components/Pagination";
 
 const Profile = () => {
-  const { logout, userId, isLogged, token } = useContext(AppContext);
+  const { logout, userId, isLogged, token, setGlobalUser } =
+    useContext(AppContext);
   const [loadingData, setLoadingData] = useState(true);
   const [loadingEdit, setLoadingEdit] = useState(false);
   const [loadingChangePass, setLoadingChangePass] = useState(false);
@@ -81,6 +82,8 @@ const Profile = () => {
           username: data.user.username,
           fullname: data.user.fullname,
         });
+        localStorage.setItem("user", JSON.stringify(data.user));
+        setGlobalUser(data.user);
         setLoadingData(false);
       } catch (error) {
         console.error(error);
@@ -334,9 +337,12 @@ const Profile = () => {
             <div className="grid grid-cols-3 gap-4 h-40 mt-4">
               {user?.bmis?.length > 0 ? (
                 user.bmis.map((bmi) => (
-                  <div key={bmi.id} className="flex flex-col shadow rounded-lg">
+                  <div
+                    key={bmi._id}
+                    className="flex flex-col shadow rounded-lg"
+                  >
                     <div className="bg-gradient-to-br from-c-orentua to-white rounded-t-lg text-center text-white text-4xl font-semibold py-8">
-                      {bmi.bmi}
+                      {bmi.value}
                     </div>
                     <div className="font-medium text-birdong pl-4 mt-2">
                       {bmi.category}
@@ -359,9 +365,12 @@ const Profile = () => {
             <div className="grid grid-cols-3 gap-4 h-40 mt-4">
               {user?.akgs?.length > 0 ? (
                 user.akgs.map((akg) => (
-                  <div key={akg.id} className="flex flex-col shadow rounded-lg">
+                  <div
+                    key={akg._id}
+                    className="flex flex-col shadow rounded-lg"
+                  >
                     <div className="bg-gradient-to-br from-c-hijautua to-white rounded-t-lg text-center text-white text-4xl font-semibold py-8">
-                      {akg.akg}
+                      {akg.value}
                     </div>
                     <div className="text-xs text-birdong opacity-70 pl-4 mt-2">
                       {akg.date}
