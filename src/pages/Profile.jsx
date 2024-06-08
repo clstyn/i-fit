@@ -389,12 +389,6 @@ const Profile = () => {
             {posts.map((post) => (
               <CardPostingan key={post.id} post={post} />
             ))}
-
-            <PaginationControls
-              currPage={1}
-              totalPages={5}
-              handlePagination={() => {}}
-            />
           </div>
         </div>
       </div>
