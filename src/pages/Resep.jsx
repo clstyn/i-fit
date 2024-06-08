@@ -8,52 +8,54 @@ import {
   FavoriteOutlined,
 } from "@mui/icons-material";
 import Dummy from "../assets/recipe-dummy.png";
+
 const Resep = () => {
   return (
-    <div className="font-poppins text-c-birdong">
+    <div className="font-poppins text-c-birdong pb-10">
       <Navbar />
-      <div className="h-[376px] w-full bg-cover">
+
+      <div className="h-[216px] w-full pb-20">
         <div className="flex w-full h-full items-center justify-center">
-          <h1 className="font-kaushan text-7xl">Resep Kreatif</h1>
+          <h1 className="font-kaushan text-5xl lg:text-7xl mt-32">Resep Kreatif</h1>
         </div>
       </div>
 
       <Link
         to={"/tambah-resep"}
-        className="fixed right-24 bottom-24 text-c-orentua cursor-pointer hover:scale-105"
+        className="z-50 fixed right-10 bottom-10 text-c-orentua cursor-pointer hover:scale-105"
       >
         <ControlPoint style={{ fontSize: "78px" }}></ControlPoint>
       </Link>
 
-      <div className="w-5/6 mx-auto flex justify-between">
-        <div className="flex gap-4 text-lg font-semibold">
+      <div className="w-5/6 mx-auto flex flex-col lg:flex-row justify-between gap-3">
+        <div className="flex flex-wrap gap-2 text-md">
           <div className="rounded-full border-2 border-c-orentua text-c-orentua">
-            <p className="p-4">Semua</p>
+            <p className="p-2">Semua</p>
           </div>
           <div className="rounded-full border-2 border-c-orentua text-c-orentua">
-            <p className="p-4">Camilan</p>
+            <p className="p-2">Camilan</p>
           </div>
           <div className="rounded-full border-2 border-c-orentua text-c-orentua">
-            <p className="p-4">Hidangan Utama</p>
+            <p className="p-2">Hidangan Utama</p>
           </div>
           <div className="rounded-full border-2 border-c-orentua text-c-orentua">
-            <p className="p-4">Sarapan</p>
+            <p className="p-2">Sarapan</p>
           </div>
           <div className="rounded-full border-2 border-c-orentua text-c-orentua">
-            <p className="p-4">Disukai</p>
+            <p className="p-2">Disukai</p>
           </div>
           <div className="rounded-full border-2 border-c-orentua text-c-orentua">
-            <p className="p-4">Menu Saya</p>
+            <p className="p-2">Menu Saya</p>
           </div>
         </div>
 
         <input
-          className="rounded-2xl border-4 border-c-orentua p-4 w-1/4"
+          className="focus:outline-none rounded-2xl border-4 border-c-orentua p-2 w-full lg:w-1/4"
           placeholder="Cari resep..."
         />
       </div>
 
-      <div className="w-5/6 mx-auto my-12 grid grid-cols-4 gap-8">
+      <div className="w-5/6 mx-auto my-12 grid gap-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         <CardResep />
         <CardResep />
         <CardResep />
@@ -61,6 +63,7 @@ const Resep = () => {
         <CardResep />
         <CardResep />
       </div>
+
     </div>
   );
 };
@@ -74,23 +77,23 @@ const CardResep = () => {
         className="w-full h-full object-cover rounded-t-2xl"
       />
       <div className="relative h-1/4 bg-white rounded-b-2xl px-4 py-2">
-        <p className="text-lg">Siti Nur Khodijah</p>
-        <p className="text-2xl font-semibold mt-2">SUP LABU</p>
+        <p className="text-md">Siti Nur Khodijah</p>
+        <p className="text-xl font-semibold mt-2">SUP LABU</p>
 
         <div className="flex justify-between text-c-birdong/70">
-          <p className="text-lg">
+          <p className="text-md">
             <span className="text-c-orentua mr-1">
               <LocalFireDepartmentOutlined className="inline w-6 h-6"></LocalFireDepartmentOutlined>
             </span>
             350 kalori
           </p>
-          <p className="text-lg">
+          <p className="text-md">
             <span className="text-c-orentua mr-1">
               <TimerOutlined className="inline w-6 h-6"></TimerOutlined>
             </span>
             15 menit
           </p>
-          <p className="text-lg">
+          <p className="text-md">
             <span className="text-c-orentua mr-1">
               <Favorite className="inline w-6 h-6"></Favorite>
             </span>
@@ -108,4 +111,5 @@ const CardResep = () => {
     </div>
   );
 };
+
 export default Resep;

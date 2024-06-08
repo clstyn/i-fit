@@ -10,7 +10,7 @@ const recipe = {
   portion: "5",
   time: "15 menit",
   totalcalories: "350",
-  desc: "Hai semuanya kali ini saya akan membagikan resep ayam betutu khas bali yang terkenal, tetapi dengan menggunakan minyak sedikit...",
+  desc: "Hai semuanya kali ini saya akan membagikan resep ayam betutu khas bali yang terkenal, tetapi dengan menggunakan minyak sedikit dan pastinya sehat.",
   ingredients: [
     { name: "Bawang Putih", amount: "2 siung", calories: "10" },
     { name: "Daging Ayam", amount: "200 gram", calories: "250" },
@@ -31,10 +31,9 @@ const RecipeDetail = () => {
   };
 
   return (
-    <div>
-      <header className="h-24">
-        <Navbar />
-      </header>
+    <div className="font-poppins text-c-birdong pb-10">
+      <Navbar />
+
       <div
         className="relative h-96 bg-cover bg-center flex justify-center items-center cursor-pointer"
         style={{ backgroundImage: `url(${recipe.imageUrl})` }}
@@ -48,8 +47,8 @@ const RecipeDetail = () => {
       {isPopupOpen && (
         <PopupImage imageUrl={recipe.imageUrl} onClose={handleClosePopup} />
       )}
-      <div className="container mx-auto py-8 px-4">
-        <div className="flex gap-x-4">
+      <div className="container mx-auto p-10">
+        <div className="flex flex-col lg:flex-row gap-x-4">
           <div className="w-auto h-14 bg-c-hijautua bg-opacity-50 p-4 mb-4 rounded-xl border border-c-hijautua">
             <div className="flex gap-x-4">
               <Icon
@@ -59,11 +58,11 @@ const RecipeDetail = () => {
                 height={"auto"}
               />
               <p className="font-poppins font-bold text-xl text-c-birdong">
-                Porsi
-              </p>
-              <p className="font-poppins font-bold text-xl text-c-birdong">
                 {recipe.portion}
               </p>
+              <p className="font-poppins font-bold text-xl text-c-birdong">
+                Porsi
+              </p>              
             </div>
           </div>
           <div className="w-auto h-14 bg-c-hijautua bg-opacity-50 p-4 mb-4 rounded-xl border border-c-hijautua">
@@ -88,7 +87,7 @@ const RecipeDetail = () => {
                 height={"auto"}
               />
               <p className="font-poppins font-bold text-xl text-c-birdong">
-                Estimasi Kalori
+                Estimasi Kalori:
               </p>
               <p className="font-poppins font-bold text-xl text-c-birdong">
                 {recipe.totalcalories}
@@ -96,23 +95,23 @@ const RecipeDetail = () => {
             </div>
           </div>
         </div>
-        <p className="font-poppins font-normal text-c-birdong text-xl mb-10">
+        <p className="indent-5  text-justify font-poppins font-normal text-c-birdong text-xl mb-10">
           {recipe.desc}
         </p>
-        <div className="container-bahan w-1/2">
+        <div className="container-bahan">
           <h2 className="text-2xl font-bold mb-4 font-poppins text-c-birdong">
             Bahan-bahan
           </h2>
-          <ul className="mb-8">
+          <ul className="mb-8 lg:w-1/2">
             {recipe.ingredients.map((ingredient, index) => (
               <li
                 key={index}
                 className="flex justify-between items-center p-4 mb-2 bg-c-hijautua bg-opacity-50 rounded-xl border border-c-hijautua"
               >
-                <div className="w-full flex space-x-4 text-c-birdong font-poppins font-normal text-xl">
-                  <span className="w-2/4">{ingredient.name}</span>
-                  <span className="w-1/4">{ingredient.amount}</span>
-                  <span className="w-1/4">{ingredient.calories} kalori</span>
+                <div className="w-full flex space-x-4 text-c-birdong font-poppins font-normal text-xl items-center">
+                  <span className="w-1/3 text-left">{ingredient.name}</span>
+                  <span className="w-1/3 text-center">{ingredient.amount}</span>
+                  <span className="w-1/3 text-right">{ingredient.calories} kalori</span>
                 </div>
               </li>
             ))}

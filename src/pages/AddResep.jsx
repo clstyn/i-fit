@@ -73,7 +73,7 @@ const AddResep = () => {
           ></textarea>
         </div>
 
-        <div className="flex w-1/2 justify-between">
+        <div className="flex flex-col lg:flex-row w-full justify-between">
           <div className="flex items-center justify-center gap-4">
             <p>Porsi</p>
             <div className="flex flex-col items-center justify-center">
@@ -131,7 +131,7 @@ const AddResep = () => {
           ) : null}
 
           <div className="flex gap-4">
-            <div className="bg-gradient-to-br from-[#F8905B] to-c-orentua rounded-2xl font-semibold text-xl w-fit p-4 text-white">
+            <div className="bg-gradient-to-br from-[#F8905B] to-c-orentua rounded-2xl font-semibold text-xl w-fit p-3 text-white">
               <span>
                 <Add
                   className="inline mr-2"
@@ -161,7 +161,7 @@ const AddResep = () => {
             )
           ) : null}
 
-          <div className="bg-gradient-to-br from-[#F8905B] to-c-orentua rounded-2xl font-semibold text-xl w-fit p-4 text-white">
+          <div className="bg-gradient-to-br from-[#F8905B] to-c-orentua rounded-2xl font-semibold text-md lg:text-xl w-fit p-3 text-white">
             <span>
               <Add
                 className="inline mr-2"
@@ -184,33 +184,37 @@ const AddResep = () => {
 
 const InputBahan = (nomor, value) => {
   return (
-    <div className="flex gap-4 w-5/6 font-regular">
-      <input
-        className="rounded-lg border-2 border-c-hijautua p-4 text-xl w-1/2"
-        placeholder="Nama Bahan"
-      />
-      <input
-        className="rounded-lg border-2 border-c-hijautua p-4 text-xl w-1/4"
-        placeholder="Satuan"
-      />
-      <input
-        className="rounded-lg border-2 border-c-hijautua p-4 text-xl w-1/4"
-        placeholder="Kalori"
-      />
-      <Close className="text-c-hijautua" style={{ fontSize: "40px" }}></Close>
-    </div>
+    <div className="flex flex-col lg:flex-row gap-4 w-full lg:w-5/6 font-regular items-center">
+      <div className="flex flex-col lg:flex-row gap-4 w-full items-center">
+        <input
+          className="rounded-lg border-2 border-c-hijautua p-4 text-xl w-full lg:w-1/2"
+          placeholder="Nama Bahan"
+        />
+        <div className="flex gap-4 w-full lg:w-1/2 items-center">
+          <input
+            className="rounded-lg border-2 border-c-hijautua p-4 text-xl w-full lg:w-1/2"
+            placeholder="Satuan"
+          />
+          <input
+            className="rounded-lg border-2 border-c-hijautua p-4 text-xl w-full lg:w-1/2"
+            placeholder="Kalori"
+          />
+          <Close className="text-c-hijautua" style={{ fontSize: "40px" }}></Close>
+        </div>
+      </div>
+    </div>  
   );
 };
 
 const InputLangkah = ({ nomor, value }) => {
   return (
-    <div className="flex gap-4 w-5/6 font-regular">
-      <div className="w-10 h-10 rounded-full bg-c-orentua text-white text-2xl flex items-center justify-center">
+    <div className="flex gap-4 w-full lg:w-5/6 items-center font-normal">
+      <div className="w-7 h-7 rounded-full bg-c-orentua text-white text-2xl flex items-center justify-center">
         {nomor}
       </div>
       <input
-        className="rounded-lg border-2 border-c-hijautua p-4 text-xl w-full"
-        placeholder="Masukkan langkah pembuatan"
+        className="rounded-lg border-2 border-c-hijautua p-4 text-md lg:text-lg w-full"
+        placeholder="Masukkan langkah pembuatan..."
       />
       <Close className="text-c-hijautua" style={{ fontSize: "40px" }}></Close>
     </div>

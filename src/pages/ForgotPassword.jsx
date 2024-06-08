@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 import axios from "axios";
+import Navbar from "../components/Navbar";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("contoh@gmail.com");
@@ -42,11 +43,12 @@ const ForgotPassword = () => {
 
   return (
     <div className="font-poppins text-c-birdong min-h-screen flex flex-col lg:flex-row">
+      <Navbar />
       <div className="lg:w-1/2 bg-cover bg-center bg-forgot hidden lg:block"></div>
 
       <div className="w-full lg:w-1/2 bg-cover bg-center bg-base-hijau relative">
         <div className="flex items-center justify-center min-h-screen">
-          <div className="p-8 max-w-md w-full">
+          <div className="p-10 max-w-md w-full">
             <div>
               <p className="font-bold text-xl">Lupa password ?</p>
               <p className="text-md mb-4">

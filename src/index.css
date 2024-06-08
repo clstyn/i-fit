@@ -20,9 +20,10 @@ input[type="number"]::-webkit-inner-spin-button {
 
 .needle-container {
   width: 400px;
-  height: 400px;
+  height: 350px;
   border-radius: 50%;
   margin: 20px auto;
+  margin-bottom: 0;
   background-size: 100%;
   position: relative;
 }

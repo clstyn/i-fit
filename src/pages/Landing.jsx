@@ -1,9 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
+import WorkOut from "../assets/wo.jpg";
 import bmiInd from "../assets/bmiInd.png";
 import PicKalori from "../assets/pic-kalori.png";
 import PicRecommend from "../assets/pic-recommend.png";
+import PicRecipe from "../assets/resep.png";
+import CheckInHere from "../assets/cekin.png";
 import BasicButton from "../components/BasicButton";
 
 const features = [
@@ -16,7 +19,7 @@ const features = [
     btnText: "Kalkulator BMI & AKG",
   },
   {
-    title: "Hitung Kalori Makanan yang Dimakan",
+    title: "Hitung Kalori Makanan",
     description:
       "Pantau jumlah kalori yang masuk ketubuh Anda berdasarkan makanan yang Anda Makan.",
     imageUrl: PicKalori,
@@ -35,7 +38,7 @@ const features = [
     title: "Dapatkan Resep Kreatif",
     description:
       "Berbagi resep kreatif dalam forum untuk menghindari kejenuhan menu makan.",
-    imageUrl: "https://via.placeholder.com/250",
+    imageUrl: PicRecipe,
     link: "/resep",
     btnText: "Resep Kreatif",
   },
@@ -43,7 +46,7 @@ const features = [
     title: "Check-In Setiap Hari",
     description:
       "Jangan sampai terlewat melakukan check-in harian untuk mendapatkan banyak voucher jajan makanan sehat.",
-    imageUrl: "https://via.placeholder.com/250",
+    imageUrl: CheckInHere,
     link: "/check-in",
     btnText: "Check-In Harian",
   },
@@ -51,24 +54,35 @@ const features = [
 
 const Landing = () => {
   return (
-    <div>
-      <header className="h-24">
-        <Navbar />
-      </header>
-      <div className="bg-cover bg-center h-screen text-white flex flex-col items-start bg-bg-landing">
-        <h1 className="text-7xl font-kaushan text-c-birdong mt-52 mx-28">
-          I-Fit
-        </h1>
-        <p className="text-4xl text-c-birdong font-poppins font-bold mx-28 mb-6">
-          Tubuhmu Nomor Satu
-        </p>
-        <p className="w-[632px] text-xl text-c-birdong font-poppins font-normal mx-28">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat.
-        </p>
-      </div>
+    <div className="font-poppins text-c-birdong">
+      <Navbar />
+
+      <div className="bg-cover bg-center w-full min-h-screen text-white flex flex-col items-start bg-bg-landing">
+        <div className="min-h-screen flex flex-col lg:flex-row items-center gap-5">
+          <div>
+            <h1 className="text-5xl lg:text-7xl font-kaushan text-c-birdong mt-36 lg:mt-0 mx-10 lg:mx-28">
+              I-Fit
+            </h1>
+            <p className="text-2xl lg:text-4xl text-c-birdong font-bold mx-10 lg:mx-28 mb-6">
+              Tubuhmu Nomor Satu
+            </p>
+            <p className="w-3/4 text-md lg:text-xl text-c-birdong font-normal mx-10 lg:mx-28">
+              I-Fit siap untuk mendampingi kalian dalam 
+              menjalankan gaya hidup sehat. 
+              Fitur–fitur yang tersedia di I-Fit dapat membantu kamu
+              dalam memahami diet dan olahraga yang sesuai dengan kebutuhanmu.
+            </p>
+          </div>
+          <div className="w-3/4 lg:mr-36">
+            <img
+              src={WorkOut}
+              alt={"Work Out"}
+              className="shadow-xl"
+            />
+          </div>
+        </div>          
+      </div>      
+      
       <div className="py-16 flex flex-col items-center">
         {features.map((feature, index) => (
           <div
@@ -80,23 +94,23 @@ const Landing = () => {
             <img
               src={feature.imageUrl}
               alt={feature.title}
-              className="w-auto h-auto object-cover"
+              className="w-3/4 h-3/4 lg:w-auto lg:h-auto object-cover"
             />
             <div
               className={`md:w-3/4 md:px-8 text-center mt-4 md:mt-0 ${
                 index % 2 === 0 ? "md:text-left" : "md:text-right"
               }`}
             >
-              <h2 className="text-4xl font-poppins font-bold text-c-birdong mb-2">
+              <h2 className="text-xl lg:text-4xl font-bold text-c-birdong mb-2">
                 {feature.title}
               </h2>
               <div
-                className={`w-[450px] ${
+                className={`w-full px-10 lg:px-0 ${
                   index % 2 === 0 ? "ml-0 mr-auto" : "ml-auto mr-0"
                 }`}
               >
                 <p
-                  className={`text-c-birdong font-poppins font-normal mb-4 ${
+                  className={`text-md lg:text-xl text-c-birdong font-normal mb-4 ${
                     index % 2 === 0 ? "ml-0 mr-auto" : "ml-auto mr-0"
                   }`}
                 >
@@ -105,8 +119,8 @@ const Landing = () => {
               </div>
 
               <div
-                className={`w-2/5 ${
-                  index % 2 === 0 ? "ml-0 mr-auto" : "ml-auto mr-0"
+                className={`max-w-fit mx-auto ${
+                  index % 2 === 0 ? "lg:ml-0 lg:mr-auto" : "lg:ml-auto lg:mr-0"
                 }`}
               >
                 <Link to={`${feature.link}`}>
