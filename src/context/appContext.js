@@ -4,6 +4,7 @@ const token = JSON.parse(localStorage.getItem("token")) || null;
 
 const initialState = {
   isLogged: !!token,
+  token: token,
   userId: localStorage.getItem("userId") || null,
 };
 
