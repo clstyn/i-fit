@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
+import Slider from "../components/slider/Slider";
 import WorkOut from "../assets/wo.jpg";
 import bmiInd from "../assets/bmiInd.png";
 import PicKalori from "../assets/pic-kalori.png";
@@ -57,30 +58,24 @@ const Landing = () => {
     <div className="font-poppins text-c-birdong">
       <Navbar />
 
-      <div className="bg-cover bg-center w-full min-h-screen text-white flex flex-col items-start bg-bg-landing">
-        <div className="min-h-screen flex flex-col lg:flex-row items-center gap-5">
-          <div>
-            <h1 className="text-5xl lg:text-7xl font-kaushan text-c-birdong mt-36 lg:mt-0 mx-10 lg:mx-28">
-              I-Fit
-            </h1>
-            <p className="text-2xl lg:text-4xl text-c-birdong font-bold mx-10 lg:mx-28 mb-6">
-              Tubuhmu Nomor Satu
-            </p>
-            <p className="w-3/4 text-md lg:text-xl text-c-birdong font-normal mx-10 lg:mx-28">
-              I-Fit siap untuk mendampingi kalian dalam 
-              menjalankan gaya hidup sehat. 
-              Fitur–fitur yang tersedia di I-Fit dapat membantu kamu
-              dalam memahami diet dan olahraga yang sesuai dengan kebutuhanmu.
-            </p>
-          </div>
-          <div className="w-3/4 lg:mr-36">
-            <img
-              src={WorkOut}
-              alt={"Work Out"}
-              className="shadow-xl"
-            />
-          </div>
-        </div>          
+      <div className="flex flex-col lg:flex-row gap-5 w-full min-h-screen mx-auto py-10 lg:pt-48 justify-around bg-cover bg-center bg-bg-landing">
+        <div>
+          <h1 className="text-5xl lg:text-7xl font-kaushan text-c-birdong mt-24 lg:mt-0 mx-10 lg:mx-28">
+            I-Fit
+          </h1>
+          <p className="text-2xl lg:text-4xl text-c-birdong font-bold mx-10 lg:mx-28 mb-6">
+            Tubuhmu Nomor Satu
+          </p>
+          <p className="w-3/4 text-md lg:text-xl text-c-birdong font-normal mx-10 lg:mx-28">
+            I-Fit siap untuk mendampingi kalian dalam 
+            menjalankan gaya hidup sehat. 
+            Fitur–fitur yang tersedia di I-Fit dapat membantu kamu
+            dalam memahami diet dan olahraga yang sesuai dengan kebutuhanmu.
+          </p>
+        </div>
+        <div className="w-full lg:w-1/2">
+          <Slider />
+        </div>
       </div>      
       
       <div className="py-16 flex flex-col items-center">

@@ -6,6 +6,7 @@ import { AppContext } from "../context/appContext";
 import Navbar from "../components/Navbar";
 import DummyPp from "../assets/pp-dummy.png";
 import PaginationControls from "../components/Pagination";
+import BasicButton from "../components/BasicButton";
 
 const Profile = () => {
   const { logout, userId, isLogged, token, setGlobalUser } =
@@ -232,23 +233,23 @@ const Profile = () => {
     <div className="font-poppins">
       <Navbar />
 
-      <div className="h-[376px] w-full bg-header-profile bg-cover">
-        <div className="bg-white rounded-2xl h-64 w-5/6 mx-auto translate-y-40 drop-shadow-md px-12 py-6 flex justify-between items-center">
+      <div className="h-[316px] w-full bg-header-profile bg-cover">
+        <div className="bg-white rounded-2xl min-h-fit w-5/6 mx-auto translate-y-40 drop-shadow-md px-12 py-6 flex flex-col lg:flex-row justify-between items-center">
           <img src={DummyPp} alt="Profile" className="rounded-full h-48" />
-          <div className="flex flex-col gap-8 items-end">
-            <p className="text-4xl font-semibold">
+          <div className="flex flex-col gap-3 items-center lg:items-end">
+            <p className="text-2xl lg:text-3xl lg:text-4xl font-semibold">
               {loadingData ? "Loading data.." : user.fullname}
             </p>
-            <p className="text-[28px] font-medium opacity-70">
+            <p className="text-xl text-center lg:text-right font-medium opacity-70">
               Bergabung sejak {user?.joined}
             </p>
           </div>
         </div>
       </div>
 
-      <div className="w-5/6 mx-auto grid grid-cols-3 gap-16 my-24">
+      <div className="w-5/6 mx-auto flex flex-col lg:flex-row gap-16 my-24">
         <div>
-          <div className="sticky top-28 flex flex-col gap-12">
+          <div className="lg:sticky pt-32 lg:pt-0 top-28 flex flex-col gap-12">
             <form
               onSubmit={handleEditSave}
               className="rounded-lg shadow-md p-8 flex flex-col gap-2"
@@ -276,7 +277,7 @@ const Profile = () => {
               />
               <button
                 disabled={loadingEdit}
-                className="bg-c-hijautua rounded-full p-4 text-white font-bold mt-4 w-fit mx-auto"
+                className="bg-c-hijautua rounded-full p-3 lg:p-4 text-white font-semibold mt-4 w-fit mx-auto"
               >
                 {loadingEdit ? "Loading..." : "Ubah Data"}
               </button>
@@ -315,19 +316,18 @@ const Profile = () => {
               )}
               <button
                 disabled={loadingChangePass}
-                className="bg-c-hijaumedium rounded-full p-4 text-white font-bold mt-4 w-fit mx-auto"
+                className="bg-c-hijaumedium rounded-full p-3 lg:p-4 text-white font-semibold mt-4 w-fit mx-auto"
               >
                 {loadingChangePass ? "Loading..." : "Ubah Kata Sandi"}
               </button>
             </form>
 
-            <button
+            <BasicButton
               onClick={handleLogout}
+              text="Logout"
               type="button"
               className="w-full bg-c-orentua rounded-lg text-center text-white text-xl font-semibold p-4"
-            >
-              Log Out
-            </button>
+            />
           </div>
         </div>
 
@@ -398,17 +398,18 @@ const Profile = () => {
 
 const CardPostingan = ({ post }) => {
   return (
-    <div className="rounded-xl border border-c-hijautua/75 p-6 flex my-4">
-      <div>
+    <div className="rounded-xl border border-c-hijautua/75 p-6 flex flex-col lg:flex-row my-4 gap-4">
+      <div className="flex-1 content-center">
         <p className="text-xl font-medium">{post.title}</p>
         <p className="my-4">{post.desc}</p>
-        <div className="flex gap-4">
-          <img src={post.author.profilePic} alt="Profile" />
+        <div className="flex gap-4 items-center">
+          <img src={post.author.profilePic} alt="Profile" className="w-10 h-10 rounded-full" />
           <p className="text-lg">{post.author.name}</p>
         </div>
       </div>
-      <div className="w-1/3 rounded-lg bg-gray-500"></div>
+      <div className="w-full lg:w-1/3 h-48 rounded-lg bg-gray-500"></div>
     </div>
+
   );
 };
 
