@@ -20,28 +20,69 @@ const getTodayDate = () => {
 
 const Checkin = () => {
   const { token, isLogged, user } = useContext(AppContext);
+  const [point, setPoint] = useState(0);
+  const [latestCheckin, setLatestCheckin] = useState(null);
   const [loadingDaily, setLoadingDaily] = useState(false);
   const [loadingPrize, setLoadingPrize] = useState(false);
   const [loadingChallenge, setLoadingChallenge] = useState(false);
   const [checkinAllowed, setCheckinAllowed] = useState(true);
   const [prizes, setPrizes] = useState([]);
+  const [challenges, setChallenges] = useState([]);
   const [mode, setMode] = useState("tantangan");
 
   useEffect(() => {
     const now = new Date();
-    const lastCheckin = new Date(user?.latestCheckin);
+    const lastCheckin = new Date(latestCheckin);
     if (now - lastCheckin < 24 * 60 * 60 * 1000) {
       setCheckinAllowed(false);
     }
-  }, [user]);
+  }, [latestCheckin]);
 
   useEffect(() => {
     fetchPrizes();
+    fetchLatestPoint();
+    fetchChallenges();
   }, []);
 
-  useEffect(() => {
-    console.log(prizes);
-  }, prizes);
+  // useEffect(() => {
+  //   setPoint(user?.point);
+  //   setLatestCheckin(user?.latestCheckin);
+  // }, [user]);
+
+  const fetchLatestPoint = async () => {
+    try {
+      const response = await axios.get(
+        "https://i-fit-be.vercel.app/user/point",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setPoint(response.data.point);
+      setLatestCheckin(response.data.latestCheckin);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const fetchChallenges = async () => {
+    try {
+      const response = await axios.get(
+        "https://i-fit-be.vercel.app/user/challenges",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (response.status === 200) {
+        setChallenges(response.data.challenges);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const dailyCheckin = async (e) => {
     e.preventDefault();
@@ -106,6 +147,33 @@ const Checkin = () => {
       toast.error(error.response?.data?.message || "Gagal menukarkan poin");
     } finally {
       setLoadingPrize(false);
+      fetchLatestPoint();
+    }
+  };
+
+  const doChallenge = async (challengeId) => {
+    setLoadingChallenge(true);
+    try {
+      const response = await axios.post(
+        `https://i-fit-be.vercel.app/user/challenge-done/${challengeId}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (response.status === 200) {
+        toast.success(response.data.message);
+      }
+    } catch (error) {
+      toast.error(
+        error.response?.data?.message || "Gagal menyelesaikan tantangan"
+      );
+    } finally {
+      setLoadingChallenge(false);
+      fetchLatestPoint();
+      fetchChallenges();
     }
   };
 
@@ -127,7 +195,7 @@ const Checkin = () => {
               </div>
               <div className="mt-4 font-semibold w-full flex gap-4 items-center justify-center text-3xl">
                 <img src={Coin} alt="coin" className="w-8" />
-                <p>{user?.point}</p>
+                <p>{point}</p>
               </div>
             </div>
 
@@ -191,7 +259,14 @@ const Checkin = () => {
                 </p>
                 <div className="h-[480px] overflow-y-auto">
                   {mode === "tantangan"
-                    ? null
+                    ? challenges.map((challenge) => (
+                        <CardChallenge
+                          item={challenge}
+                          key={challenge.id}
+                          doChallenge={doChallenge}
+                          loading={loadingChallenge}
+                        />
+                      ))
                     : prizes.map((prize) => (
                         <CardPrize
                           prize={prize}
@@ -210,19 +285,27 @@ const Checkin = () => {
   );
 };
 
-const CardChallenge = ({ item }) => {
+const CardChallenge = ({ item, doChallenge, loading }) => {
   return (
     <div className="grid grid-cols-3 w-full border border-c-birdong/50 rounded-xl p-6 my-2">
       <div className="flex flex-col place-self-start">
-        <p className="text-2xl font-medium">Goblet Squats</p>
-        <p className="text-lg opacity-70">25 kali</p>
+        <p className="text-2xl font-medium">{item.name}</p>
+        <p className="text-lg opacity-70">{item.keterangan}</p>
       </div>
       <div className="flex gap-2 place-self-center">
         <img src={Coin} alt="coin" className="w-8 h-8" />
-        <p className="font-medium text-xl">+ 25</p>
+        <p className="font-medium text-xl">+ {item.point}</p>
       </div>
-      <button className="bg-gradient-to-br from-[#8BCEC0] to-c-hijautua rounded-full text-white text-xl font-medium w-fit py-2 px-4 place-self-end">
-        Lakukan
+      <button
+        onClick={() => doChallenge(item._id)}
+        className={`${
+          new Date() - new Date(item.lastDone) < 24 * 60 * 60 * 1000
+            ? "bg-slate-300 cursor-not-allowed"
+            : "bg-gradient-to-br from-[#8BCEC0] to-c-hijautua"
+        } rounded-full text-white text-xl font-medium w-fit py-2 px-4 place-self-end`}
+        disabled={new Date() - new Date(item.lastDone) < 24 * 60 * 60 * 1000}
+      >
+        {loading ? "Loading..." : "Lakukan"}
       </button>
     </div>
   );
@@ -232,7 +315,9 @@ const CardPrize = ({ prize, redeemPrize, loading }) => {
   return (
     <div className="grid grid-cols-3 w-full border border-c-birdong/50 rounded-xl p-6 mb-4">
       <div className="flex flex-col place-self-start">
-        <p className="text-2xl font-medium">{prize.nominal}</p>
+        <p className="text-2xl font-medium">
+          Rp{new Intl.NumberFormat("id-ID").format(prize.nominal)}
+        </p>
         <p className="text-lg opacity-70">{prize.boothname}</p>
       </div>
       <div className="flex gap-2 place-self-center">

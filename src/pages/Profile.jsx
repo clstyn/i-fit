@@ -240,7 +240,7 @@ const Profile = () => {
               {loadingData ? "Loading data.." : user.fullname}
             </p>
             <p className="text-[28px] font-medium opacity-70">
-              Bergabung sejak {user.joined}
+              Bergabung sejak {user?.joined}
             </p>
           </div>
         </div>
