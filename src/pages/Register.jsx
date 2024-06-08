@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import Navbar from "../components/Navbar";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -71,11 +72,12 @@ const Register = () => {
   };
   return (
     <div className="font-poppins text-c-birdong min-h-screen flex flex-col lg:flex-row">
+      <Navbar />
       <div className="lg:w-1/2 bg-cover bg-center bg-register hidden lg:block"></div>
 
       <div className="w-full lg:w-1/2 bg-cover bg-center bg-base-hijau relative">
         <div className="flex items-center justify-center min-h-screen">
-          <div className="p-8 max-w-md w-full">
+          <div className="p-10 mt-20 max-w-md w-full">
             <div>
               <p className="font-bold text-xl">Selamat datang</p>
               <p className="text-md mb-4">
