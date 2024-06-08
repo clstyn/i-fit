@@ -70,11 +70,9 @@ const BmiAkgCalculator = () => {
     <div className="font-poppins text-c-birdong min-h-screen">
       <Navbar/>
 
-      <div className="h-[196px] w-full">
+      <div className="h-[216px] w-full pb-20">
         <div className="flex w-full h-full items-center justify-center">
-          <h1 className="font-kaushan text-4xl lg:text-7xl mt-10">
-            Kalkulator BMI & AKG
-          </h1>
+          <h1 className="font-kaushan text-5xl lg:text-7xl mt-32">Kalkulator BMI & AKG</h1>
         </div>
       </div>
 

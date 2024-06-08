@@ -50,7 +50,7 @@ const Kalori = () => {
     <div className="font-poppins text-c-birdong bg-header-kalori bg-cover min-h-screen">
       <Navbar />
 
-      <div className="h-[276px] w-full">
+      <div className="h-[216px] w-full pb-20">
         <div className="flex w-full h-full items-center justify-center">
           <h1 className="font-kaushan text-5xl lg:text-7xl mt-32">Kalkulator Kalori</h1>
         </div>
