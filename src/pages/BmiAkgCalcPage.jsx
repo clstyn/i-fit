@@ -5,7 +5,7 @@ import BasicButton from "../components/BasicButton";
 import Navbar from "../components/Navbar";
 
 const BmiAkgCalculator = () => {
-  const [selectedGender, setSelectedGender] = useState(null);
+  const [selectedGender, setSelectedGender] = useState("male");
   const [selectedActivity, setSelectedActivity] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [weight, setWeight] = useState();
@@ -17,6 +17,7 @@ const BmiAkgCalculator = () => {
   const [karbohidrat, setKarbohidrat] = useState(0);
   const [protein, setProtein] = useState(0);
   const [lemak, setLemak] = useState(0);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleOptionChange = (value) => {
     setSelectedGender(value);
@@ -44,8 +45,19 @@ const BmiAkgCalculator = () => {
   };
 
   const handleCalculate = () => {
-    console.log("Button clicked!");
-    console.log(weight, height);
+    if (!weight || !height || !age || !selectedActivity) {
+      setErrorMessage("Semua field harus diisi!");
+      setBmi(0);
+      setBmiCategory("-");
+      setAkg(0);
+      setKarbohidrat(0);
+      setProtein(0);
+      setLemak(0);
+      return;
+    }
+
+    setErrorMessage("");
+
     if (weight > 0 && height > 0) {
       const heightInMeters = height / 100;
       const bmiValue = weight / (heightInMeters * heightInMeters);
@@ -106,7 +118,7 @@ const BmiAkgCalculator = () => {
       </div>
 
       <div className="flex flex-col lg:flex-row gap-x-20 justify-center items-center">
-        <div className="lg:h-[800px] flex flex-col bg-white custom-shadow rounded-xl p-10 m-4 w-3/4 lg:w-2/5 gap-5">
+        <div className="lg:h-[750px] flex flex-col bg-white custom-shadow rounded-xl p-10 m-4 w-3/4 lg:w-2/5 gap-5">
           <div>
             <p className="text-c-birdong text-xl lg:text-2xl text-center font-poppins font-medium">
               Jenis Kelamin
@@ -195,7 +207,7 @@ const BmiAkgCalculator = () => {
               ></InputNum>
             </div>
           </div>
-          <div className="space-y-2 pb-10 lg:pb-52">
+          <div className="space-y-2">
             <p className="text-c-birdong text-center lg:text-left text-xl lg:text-2xl font-poppins font-medium">
               Tingkat Aktivitas
             </p>
@@ -228,10 +240,19 @@ const BmiAkgCalculator = () => {
             </div>
           </div>
           <div className="grow content-end">
-            <BasicButton text={"Hitung"} onClick={handleCalculate} />
+            <div className="flex flex-col">
+              <div className="h-6">
+                {errorMessage && (
+                  <p className="h-8 text-red-500 text-start text-xs font-poppins font-medium mb-4">
+                    {errorMessage}
+                  </p>
+                )}
+              </div>
+              <BasicButton text={"Hitung"} onClick={handleCalculate} />
+            </div>
           </div>
         </div>
-        <div className="lg:h-[800px] flex flex-col bg-white custom-shadow rounded-xl p-10 m-4 w-3/4 lg:w-2/5 gap-6">
+        <div className="lg:h-[750px] flex flex-col bg-white custom-shadow rounded-xl p-10 m-4 w-3/4 lg:w-2/5 gap-6">
           <p className="text-c-birdong text-xl lg:text-2xl text-center font-poppins font-bold">
             Hasil
           </p>
@@ -305,7 +326,10 @@ const BmiAkgCalculator = () => {
             </div>
           </div>
           <div className="grow content-end">
-            <BasicButton text={"Cek Rekomendasi"}></BasicButton>
+            <div className="flex flex-row gap-6">
+              <BasicButton text={"Simpan"}></BasicButton>
+              <BasicButton text={"Cek Rekomendasi"}></BasicButton>
+            </div>
           </div>
         </div>
       </div>
