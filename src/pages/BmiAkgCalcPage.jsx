@@ -149,7 +149,7 @@ const BmiAkgCalculator = () => {
 
       <div className="h-[216px] w-full pb-20">
         <div className="flex w-full h-full items-center justify-center">
-          <h1 className="font-kaushan text-5xl lg:text-7xl mt-32 text-center">
+          <h1 className="font-kaushan text-5xl mx-16 lg:text-7xl mt-32 text-center">
             Kalkulator BMI & AKG
           </h1>
         </div>
@@ -357,7 +357,7 @@ const BmiAkgCalculator = () => {
             </div>
           </div>
           <div className="grow content-end">
-            <div className="flex flex-row gap-6">
+            <div className="flex flex-col gap-2 lg:flex-row lg:gap-6">
               <BasicButton
                 text={loading ? "Loading..." : "Simpan"}
                 onClick={() => {
