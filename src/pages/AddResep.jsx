@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
+import { debounce } from "lodash";
 import HeaderImg from "../assets/add-resep-header.png";
 import {
   AddAPhoto,
@@ -8,6 +9,7 @@ import {
   ArrowDropDown,
   Close,
 } from "@mui/icons-material";
+import { toast } from "react-toastify";
 
 const AddResep = () => {
   const [formData, setFormData] = useState({
@@ -21,9 +23,25 @@ const AddResep = () => {
     tag: "",
   });
 
+  const [bahan, setBahan] = useState({
+    id: 0,
+    nama: "",
+    satuan: "",
+    kalori: 0,
+  });
+
+  const [langkah, setLangkah] = useState({
+    id: 0,
+    text: "",
+  });
+
   useEffect(() => {
     console.log(formData);
   }, [formData]);
+
+  useEffect(() => {
+    console.log(langkah);
+  }, [langkah]);
 
   const handleChangeText = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -33,8 +51,82 @@ const AddResep = () => {
     setFormData({ ...formData, [e.target.name]: parseInt(e.target.value) });
   };
 
-  const [bahanCount, setBahanCount] = useState(1);
-  const [langkahCount, setLangkahCount] = useState(1);
+  const handleChangeInputBahan = (e) => {
+    const { name, value } = e.target;
+    setBahan((prevBahan) => ({
+      ...prevBahan,
+      id: bahanRowShowed,
+      [name]: name === "kalori" ? parseInt(value, 10) : value,
+    }));
+  };
+
+  const handleChangeInputLangkah = (e) => {
+    const { name, value } = e.target;
+    setLangkah((prevLkh) => ({
+      ...prevLkh,
+      id: langkahRowShowed,
+      [name]: value,
+    }));
+  };
+
+  const handleAddLangkah = (value) => {
+    if (langkah.id === 0) {
+      toast.error("Isikan langkah terlebih dahulu");
+      return;
+    }
+
+    setFormData((prevState) => {
+      let newLangkah = JSON.parse(JSON.stringify(prevState.langkah));
+      newLangkah.push(langkah);
+      return { ...prevState, langkah: newLangkah };
+    });
+    setLangkah({
+      id: 0,
+      text: "",
+    });
+    setLangkahRowShowed(langkahRowShowed + 1);
+  };
+
+  const handleRemoveLangkah = (id) => {
+    setFormData((prevState) => {
+      let newLangkah = JSON.parse(JSON.stringify(prevState.langkah));
+      newLangkah = newLangkah.filter((lkh) => lkh.id !== id);
+      return { ...prevState, langkah: newLangkah };
+    });
+    setLangkahRowShowed(langkahRowShowed - 1);
+  };
+
+  const handleAddBahan = (value) => {
+    if (bahan.id === 0) {
+      toast.error("Isikan bahan terlebih dahulu");
+      return;
+    }
+
+    setFormData((prevState) => {
+      let newBahan = JSON.parse(JSON.stringify(prevState.bahan));
+      newBahan.push(bahan);
+      return { ...prevState, bahan: newBahan };
+    });
+    setBahan({
+      id: 0,
+      nama: "",
+      satuan: "",
+      kalori: 0,
+    });
+    setBahanRowShowed(bahanRowShowed + 1);
+  };
+
+  const handleRemoveBahan = (id) => {
+    setFormData((prevState) => {
+      let newBahan = JSON.parse(JSON.stringify(prevState.bahan));
+      newBahan = newBahan.filter((bhn) => bhn.id !== id);
+      return { ...prevState, bahan: newBahan };
+    });
+    setBahanRowShowed(bahanRowShowed - 1);
+  };
+
+  const [bahanRowShowed, setBahanRowShowed] = useState(1);
+  const [langkahRowShowed, setLangkahRowShowed] = useState(1);
 
   return (
     <div className="font-poppins text-c-birdong">
@@ -148,20 +240,26 @@ const AddResep = () => {
         <div className="flex flex-col gap-4">
           <p>Bahan - bahan</p>
 
-          {bahanCount > 0 ? (
-            formData.bahan.length === bahanCount - 1 ? (
-              <>
-                {formData.bahan.map((bhn, idx) => (
-                  <InputBahan nomor={idx + 1} key={idx} value={bhn} />
-                ))}
-                <InputBahan nomor={bahanCount} />
-              </>
-            ) : (
-              <InputBahan nomor={1} />
-            )
-          ) : null}
+          {bahanRowShowed > 0 && (
+            <>
+              {formData.bahan.map((bhn, idx) => (
+                <InputBahan
+                  nomor={idx + 1}
+                  key={bhn.id}
+                  value={bhn}
+                  handleChange={handleChangeInputBahan}
+                  handleRemove={() => handleRemoveBahan(bhn.id)}
+                />
+              ))}
+              <InputBahan
+                nomor={bahanRowShowed}
+                value={bahan}
+                handleChange={handleChangeInputBahan}
+              />
+            </>
+          )}
 
-          <div className="flex gap-4">
+          <div onClick={handleAddBahan} className="flex gap-4 cursor-pointer">
             <div className="bg-gradient-to-br from-[#F8905B] to-c-orentua rounded-2xl font-semibold text-md lg:text-xl w-fit p-3 text-white">
               <span>
                 <Add
@@ -179,20 +277,29 @@ const AddResep = () => {
         <div className="flex flex-col gap-4">
           <p>Langkah - langkah</p>
 
-          {langkahCount > 0 ? (
-            formData.langkah.length === langkahCount - 1 ? (
-              <>
-                {formData.langkah.map((bhn, idx) => (
-                  <InputLangkah nomor={idx + 1} key={idx} value={bhn} />
-                ))}
-                <InputLangkah nomor={langkahCount} />
-              </>
-            ) : (
-              <InputLangkah nomor={1} />
-            )
-          ) : null}
+          {langkahRowShowed > 0 && (
+            <>
+              {formData.langkah.map((lkh, idx) => (
+                <InputLangkah
+                  nomor={idx + 1}
+                  key={lkh.id}
+                  value={lkh}
+                  handleChange={handleChangeInputLangkah}
+                  handleRemove={() => handleRemoveLangkah(lkh.id)}
+                />
+              ))}
+              <InputLangkah
+                nomor={langkahRowShowed}
+                value={langkah}
+                handleChange={handleChangeInputLangkah}
+              />
+            </>
+          )}
 
-          <div className="bg-gradient-to-br from-[#F8905B] to-c-orentua rounded-2xl font-semibold text-md lg:text-xl w-fit p-3 text-white">
+          <div
+            onClick={handleAddLangkah}
+            className="bg-gradient-to-br from-[#F8905B] to-c-orentua rounded-2xl font-semibold text-md lg:text-xl w-fit p-3 text-white"
+          >
             <span>
               <Add
                 className="inline mr-2"
@@ -213,44 +320,66 @@ const AddResep = () => {
   );
 };
 
-const InputBahan = (nomor, value) => {
+const InputBahan = ({ nomor, value, handleChange, handleRemove }) => {
   return (
     <div className="flex flex-col lg:flex-row gap-4 w-full lg:w-5/6 font-normal items-center">
       <div className="flex flex-col lg:flex-row gap-4 w-full items-center">
         <input
           className="rounded-lg border-2 border-c-hijautua p-4 text-md lg:text-xl w-full lg:w-1/2"
           placeholder="Nama Bahan"
+          name="nama"
+          onChange={handleChange}
+          value={value.nama}
         />
         <div className="flex gap-4 w-full lg:w-1/2 items-center">
           <input
             className="rounded-lg border-2 border-c-hijautua p-4 text-md lg:text-xl w-full lg:w-1/2"
             placeholder="Satuan"
+            name="satuan"
+            onChange={handleChange}
+            value={value.satuan}
           />
           <input
+            type="number"
             className="rounded-lg border-2 border-c-hijautua p-4 text-md lg:text-xl w-full lg:w-1/2"
             placeholder="Kalori"
+            name="kalori"
+            onChange={handleChange}
+            value={value.kalori}
           />
-          <Close
-            className="text-c-hijautua"
-            style={{ fontSize: "40px" }}
-          ></Close>
+          {!!handleRemove && (
+            <Close
+              onClick={handleRemove}
+              className="text-c-hijautua"
+              style={{ fontSize: "40px" }}
+            ></Close>
+          )}
         </div>
       </div>
     </div>
   );
 };
 
-const InputLangkah = ({ nomor, value }) => {
+const InputLangkah = ({ nomor, value, handleChange, handleRemove }) => {
   return (
     <div className="flex gap-4 w-full lg:w-5/6 items-center font-normal">
       <div className="w-7 h-7 rounded-full bg-c-orentua text-white text-lg lg:text-2xl flex items-center justify-center">
         {nomor}
       </div>
       <input
+        value={value.text}
+        name="text"
+        onChange={handleChange}
         className="rounded-lg border-2 border-c-hijautua p-4 text-md lg:text-lg w-full"
         placeholder="Masukkan langkah pembuatan..."
-      />
-      <Close className="text-c-hijautua" style={{ fontSize: "40px" }}></Close>
+      />{" "}
+      {!!handleRemove && (
+        <Close
+          onClick={handleRemove}
+          className="text-c-hijautua"
+          style={{ fontSize: "40px" }}
+        ></Close>
+      )}
     </div>
   );
 };

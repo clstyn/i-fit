@@ -65,7 +65,7 @@ const Resep = () => {
     } finally {
       setLoading(false);
     }
-  }, [selectedTag, searchQuery, mode]);
+  }, [selectedTag, searchQuery, mode, token]);
 
   useEffect(() => {
     fetchRecipes();
