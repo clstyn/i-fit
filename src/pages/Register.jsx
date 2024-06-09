@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Navbar from "../components/Navbar";
+import { toast } from "react-toastify";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -12,8 +13,6 @@ const Register = () => {
   });
 
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
 
   const handleChange = (e) => {
@@ -29,7 +28,7 @@ const Register = () => {
       formData.confirmPassword &&
       formData.password !== formData.confirmPassword
     ) {
-      setConfirmPasswordError("Passwords do not match");
+      setConfirmPasswordError("Password tidak sama");
     } else {
       setConfirmPasswordError("");
     }
@@ -39,12 +38,10 @@ const Register = () => {
     e.preventDefault();
 
     if (formData.password !== formData.confirmPassword) {
-      setError("Passwords do not match");
+      toast.error("Password tidak sama");
       return;
     }
 
-    setError("");
-    setSuccess("");
     setLoading(true);
 
     try {
@@ -59,14 +56,14 @@ const Register = () => {
       );
 
       if (response.status === 200) {
-        setSuccess(response.data.message);
+        toast.success(response.data.message || "Berhasil membuat akun");
       } else {
-        setError(response.data.message || "Registration failed");
+        toast.error(response.data.message || "Registrasi akun gagal");
       }
     } catch (error) {
-      setError(
+      toast.error(
         error.response?.data?.message ||
-          "Registration failed. Please try again later."
+          "Terjadi kesalahan. Ulangi beberapa saat lagi"
       );
     }
   };
@@ -83,8 +80,6 @@ const Register = () => {
               <p className="text-md mb-4">
                 Isi data berikut untuk membuat akun
               </p>
-              {error && <p className="text-red-500 mb-4">{error}</p>}
-              {success && <p className="text-green-500 mb-4">{success}</p>}
               <form onSubmit={handleSubmit}>
                 <div className="mb-4">
                   <label
@@ -158,7 +153,7 @@ const Register = () => {
                     placeholder="Password"
                   />
                 </div>
-                <div className="mb-6">
+                <div className="flex flex-col mb-6 gap-1">
                   <label
                     htmlFor="confirmPassword"
                     className="block text-gray-700 font-bold mb-2"
@@ -175,10 +170,14 @@ const Register = () => {
                     className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                     placeholder="Confirm Password"
                   />
+                  <div className="h-6">
+                    {confirmPasswordError && (
+                      <p className="text-red-500 text-xs">
+                        {confirmPasswordError}
+                      </p>
+                    )}
+                  </div>
                 </div>
-                {confirmPasswordError && (
-                  <p className="text-red-500 text-sm">{confirmPasswordError}</p>
-                )}
                 <div className="flex items-center justify-between my-4">
                   <button
                     disabled={loading}
