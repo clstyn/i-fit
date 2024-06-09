@@ -6,6 +6,7 @@ import Navbar from "../components/Navbar";
 import { toast } from "react-toastify";
 import { AppContext } from "../context/appContext";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const BmiAkgCalculator = () => {
   const [selectedGender, setSelectedGender] = useState("male");
@@ -22,6 +23,7 @@ const BmiAkgCalculator = () => {
   const [lemak, setLemak] = useState(0);
   const { token, isLogged } = useContext(AppContext);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleOptionChange = (value) => {
     setSelectedGender(value);
@@ -141,6 +143,10 @@ const BmiAkgCalculator = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleCekRecommend = () => {
+    navigate("/rekomendasi");
   };
 
   return (
@@ -371,7 +377,10 @@ const BmiAkgCalculator = () => {
                   handleSave();
                 }}
               ></BasicButton>
-              <BasicButton text={"Cek Rekomendasi"}></BasicButton>
+              <BasicButton
+                text={"Cek Rekomendasi"}
+                onClick={handleCekRecommend}
+              ></BasicButton>
             </div>
           </div>
         </div>
