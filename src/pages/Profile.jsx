@@ -314,7 +314,7 @@ const Profile = () => {
 
         <div className="col-span-2 flex flex-col gap-20">
           <div className="w-full">
-            <h3 className="font-semibold text-2xl">Riwayat BMI Terakhir</h3>
+            <h3 className="font-semibold text-xl lg:text-2xl">Riwayat BMI Terakhir</h3>
             <div className="grid grid-cols-3 gap-4 h-40 mt-4">
               {user?.bmis?.length > 0 ? (
                 user.bmis.map((bmi) => (
@@ -322,14 +322,14 @@ const Profile = () => {
                     key={bmi._id}
                     className="flex flex-col shadow rounded-lg"
                   >
-                    <div className="bg-gradient-to-br from-c-orentua to-white rounded-t-lg text-center text-white text-4xl font-semibold py-8">
+                    <div className="bg-gradient-to-br from-c-orentua to-white rounded-t-lg text-center text-white text-2xl lg:text-4xl font-semibold py-8">
                       {bmi.value}
                     </div>
-                    <div className="font-medium text-birdong pl-4 mt-2">
+                    <div className="font-medium text-md lg:text-xl text-birdong pl-4 mt-2">
                       {bmi.category}
                     </div>
                     <div className="text-xs text-birdong opacity-70 pl-4">
-                      {bmi.date}
+                      {formatDate(bmi.date)}
                     </div>
                   </div>
                 ))
@@ -340,7 +340,7 @@ const Profile = () => {
           </div>
 
           <div className="w-full">
-            <h3 className="font-semibold text-2xl">
+            <h3 className="font-semibold text-xl lg:text-2xl">
               Riwayat AKG Terakhir <span className="font-normal">(kal)</span>
             </h3>
             <div className="grid grid-cols-3 gap-4 h-40 mt-4">
@@ -350,11 +350,11 @@ const Profile = () => {
                     key={akg._id}
                     className="flex flex-col shadow rounded-lg"
                   >
-                    <div className="bg-gradient-to-br from-c-hijautua to-white rounded-t-lg text-center text-white text-4xl font-semibold py-8">
+                    <div className="bg-gradient-to-br from-c-hijautua to-white rounded-t-lg text-center text-white text-2xl lg:text-4xl font-semibold py-8">
                       {akg.value}
                     </div>
                     <div className="text-xs text-birdong opacity-70 pl-4 mt-2">
-                      {akg.date}
+                      {formatDate(akg.date)}
                     </div>
                   </div>
                 ))
@@ -395,6 +395,14 @@ const CardPostingan = ({ post }) => {
       <div className="w-full lg:w-1/3 h-48 rounded-lg bg-gray-500"></div>
     </div>
   );
+};
+
+const formatDate = (dateString) => {
+  const date = new Date(dateString);
+  const day = date.getDate();
+  const month = date.toLocaleString('default', { month: 'long' }); // Get the full month name
+  const year = date.getFullYear();
+  return `${day} ${month} ${year}`;
 };
 
 export default Profile;

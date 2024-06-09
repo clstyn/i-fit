@@ -288,8 +288,8 @@ const Checkin = () => {
 
 const CardChallenge = ({ item, doChallenge, loading }) => {
   return (
-    <div className="grid grid-cols-3 w-full border border-c-birdong/50 rounded-xl p-6 my-2">
-      <div className="flex flex-col place-self-start">
+    <div className="flex flex-col lg:flex-row justify-around gap-3 w-full border border-c-birdong/50 rounded-xl p-6 mb-4">
+      <div className="flex flex-row lg:flex-col place-self-center gap-2">
         <p className="text-2xl font-medium">{item.name}</p>
         <p className="text-lg opacity-70">{item.keterangan}</p>
       </div>
@@ -303,7 +303,7 @@ const CardChallenge = ({ item, doChallenge, loading }) => {
           new Date() - new Date(item.lastDone) < 24 * 60 * 60 * 1000
             ? "bg-slate-300 cursor-not-allowed"
             : "bg-gradient-to-br from-[#8BCEC0] to-c-hijautua"
-        } rounded-full text-white text-xl font-medium w-fit py-2 px-4 place-self-end`}
+        } rounded-full text-white text-xl font-medium w-fit py-2 px-4 place-self-center`}
         disabled={new Date() - new Date(item.lastDone) < 24 * 60 * 60 * 1000}
       >
         {loading ? "Loading..." : "Lakukan"}
@@ -315,7 +315,7 @@ const CardChallenge = ({ item, doChallenge, loading }) => {
 const CardPrize = ({ prize, redeemPrize, loading }) => {
   return (
     <div className="flex flex-col lg:flex-row justify-around gap-3 w-full border border-c-birdong/50 rounded-xl p-6 mb-4">
-      <div className="flex flex-row lf:flex-col place-self-center gap-2">
+      <div className="flex flex-row lg:flex-col place-self-center gap-2">
         <p className="text-2xl font-medium">
           Rp{new Intl.NumberFormat("id-ID").format(prize.nominal)}
         </p>

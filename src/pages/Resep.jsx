@@ -216,29 +216,29 @@ const CardResep = ({ recipe }) => {
         alt=""
         className="w-full h-full object-cover rounded-t-2xl"
       />
-      <div className="relative h-1/4 bg-white rounded-b-2xl px-4 py-2">
-        <p className="text-md">{recipe.author.username}</p>
+      <div className="relative min-h-fit bg-white rounded-b-2xl px-4 py-2">
+        <p className="text-sm">{recipe.author.username}</p>
         <Link
           to={`/detail-resep/${recipe._id}`}
-          className="text-xl font-semibold mt-2"
+          className="text-md font-semibold mt-2"
         >
           {recipe.title}
         </Link>
 
         <div className="flex justify-between text-c-birdong/70">
-          <p className="text-md">
+          <p className="text-sm">
             <span className="text-c-orentua mr-1">
               <LocalFireDepartmentOutlined className="inline w-6 h-6"></LocalFireDepartmentOutlined>
             </span>
             {calories} kalori
           </p>
-          <p className="text-md">
+          <p className="text-sm">
             <span className="text-c-orentua mr-1">
               <TimerOutlined className="inline w-6 h-6"></TimerOutlined>
             </span>
             {recipe.cookmin} menit
           </p>
-          <p className="text-md">
+          <p className="text-sm">
             <span className="text-c-orentua mr-1">
               <Favorite className="inline w-6 h-6"></Favorite>
             </span>
