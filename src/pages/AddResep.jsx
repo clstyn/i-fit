@@ -1,7 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
+import axios from "axios";
+import storage from "../firebase";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import Navbar from "../components/Navbar";
-import { debounce } from "lodash";
 import HeaderImg from "../assets/add-resep-header.png";
+
 import {
   AddAPhoto,
   Add,
@@ -9,9 +13,11 @@ import {
   ArrowDropDown,
   Close,
 } from "@mui/icons-material";
+import { AppContext } from "../context/appContext";
 import { toast } from "react-toastify";
 
 const AddResep = () => {
+  const { token, isLogged } = useContext(AppContext);
   const [formData, setFormData] = useState({
     title: "",
     desc: "",
@@ -34,6 +40,9 @@ const AddResep = () => {
     id: 0,
     text: "",
   });
+
+  const [image, setImage] = useState(null);
+  const [imageFile, setImageFile] = useState(null);
 
   useEffect(() => {
     console.log(formData);
@@ -128,26 +137,92 @@ const AddResep = () => {
   const [bahanRowShowed, setBahanRowShowed] = useState(1);
   const [langkahRowShowed, setLangkahRowShowed] = useState(1);
 
+  const navigate = useNavigate();
+
+  const submit = async (e) => {
+    e.preventDefault();
+    try {
+      if (!imageFile) {
+        toast.error("Harus menambahkan gambar");
+        return;
+      }
+      console.log(imageFile);
+      const storageRef = ref(storage, `imageFiles/${imageFile.name}`);
+      await uploadBytes(storageRef, imageFile);
+      const url = await getDownloadURL(storageRef);
+
+      const updatedFormData = {
+        ...formData,
+        picUrl: url,
+      };
+
+      const response = await axios.post(
+        "https://i-fit-be.vercel.app/post/",
+        updatedFormData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      toast.success(response.data.message);
+      navigate("/resep");
+    } catch (err) {
+      console.log(err);
+      toast.error(err.message);
+    }
+  };
+
+  if (!isLogged) {
+    toast.error("Anda perlu masuk");
+    return <Navigate to="/login" />;
+  }
+
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setImage(e.target.result);
+      };
+      reader.readAsDataURL(file);
+      setImageFile(file);
+    }
+  };
+
   return (
     <div className="font-poppins text-c-birdong">
       <Navbar />
-      <div className="h-[576px] w-full">
+      <div className="h-[576px] w-full relative">
         <img
-          src={HeaderImg}
+          src={image || HeaderImg}
           alt="placeholder"
           className="w-full h-full object-cover"
         />
-        <div className="bg-gradient-to-br from-[#F8905B] to-c-orentua rounded-2xl font-semibold text-md lg:text-xl w-fit p-3 lg:p-4 text-white mx-auto -translate-y-[50%]">
-          <span>
-            <AddAPhoto
-              className="inline mr-2"
-              style={{
-                fontSize: "28px",
-              }}
-            ></AddAPhoto>
-          </span>
-          Tambahkan Foto Makanan
+        <div className="w-full flex items-center justify-center">
+          <label
+            htmlFor="imageInput"
+            className="bg-gradient-to-br from-[#F8905B] to-c-orentua rounded-2xl font-semibold text-md lg:text-xl w-fit p-3 lg:p-4 text-white mx-auto -translate-y-[50%] cursor-pointer"
+          >
+            <span>
+              <AddAPhoto
+                className="inline mr-2"
+                style={{
+                  fontSize: "28px",
+                }}
+              />
+            </span>
+            Tambahkan Foto Makanan
+          </label>
         </div>
+
+        <input
+          type="file"
+          id="imageInput"
+          accept="image/*"
+          className="hidden"
+          onChange={handleImageChange}
+        />
       </div>
 
       <div className="flex w-5/6 mx-auto flex-col gap-5 text-md lg:text-xl font-semibold my-12">
@@ -237,6 +312,45 @@ const AddResep = () => {
           </div>
         </div>
 
+        <div>
+          <p>Tandai</p>
+          <div className="flex gap-2 md:gap-6 mb-4">
+            <label className="mt-2">
+              <input
+                type="radio"
+                name="tag"
+                value="minuman"
+                checked={formData.tag === "minuman"}
+                onChange={handleChangeText}
+                className="mr-2"
+              />
+              Minuman
+            </label>
+            <label className="mt-2">
+              <input
+                type="radio"
+                name="tag"
+                value="camilan"
+                checked={formData.tag === "camilan"}
+                onChange={handleChangeText}
+                className="mr-2"
+              />
+              Camilan
+            </label>
+            <label className="mt-2">
+              <input
+                type="radio"
+                name="tag"
+                value="hidangan"
+                checked={formData.tag === "hidangan"}
+                onChange={handleChangeText}
+                className="mr-2"
+              />
+              Hidangan
+            </label>
+          </div>
+        </div>
+
         <div className="flex flex-col gap-4">
           <p>Bahan - bahan</p>
 
@@ -259,18 +373,19 @@ const AddResep = () => {
             </>
           )}
 
-          <div onClick={handleAddBahan} className="flex gap-4 cursor-pointer">
-            <div className="bg-gradient-to-br from-[#F8905B] to-c-orentua rounded-2xl font-semibold text-md lg:text-xl w-fit p-3 text-white">
-              <span>
-                <Add
-                  className="inline mr-2"
-                  style={{
-                    fontSize: "28px",
-                  }}
-                ></Add>
-              </span>
-              Bahan
-            </div>
+          <div
+            onClick={handleAddBahan}
+            className="cursor-pointer bg-gradient-to-br from-[#F8905B] to-c-orentua rounded-2xl font-semibold text-md lg:text-xl w-fit p-3 text-white"
+          >
+            <span>
+              <Add
+                className="inline mr-2"
+                style={{
+                  fontSize: "28px",
+                }}
+              ></Add>
+            </span>
+            Tambahkan
           </div>
         </div>
 
@@ -298,7 +413,7 @@ const AddResep = () => {
 
           <div
             onClick={handleAddLangkah}
-            className="bg-gradient-to-br from-[#F8905B] to-c-orentua rounded-2xl font-semibold text-md lg:text-xl w-fit p-3 text-white"
+            className="cursor-pointer bg-gradient-to-br from-[#F8905B] to-c-orentua rounded-2xl font-semibold text-md lg:text-xl w-fit p-3 text-white"
           >
             <span>
               <Add
@@ -308,11 +423,14 @@ const AddResep = () => {
                 }}
               ></Add>
             </span>
-            Langkah
+            Tambahkan
           </div>
         </div>
 
-        <button className="bg-gradient-to-br from-[#F8905B] to-c-orentua rounded-2xl font-semibold text-xl w-full py-3 lg:py-6 text-white shadow-xl mt-8">
+        <button
+          onClick={submit}
+          className="bg-gradient-to-br from-[#F8905B] to-c-orentua rounded-2xl font-semibold text-xl w-full py-3 lg:py-6 text-white shadow-xl mt-8"
+        >
           Unggah Resep
         </button>
       </div>
@@ -325,6 +443,7 @@ const InputBahan = ({ nomor, value, handleChange, handleRemove }) => {
     <div className="flex flex-col lg:flex-row gap-4 w-full lg:w-5/6 font-normal items-center">
       <div className="flex flex-col lg:flex-row gap-4 w-full items-center">
         <input
+          type="text"
           className="rounded-lg border-2 border-c-hijautua p-4 text-md lg:text-xl w-full lg:w-1/2"
           placeholder="Nama Bahan"
           name="nama"
@@ -333,6 +452,7 @@ const InputBahan = ({ nomor, value, handleChange, handleRemove }) => {
         />
         <div className="flex gap-4 w-full lg:w-1/2 items-center">
           <input
+            type="text"
             className="rounded-lg border-2 border-c-hijautua p-4 text-md lg:text-xl w-full lg:w-1/2"
             placeholder="Satuan"
             name="satuan"
