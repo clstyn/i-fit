@@ -5,7 +5,6 @@ import { toast } from "react-toastify";
 import { AppContext } from "../context/appContext";
 import Navbar from "../components/Navbar";
 import DummyPp from "../assets/pp-dummy.png";
-import PaginationControls from "../components/Pagination";
 import BasicButton from "../components/BasicButton";
 
 const Profile = () => {
@@ -44,24 +43,6 @@ const Profile = () => {
       id: 3,
       bmi: 18.3,
       category: "Underweight",
-      date: "1 Januari 2024",
-    },
-  ]);
-
-  const [akgs, setAkgs] = useState([
-    {
-      id: 1,
-      akg: 1116,
-      date: "24 April 2024",
-    },
-    {
-      id: 2,
-      akg: 1900,
-      date: "2 April 2024",
-    },
-    {
-      id: 3,
-      akg: 1560,
       date: "1 Januari 2024",
     },
   ]);
@@ -272,7 +253,7 @@ const Profile = () => {
                 disabled
                 className="px-2 py-1 border-b border-c-birdong"
                 type="email"
-                placeholder={user.email}
+                placeholder={user?.email}
                 name="email"
               />
               <button
@@ -403,13 +384,16 @@ const CardPostingan = ({ post }) => {
         <p className="text-xl font-medium">{post.title}</p>
         <p className="my-4">{post.desc}</p>
         <div className="flex gap-4 items-center">
-          <img src={post.author.profilePic} alt="Profile" className="w-10 h-10 rounded-full" />
+          <img
+            src={post.author.profilePic}
+            alt="Profile"
+            className="w-10 h-10 rounded-full"
+          />
           <p className="text-lg">{post.author.name}</p>
         </div>
       </div>
       <div className="w-full lg:w-1/3 h-48 rounded-lg bg-gray-500"></div>
     </div>
-
   );
 };
 
