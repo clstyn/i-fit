@@ -13,6 +13,10 @@ const BmiAkgCalculator = () => {
   const [age, setAge] = useState();
   const [bmi, setBmi] = useState(0);
   const [bmiCategory, setBmiCategory] = useState("-");
+  const [akg, setAkg] = useState(0);
+  const [karbohidrat, setKarbohidrat] = useState(0);
+  const [protein, setProtein] = useState(0);
+  const [lemak, setLemak] = useState(0);
 
   const handleOptionChange = (value) => {
     setSelectedGender(value);
@@ -25,6 +29,14 @@ const BmiAkgCalculator = () => {
     "Sering olahraga (6-7 kali per minggu)",
     "Sangat sering olahraga (2 kali dalam sehari)",
   ];
+
+  const activityMultipliers = {
+    "Sangat jarang berolahraga": 1.2,
+    "Jarang olahraga (1-3 kali per minggu)": 1.375,
+    "Cukup olahraga (3-5 kali per minggu)": 1.55,
+    "Sering olahraga (6-7 kali per minggu)": 1.725,
+    "Sangat sering olahraga (2 kali dalam sehari)": 1.9,
+  };
 
   const handleSelect = (option) => {
     setSelectedActivity(option);
@@ -49,6 +61,21 @@ const BmiAkgCalculator = () => {
         setBmiCategory("Obese");
       }
     }
+
+    const bmr =
+      selectedGender === "male"
+        ? 66 + 13.75 * weight + 5.003 * height - 6.755 * age
+        : 655 + 9.563 * weight + 1.85 * height - 4.676 * age;
+    const maintenanceCalories = bmr * activityMultipliers[selectedActivity];
+
+    const proteinCalorie = (0.15 * maintenanceCalories) / 4;
+    const lemakCalorie = (0.2 * maintenanceCalories) / 9;
+    const karbohidratCalorie = (0.65 * maintenanceCalories) / 4;
+
+    setAkg(maintenanceCalories.toFixed(2));
+    setKarbohidrat(karbohidratCalorie.toFixed(2));
+    setProtein(proteinCalorie.toFixed(2));
+    setLemak(lemakCalorie.toFixed(2));
   };
 
   const getBgImageClass = () => {
@@ -64,20 +91,22 @@ const BmiAkgCalculator = () => {
       default:
         return "bg-bmi";
     }
-  };  
+  };
 
   return (
     <div className="font-poppins text-c-birdong min-h-screen">
-      <Navbar/>
+      <Navbar />
 
       <div className="h-[216px] w-full pb-20">
         <div className="flex w-full h-full items-center justify-center">
-          <h1 className="font-kaushan text-5xl lg:text-7xl mt-32">Kalkulator BMI & AKG</h1>
+          <h1 className="font-kaushan text-5xl lg:text-7xl mt-32">
+            Kalkulator BMI & AKG
+          </h1>
         </div>
       </div>
 
       <div className="flex flex-col lg:flex-row gap-x-20 justify-center items-center">
-        <div className="bg-white custom-shadow rounded-xl p-10 m-4 w-3/4 lg:w-2/5 space-y-6">
+        <div className="lg:h-[800px] flex flex-col bg-white custom-shadow rounded-xl p-10 m-4 w-3/4 lg:w-2/5 gap-5">
           <div>
             <p className="text-c-birdong text-xl lg:text-2xl text-center font-poppins font-medium">
               Jenis Kelamin
@@ -120,7 +149,7 @@ const BmiAkgCalculator = () => {
                     selectedGender === "female"
                       ? "text-c-hijautua"
                       : "text-c-hijaumuda"
-                    }
+                  }
                   width={"full"}
                   height={80}
                 />
@@ -128,12 +157,12 @@ const BmiAkgCalculator = () => {
             </div>
           </div>
           <div className="flex flex-col lg:flex-row justify-center gap-3">
-            <div class="flex-none lg:w-2/3 w-full">
+            <div class="flex-none lg:w-3/5 w-full">
               <p className="text-c-birdong text-center lg:text-left text-xl lg:text-2xl font-poppins font-medium">
                 Berat Badan (kg)
               </p>
             </div>
-            <div class="flex items-center justify-center lg:justify-end lg:w-1/3 w-full">
+            <div class="flex items-center justify-center lg:w-2/5 w-full">
               <InputNum
                 value={weight}
                 onChange={(value) => setWeight(value)}
@@ -141,12 +170,12 @@ const BmiAkgCalculator = () => {
             </div>
           </div>
           <div className="flex flex-col lg:flex-row justify-center gap-3">
-            <div class="flex-none lg:w-2/3 w-full">
+            <div class="flex-none lg:w-3/5 w-full">
               <p className="text-c-birdong text-center lg:text-left text-xl lg:text-2xl font-poppins font-medium">
                 Tinggi Badan (cm)
               </p>
             </div>
-            <div class="flex items-center justify-center lg:justify-end lg:w-1/3 w-full">
+            <div class="flex items-center justify-center lg:justify-end lg:w-2/5 w-full ">
               <InputNum
                 value={height}
                 onChange={(value) => setHeight(value)}
@@ -154,12 +183,12 @@ const BmiAkgCalculator = () => {
             </div>
           </div>
           <div className="flex flex-col lg:flex-row justify-center gap-3">
-            <div class="flex-none lg:w-2/3 w-full">
+            <div class="flex-none lg:w-3/5 w-full">
               <p className="text-c-birdong text-center lg:text-left text-xl lg:text-2xl font-poppins font-medium">
                 Usia (tahun)
               </p>
             </div>
-            <div class="flex items-center justify-center lg:justify-end lg:w-1/3 w-full">
+            <div class="flex items-center justify-center lg:justify-end lg:w-2/5 w-full">
               <InputNum
                 value={age}
                 onChange={(value) => setAge(value)}
@@ -198,26 +227,29 @@ const BmiAkgCalculator = () => {
               )}
             </div>
           </div>
-          <BasicButton
-            text={"Hitung"}
-            onClick={handleCalculate}
-          />
+          <div className="grow content-end">
+            <BasicButton text={"Hitung"} onClick={handleCalculate} />
+          </div>
         </div>
-        <div className="bg-white custom-shadow rounded-xl p-9 m-4 w-3/4 lg:w-2/5">
+        <div className="lg:h-[800px] flex flex-col bg-white custom-shadow rounded-xl p-10 m-4 w-3/4 lg:w-2/5 gap-6">
           <p className="text-c-birdong text-xl lg:text-2xl text-center font-poppins font-bold">
             Hasil
           </p>
-          <div className={`needle-container ${getBgImageClass()}`}>
-            <p className="ind1 text-c-birdong text-xs text-center font-poppins font-normal">
-              18.5
-            </p>
-            <p className="ind2 text-c-birdong text-xs text-center font-poppins font-normal">
-              25.0
-            </p>
-            <p className="ind3 text-c-birdong text-xs text-center font-poppins font-normal">
-              30.0
-            </p>
-            <div className="result w-28 h-28 space-y-1">
+          <div
+            className={`indicator-container w-[100%] h-[40%] ${getBgImageClass()} pt-11 lg:pt-24`}
+          >
+            <div className="flex items-end justify-center gap-6 lg:gap-20">
+              <p className="ind1 text-c-birdong text-[10px] lg:text-xs text-center font-poppins font-normal pt-5 lg:pt-10">
+                18.5
+              </p>
+              <p className="ind2 text-c-birdong text-[10px] lg:text-xs text-center font-poppins font-normal pb-5 lg:pb-10">
+                25.0
+              </p>
+              <p className="ind3 text-c-birdong text-[10px] lg:text-xs text-center font-poppins font-normal pt-5 lg:pt-10">
+                30.0
+              </p>
+            </div>
+            <div className="result bg-transparent lg:mb-10">
               <p className="text-c-birdong text-base text-center font-poppins font-bold">
                 BMI
               </p>
@@ -229,14 +261,14 @@ const BmiAkgCalculator = () => {
               </p>
             </div>
           </div>
-          <div className="akg flex flex-col items-center space-y-2 gap-2">
+          <div className="akg flex flex-col items-center gap-2">
             <p className="text-c-birdong text-xl lg:text-2xl text-center font-poppins font-bold">
               Angka Kecukupan Gizi (AKG)
             </p>
-            <div className="bg-c-hijautua text-white text-md lg:text-xl text-center font-poppins font-semibold rounded-[15px] p-3 w-auto">
-              2126.07 Kalori
+            <div className="bg-c-hijautua text-white text-md lg:text-xl text-center font-poppins font-semibold rounded-[15px] px-2 py-1 lg:p-3 w-auto">
+              {akg} Kalori
             </div>
-            <div className="flex lg:flex-row w-full lg:w-1/2 lg:gap-x-2 pb-10">
+            <div className="flex lg:flex-row w-full lg:w-1/2 lg:gap-x-2">
               <div>
                 <p className="text-c-birdong text-base text-start font-poppins font-normal text-md lg:text-xl">
                   Karbohidrat
@@ -261,18 +293,20 @@ const BmiAkgCalculator = () => {
               </div>
               <div className="flex-auto">
                 <p className="text-md lg:text-xl text-c-birdong text-base text-end font-poppins font-normal">
-                  345.49 gr
+                  {karbohidrat} gr
                 </p>
                 <p className="text-md lg:text-xl text-c-birdong text-base text-end font-poppins font-normal">
-                  79.73 gr
+                  {protein} gr
                 </p>
                 <p className="text-md lg:text-xl text-c-birdong text-base text-end font-poppins font-normal">
-                  47.25 gr
+                  {lemak} gr
                 </p>
               </div>
             </div>
           </div>
-          <BasicButton text={"Cek Rekomendasi"}></BasicButton>
+          <div className="grow content-end">
+            <BasicButton text={"Cek Rekomendasi"}></BasicButton>
+          </div>
         </div>
       </div>
     </div>
