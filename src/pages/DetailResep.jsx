@@ -1,25 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { useParams } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import PopupImage from "../components/PopupImage"; // Komponen popup untuk menampilkan gambar lebih besar
-import Food from "../assets/food-pic.png";
 import { Icon } from "@iconify-icon/react";
 
-const recipe = {
-  imageUrl: Food,
-  title: "Nama Resep",
-  portion: "5",
-  time: "15 menit",
-  totalcalories: "350",
-  desc: "Hai semuanya kali ini saya akan membagikan resep ayam betutu khas bali yang terkenal, tetapi dengan menggunakan minyak sedikit dan pastinya sehat.",
-  ingredients: [
-    { name: "Bawang Putih", amount: "2 siung", calories: "10" },
-    { name: "Daging Ayam", amount: "200 gram", calories: "250" },
-    { name: "Minyak Goreng", amount: "2 sdm", calories: "120" },
-  ],
-  steps: ["ini langkah 1", "ini langkah 2", "ini langkah 3"],
-};
-
 const RecipeDetail = () => {
+  const { id } = useParams();
+  const [loading, setLoading] = useState(true);
+  const [calories, setCalories] = useState(0);
+  const [recipe, setRecipe] = useState(null);
+
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   const handleImageClick = () => {
@@ -30,13 +21,49 @@ const RecipeDetail = () => {
     setIsPopupOpen(false);
   };
 
+  const fetchDetailRecipe = async () => {
+    setLoading(true);
+    try {
+      const response = await axios.get(
+        `https://i-fit-be.vercel.app/post/${id}`
+      );
+      if (response.status === 200) {
+        console.log(response.data.recipe);
+        setRecipe(response.data.recipe);
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchDetailRecipe();
+  }, [id]);
+
+  useEffect(() => {
+    const totalCal = recipe?.bahan.reduce((acc, curr) => {
+      return acc + curr.kalori;
+    }, 0);
+    setCalories(totalCal);
+  }, [recipe]);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!recipe) {
+    return <div>Recipe not found</div>;
+  }
+
   return (
     <div className="font-poppins text-c-birdong pb-10">
       <Navbar />
 
       <div
         className="relative h-96 bg-cover bg-center flex justify-center items-center cursor-pointer"
-        style={{ backgroundImage: `url(${recipe.imageUrl})` }}
+        style={{ backgroundImage: `url(${recipe.picUrl})` }}
         onClick={handleImageClick}
       >
         <div className="absolute inset-0 bg-black opacity-50"></div>
@@ -45,7 +72,7 @@ const RecipeDetail = () => {
         </h1>
       </div>
       {isPopupOpen && (
-        <PopupImage imageUrl={recipe.imageUrl} onClose={handleClosePopup} />
+        <PopupImage imageUrl={recipe.picUrl} onClose={handleClosePopup} />
       )}
       <div className="container mx-auto p-10">
         <div className="flex flex-col lg:flex-row gap-x-4">
@@ -62,7 +89,7 @@ const RecipeDetail = () => {
               </p>
               <p className="font-poppins font-bold text-xl text-c-birdong">
                 Porsi
-              </p>              
+              </p>
             </div>
           </div>
           <div className="w-auto h-14 bg-c-hijautua bg-opacity-50 p-4 mb-4 rounded-xl border border-c-hijautua">
@@ -74,7 +101,7 @@ const RecipeDetail = () => {
                 height={"auto"}
               />
               <p className="font-poppins font-bold text-xl text-c-birdong">
-                {recipe.time}
+                {recipe.cookmin}
               </p>
             </div>
           </div>
@@ -90,12 +117,12 @@ const RecipeDetail = () => {
                 Estimasi Kalori:
               </p>
               <p className="font-poppins font-bold text-xl text-c-birdong">
-                {recipe.totalcalories}
+                {calories}
               </p>
             </div>
           </div>
         </div>
-        <p className="indent-5  text-justify font-poppins font-normal text-c-birdong text-xl mb-10">
+        <p className="indent-5 text-justify font-poppins font-normal text-c-birdong text-xl mb-10">
           {recipe.desc}
         </p>
         <div className="container-bahan">
@@ -103,15 +130,15 @@ const RecipeDetail = () => {
             Bahan-bahan
           </h2>
           <ul className="mb-8 lg:w-1/2">
-            {recipe.ingredients.map((ingredient, index) => (
+            {recipe.bahan.map((bhn, index) => (
               <li
                 key={index}
                 className="flex justify-between items-center p-4 mb-2 bg-c-hijautua bg-opacity-50 rounded-xl border border-c-hijautua"
               >
                 <div className="w-full flex space-x-4 text-c-birdong font-poppins font-normal text-xl items-center">
-                  <span className="w-1/3 text-left">{ingredient.name}</span>
-                  <span className="w-1/3 text-center">{ingredient.amount}</span>
-                  <span className="w-1/3 text-right">{ingredient.calories} kalori</span>
+                  <span className="w-1/3 text-left">{bhn.nama}</span>
+                  <span className="w-1/3 text-center">{bhn.satuan}</span>
+                  <span className="w-1/3 text-right">{bhn.kalori} kalori</span>
                 </div>
               </li>
             ))}
@@ -122,14 +149,14 @@ const RecipeDetail = () => {
             Langkah-langkah
           </h2>
           <ul>
-            {recipe.steps.map((step, index) => (
+            {recipe.langkah.map((lkh, index) => (
               <li key={index} className="mb-4 relative pl-12">
                 <div className="flex gap-x-4 items-center">
                   <span className="absolute left-0 top-1/2 transform -translate-y-1/2 w-8 h-8 flex items-center justify-center rounded-full bg-c-hijautua bg-opacity-50 border border-c-hijautua">
                     {index + 1}
                   </span>
                   <div className="w-full p-4 rounded-lg border border-c-hijautua">
-                    {step}
+                    {lkh.text}
                   </div>
                 </div>
               </li>

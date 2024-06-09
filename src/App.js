@@ -41,7 +41,7 @@ function App() {
             <Route path="/recoverAccount" element={<RecoverAccount />} />{" "}
             <Route path="/resep" element={<Resep />} />{" "}
             <Route path="/tambah-resep" element={<AddResep />} />{" "}
-            <Route path="/detail-resep" element={<DetailResep />} />{" "}
+            <Route path="/detail-resep/:id" element={<DetailResep />} />{" "}
           </Routes>{" "}
         </Router>
       </AppProvider>

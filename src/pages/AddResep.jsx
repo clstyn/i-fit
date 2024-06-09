@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import HeaderImg from "../assets/add-resep-header.png";
 import {
@@ -10,28 +10,31 @@ import {
 } from "@mui/icons-material";
 
 const AddResep = () => {
+  const [formData, setFormData] = useState({
+    title: "",
+    desc: "",
+    portion: 0,
+    picUrl: "",
+    cookmin: 0,
+    bahan: [],
+    langkah: [],
+    tag: "",
+  });
+
+  useEffect(() => {
+    console.log(formData);
+  }, [formData]);
+
+  const handleChangeText = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleChangeNumber = (e) => {
+    setFormData({ ...formData, [e.target.name]: parseInt(e.target.value) });
+  };
+
   const [bahanCount, setBahanCount] = useState(1);
   const [langkahCount, setLangkahCount] = useState(1);
-  const [bahan, setBahan] = useState([
-    {
-      id: 1,
-      group: "Adonan",
-    },
-  ]);
-  const [langkah, setLangkah] = useState([
-    {
-      id: 1,
-      text: "Cut the pumpkin. Cut the skin off and scrape seeds out. Cut into chunks.",
-    },
-    {
-      id: 2,
-      text: "Cut the pumpkin. Cut the skin off and scrape seeds out. Cut into chunks.",
-    },
-    {
-      id: 3,
-      text: "Cut the pumpkin. Cut the skin off and scrape seeds out. Cut into chunks.",
-    },
-  ]);
 
   return (
     <div className="font-poppins text-c-birdong">
@@ -60,6 +63,10 @@ const AddResep = () => {
           <p>Judul Masakan</p>
           <input
             type="text"
+            value={formData.title}
+            name="title"
+            id="title"
+            onChange={handleChangeText}
             className="border-2 border-c-hijautua rounded-lg p-4"
           />
         </div>
@@ -69,6 +76,8 @@ const AddResep = () => {
           <textarea
             name="desc"
             id="desc"
+            value={formData.desc}
+            onChange={handleChangeText}
             className="border-2 border-c-hijautua rounded-lg p-4"
           ></textarea>
         </div>
@@ -78,14 +87,25 @@ const AddResep = () => {
             <p>Porsi</p>
             <div className="flex flex-col items-center justify-center">
               <ArrowDropUp
+                onClick={() =>
+                  setFormData({ ...formData, portion: formData.portion + 1 })
+                }
                 style={{
                   fontSize: "56px",
                 }}
               ></ArrowDropUp>
-              <div className="bg-c-hijautua rounded-lg px-4 py-2 text-white">
-                0
-              </div>
+              <input
+                value={formData.portion}
+                onChange={handleChangeNumber}
+                name="portion"
+                type="number"
+                className="bg-c-hijautua rounded-lg p-2 text-white w-16"
+              />
+
               <ArrowDropDown
+                onClick={() =>
+                  setFormData({ ...formData, portion: formData.portion - 1 })
+                }
                 style={{
                   fontSize: "56px",
                 }}
@@ -97,14 +117,25 @@ const AddResep = () => {
             <p>Lama Memasak</p>
             <div className="flex flex-col items-center justify-center">
               <ArrowDropUp
+                onClick={() =>
+                  setFormData({ ...formData, cookmin: formData.cookmin + 1 })
+                }
                 style={{
                   fontSize: "56px",
                 }}
               ></ArrowDropUp>
-              <div className="bg-c-hijautua rounded-lg px-4 py-2 text-white">
-                0
-              </div>
+              <input
+                value={formData.cookmin}
+                onChange={handleChangeNumber}
+                name="cookmin"
+                type="number"
+                className="bg-c-hijautua rounded-lg p-2 text-white w-16"
+              />
+
               <ArrowDropDown
+                onClick={() =>
+                  setFormData({ ...formData, cookmin: formData.cookmin - 1 })
+                }
                 style={{
                   fontSize: "56px",
                 }}
@@ -118,9 +149,9 @@ const AddResep = () => {
           <p>Bahan - bahan</p>
 
           {bahanCount > 0 ? (
-            bahan.length === bahanCount - 1 ? (
+            formData.bahan.length === bahanCount - 1 ? (
               <>
-                {bahan.map((bhn, idx) => (
+                {formData.bahan.map((bhn, idx) => (
                   <InputBahan nomor={idx + 1} key={idx} value={bhn} />
                 ))}
                 <InputBahan nomor={bahanCount} />
@@ -149,9 +180,9 @@ const AddResep = () => {
           <p>Langkah - langkah</p>
 
           {langkahCount > 0 ? (
-            langkah.length === langkahCount - 1 ? (
+            formData.langkah.length === langkahCount - 1 ? (
               <>
-                {bahan.map((bhn, idx) => (
+                {formData.langkah.map((bhn, idx) => (
                   <InputLangkah nomor={idx + 1} key={idx} value={bhn} />
                 ))}
                 <InputLangkah nomor={langkahCount} />
@@ -199,10 +230,13 @@ const InputBahan = (nomor, value) => {
             className="rounded-lg border-2 border-c-hijautua p-4 text-xl w-full lg:w-1/2"
             placeholder="Kalori"
           />
-          <Close className="text-c-hijautua" style={{ fontSize: "40px" }}></Close>
+          <Close
+            className="text-c-hijautua"
+            style={{ fontSize: "40px" }}
+          ></Close>
         </div>
       </div>
-    </div>  
+    </div>
   );
 };
 

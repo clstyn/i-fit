@@ -7,7 +7,7 @@ const PopupImage = ({ imageUrl, onClose }) => {
         <img src={imageUrl} alt="Popup" className="max-w-full max-h-full" />
         <button
           onClick={onClose}
-          className="absolute top-2 right-4 text-white text-2xl font-bold"
+          className="absolute top-2 right-4 text-white text-2xl font-bold bg-c-orentua rounded-full w-10 h-10 flex items-center justify-center focus:outline-none"
         >
           &times;
         </button>

@@ -218,7 +218,12 @@ const CardResep = ({ recipe }) => {
       />
       <div className="relative h-1/4 bg-white rounded-b-2xl px-4 py-2">
         <p className="text-md">{recipe.author.username}</p>
-        <p className="text-xl font-semibold mt-2">{recipe.title}</p>
+        <Link
+          to={`/detail-resep/${recipe._id}`}
+          className="text-xl font-semibold mt-2"
+        >
+          {recipe.title}
+        </Link>
 
         <div className="flex justify-between text-c-birdong/70">
           <p className="text-md">
