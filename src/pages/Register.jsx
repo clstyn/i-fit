@@ -65,6 +65,8 @@ const Register = () => {
         error.response?.data?.message ||
           "Terjadi kesalahan. Ulangi beberapa saat lagi"
       );
+    } finally {
+      setLoading(false);
     }
   };
   return (
