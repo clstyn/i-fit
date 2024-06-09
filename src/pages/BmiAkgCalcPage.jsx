@@ -1,8 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Icon } from "@iconify-icon/react";
 import InputNum from "../components/InputNum";
 import BasicButton from "../components/BasicButton";
 import Navbar from "../components/Navbar";
+import { toast } from "react-toastify";
+import { AppContext } from "../context/appContext";
+import axios from "axios";
 
 const BmiAkgCalculator = () => {
   const [selectedGender, setSelectedGender] = useState("male");
@@ -17,7 +20,8 @@ const BmiAkgCalculator = () => {
   const [karbohidrat, setKarbohidrat] = useState(0);
   const [protein, setProtein] = useState(0);
   const [lemak, setLemak] = useState(0);
-  const [errorMessage, setErrorMessage] = useState("");
+  const { token, isLogged } = useContext(AppContext);
+  const [loading, setLoading] = useState(false);
 
   const handleOptionChange = (value) => {
     setSelectedGender(value);
@@ -46,7 +50,7 @@ const BmiAkgCalculator = () => {
 
   const handleCalculate = () => {
     if (!weight || !height || !age || !selectedActivity) {
-      setErrorMessage("Semua field harus diisi!");
+      toast.error("Semua field harus diisi!");
       setBmi(0);
       setBmiCategory("-");
       setAkg(0);
@@ -55,8 +59,6 @@ const BmiAkgCalculator = () => {
       setLemak(0);
       return;
     }
-
-    setErrorMessage("");
 
     if (weight > 0 && height > 0) {
       const heightInMeters = height / 100;
@@ -105,13 +107,49 @@ const BmiAkgCalculator = () => {
     }
   };
 
+  const handleSave = async (e) => {
+    setLoading(true);
+
+    try {
+      const response = await axios.post(
+        "https://i-fit-be.vercel.app/user/save-bmi-akg",
+        {
+          bmiVal: bmi,
+          bmiCat: bmiCategory,
+          akg: akg,
+          weight: weight,
+          height: height,
+          age: age,
+          gender: selectedGender,
+          activityLevel: selectedActivity,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        toast.success(response.data.message || "Berhasil disimpan");
+      } else {
+        toast.error(response.data.message || "Gagal menyimpan");
+      }
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Terjadi kesalahan");
+      console.error("Error response:", error.response);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="font-poppins text-c-birdong min-h-screen">
       <Navbar />
 
       <div className="h-[216px] w-full pb-20">
         <div className="flex w-full h-full items-center justify-center">
-          <h1 className="font-kaushan text-5xl lg:text-7xl mt-32">
+          <h1 className="font-kaushan text-5xl lg:text-7xl mt-32 text-center">
             Kalkulator BMI & AKG
           </h1>
         </div>
@@ -241,13 +279,6 @@ const BmiAkgCalculator = () => {
           </div>
           <div className="grow content-end">
             <div className="flex flex-col">
-              <div className="h-6">
-                {errorMessage && (
-                  <p className="h-8 text-red-500 text-start text-xs font-poppins font-medium mb-4">
-                    {errorMessage}
-                  </p>
-                )}
-              </div>
               <BasicButton text={"Hitung"} onClick={handleCalculate} />
             </div>
           </div>
@@ -327,7 +358,19 @@ const BmiAkgCalculator = () => {
           </div>
           <div className="grow content-end">
             <div className="flex flex-row gap-6">
-              <BasicButton text={"Simpan"}></BasicButton>
+              <BasicButton
+                text={loading ? "Loading..." : "Simpan"}
+                onClick={() => {
+                  if (isLogged === false) {
+                    toast.error("Anda harus login terlebih dahulu");
+                    return;
+                  } else if (akg === 0 && bmi === 0) {
+                    toast.error("Lakukan perhitungan terlebih dahulu");
+                    return;
+                  }
+                  handleSave();
+                }}
+              ></BasicButton>
               <BasicButton text={"Cek Rekomendasi"}></BasicButton>
             </div>
           </div>
