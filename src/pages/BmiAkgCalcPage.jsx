@@ -284,9 +284,7 @@ const BmiAkgCalculator = () => {
             </div>
           </div>
           <div className="grow content-end">
-            <div className="flex flex-col">
-              <BasicButton text={"Hitung"} onClick={handleCalculate} />
-            </div>
+            <BasicButton text={"Hitung"} onClick={handleCalculate} />
           </div>
         </div>
         <div className="lg:h-[750px] flex flex-col bg-white custom-shadow rounded-xl p-10 m-4 w-3/4 lg:w-2/5 gap-6">
@@ -379,7 +377,16 @@ const BmiAkgCalculator = () => {
               ></BasicButton>
               <BasicButton
                 text={"Cek Rekomendasi"}
-                onClick={handleCekRecommend}
+                onClick={() => {
+                  if (isLogged === false) {
+                    toast.error("Anda harus login terlebih dahulu");
+                    return;
+                  } else if (akg === 0 && bmi === 0) {
+                    toast.error("Lakukan perhitungan terlebih dahulu");
+                    return;
+                  }
+                  handleCekRecommend();
+                }}
               ></BasicButton>
             </div>
           </div>
