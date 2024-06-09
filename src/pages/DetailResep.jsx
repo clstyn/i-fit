@@ -1,11 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext, useCallback } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { toast } from "react-toastify";
+import { useNavigate, useParams, Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
+import { AppContext } from "../context/appContext";
 import PopupImage from "../components/PopupImage"; // Komponen popup untuk menampilkan gambar lebih besar
 import { Icon } from "@iconify-icon/react";
+import { Favorite, FavoriteBorder, Edit, Delete } from "@mui/icons-material";
 
 const RecipeDetail = () => {
+  const { user, token } = useContext(AppContext);
+  const navigate = useNavigate();
   const { id } = useParams();
   const [loading, setLoading] = useState(true);
   const [calories, setCalories] = useState(0);
@@ -21,7 +26,52 @@ const RecipeDetail = () => {
     setIsPopupOpen(false);
   };
 
-  const fetchDetailRecipe = async () => {
+  const handleLike = async () => {
+    try {
+      const res = await axios.post(
+        `https://i-fit-be.vercel.app/post/${id}/handlelike`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (res.status === 200) {
+        toast.success(res.data.message);
+      }
+      setTimeout(() => {
+        window.location.reload();
+      }, 500);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleDelete = async () => {
+    const confirmDelete = window.confirm(
+      "Apakah Anda ingin menghapus resep ini?"
+    );
+    if (!confirmDelete) return;
+
+    try {
+      const res = await axios.delete(`https://i-fit-be.vercel.app/post/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (res.status === 200) {
+        toast.success(res.data.message);
+      }
+      navigate("/resep");
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const fetchDetailRecipe = useCallback(async () => {
     setLoading(true);
     try {
       const response = await axios.get(
@@ -36,11 +86,11 @@ const RecipeDetail = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [id]);
 
   useEffect(() => {
     fetchDetailRecipe();
-  }, [id]);
+  }, [fetchDetailRecipe]);
 
   useEffect(() => {
     const totalCal = recipe?.bahan.reduce((acc, curr) => {
@@ -50,11 +100,29 @@ const RecipeDetail = () => {
   }, [recipe]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="font-poppins text-c-birdong pb-10">
+        <Navbar />
+        <div className="relative h-96 bg-c-hijautua bg-center flex justify-center items-center cursor-pointer">
+          <div className="absolute inset-0 bg-black opacity-50"></div>
+          <h1 className="relative text-white text-4xl font-bold">Loading...</h1>
+        </div>
+      </div>
+    );
   }
 
   if (!recipe) {
-    return <div>Recipe not found</div>;
+    return (
+      <div className="font-poppins text-c-birdong pb-10">
+        <Navbar />
+        <div className="relative h-96 bg-c-hijautua bg-center flex justify-center items-center cursor-pointer">
+          <div className="absolute inset-0 bg-black opacity-50"></div>
+          <h1 className="relative text-white text-4xl font-bold">
+            Resep tidak ditemukan
+          </h1>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -75,6 +143,37 @@ const RecipeDetail = () => {
         <PopupImage imageUrl={recipe.picUrl} onClose={handleClosePopup} />
       )}
       <div className="container mx-auto p-10">
+        <div className="flex mb-2 lg:mb-4 gap-4">
+          <button
+            onClick={handleLike}
+            className="text-green-600 border-2 border-green-600 rounded-full p-2 font-medium"
+          >
+            {recipe.like.includes(user._id) ? (
+              <Favorite className="mr-2"></Favorite>
+            ) : (
+              <FavoriteBorder className="mr-2"></FavoriteBorder>
+            )}
+            Like
+          </button>
+          {recipe.author === user._id && (
+            <>
+              <Link
+                to={`/edit-resep/${id}`}
+                className="text-yellow-600 border-2 border-yellow-600 rounded-full p-2 font-medium"
+              >
+                <Edit className="mr-2"></Edit>
+                Edit
+              </Link>
+              <button
+                onClick={handleDelete}
+                className="text-red-600 border-2 border-red-600 rounded-full p-2 font-medium"
+              >
+                <Delete className="mr-2"></Delete>
+                Hapus
+              </button>
+            </>
+          )}
+        </div>
         <div className="flex flex-col lg:flex-row gap-x-4">
           <div className="w-auto h-14 bg-c-hijautua bg-opacity-50 p-4 mb-4 rounded-xl border border-c-hijautua">
             <div className="flex gap-x-4">

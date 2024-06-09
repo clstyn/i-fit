@@ -19,7 +19,7 @@ const getTodayDate = () => {
 };
 
 const Checkin = () => {
-  const { token, isLogged, user } = useContext(AppContext);
+  const { token, isLogged } = useContext(AppContext);
   const [point, setPoint] = useState(0);
   const [latestCheckin, setLatestCheckin] = useState(null);
   const [loadingDaily, setLoadingDaily] = useState(false);
@@ -183,7 +183,9 @@ const Checkin = () => {
 
       <div className="h-[316px] w-full pb-32  bg-header-profile bg-cover">
         <div className="flex w-full h-full items-center justify-center">
-          <h1 className="font-kaushan text-5xl lg:text-7xl mt-32">Check-In Harian</h1>
+          <h1 className="font-kaushan text-5xl lg:text-7xl mt-32">
+            Check-In Harian
+          </h1>
         </div>
       </div>
 

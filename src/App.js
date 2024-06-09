@@ -18,6 +18,7 @@ import RecoverAccount from "./pages/RecoverAccount";
 import Resep from "./pages/Resep";
 import AddResep from "./pages/AddResep";
 import DetailResep from "./pages/DetailResep";
+import EditResep from "./pages/EditResep";
 
 import { AppProvider } from "./context/appContext";
 
@@ -42,6 +43,7 @@ function App() {
             <Route path="/resep" element={<Resep />} />{" "}
             <Route path="/tambah-resep" element={<AddResep />} />{" "}
             <Route path="/detail-resep/:id" element={<DetailResep />} />{" "}
+            <Route path="/edit-resep/:id" element={<EditResep />} />{" "}
           </Routes>{" "}
         </Router>
       </AppProvider>
