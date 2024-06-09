@@ -18,46 +18,6 @@ input[type="number"]::-webkit-inner-spin-button {
   margin: 0;
 }
 
-.needle-container {
-  width: 400px;
-  height: 350px;
-  border-radius: 50%;
-  margin: 20px auto;
-  margin-bottom: 0;
+.indicator-container {
   background-size: 100%;
-  position: relative;
-}
-
-.result {
-  position: absolute;
-  top: 25%;
-  left: 36%;
-  background: white;
-  z-index: 2;
-}
-
-.ind1 {
-  position: relative;
-  top: 27%;
-  left: -20%;
-  z-index: 2;
-}
-
-.ind2 {
-  position: relative;
-  top: 13%;
-  z-index: 2;
-}
-
-.ind3 {
-  position: relative;
-  top: 19%;
-  left: 20%;
-  z-index: 2;
-}
-
-.akg {
-  position: relative;
-  top: -15%;
-  z-index: 2;
 }

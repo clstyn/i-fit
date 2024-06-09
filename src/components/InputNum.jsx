@@ -18,7 +18,7 @@ function InputNum({ value, onChange }) {
   };
 
   return (
-    <div className="flex flex-row-reverse items-center gap-x-2">
+    <div className="w-auto lg:w-full flex flex-row-reverse items-center gap-x-2">
       <button
         onClick={handleIncrement}
         className="w-6 h-6 text-c-hijautua rounded-full border border-c-hijautua flex items-center justify-center"
@@ -30,7 +30,7 @@ function InputNum({ value, onChange }) {
         type="number"
         value={value}
         onChange={handleChange}
-        className="w-28 h-9 text-center bg-c-hijautua text-white text-xl font-poppins font-semibold rounded-md placeholder-white placeholder-opacity-50"
+        className="w-24 h-9 text-center bg-c-hijautua text-white text-xl font-poppins font-semibold rounded-md placeholder-white placeholder-opacity-50"
         min="0"
         placeholder="0"
       />
