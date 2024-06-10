@@ -62,6 +62,11 @@ const BmiAkgCalculator = () => {
       return;
     }
 
+    if (weight < 0 || height < 0 || age < 0) {
+      toast.error("Input tidak boleh negatif!");
+      return;
+    }
+
     if (weight > 0 && height > 0) {
       const heightInMeters = height / 100;
       const bmiValue = weight / (heightInMeters * heightInMeters);
