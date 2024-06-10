@@ -242,11 +242,14 @@ const CardResep = ({ recipe, handleLike, loggedUserId }) => {
 
   return (
     <div className="rounded-2xl shadow flex flex-col">
-      <img
-        src={recipe.picUrl}
-        alt=""
-        className="w-full h-full object-cover rounded-t-2xl"
-      />
+      <Link to={`/detail-resep/${recipe._id}`} className="w-full h-full">
+        <img
+          src={recipe.picUrl}
+          alt=""
+          className="w-full h-full object-cover rounded-t-2xl"
+        />
+      </Link>
+
       <div className="relative min-h-fit bg-white rounded-b-2xl px-4 py-2">
         <p className="text-sm">{recipe.author.username}</p>
         <Link
