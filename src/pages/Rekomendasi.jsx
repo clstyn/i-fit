@@ -8,17 +8,15 @@ import { toast } from "react-toastify";
 import { AppContext } from "../context/appContext";
 
 const Rekomendasi = () => {
-  const { token, isLogged } = useContext(AppContext);
+  const { token } = useContext(AppContext);
   const [diets, setDiets] = useState([]);
-
   const [foods, setFoods] = useState([]);
-
   const [olahraga, setOlahraga] = useState([]);
   const [activeOlahraga, setActiveOlahraga] = useState(1);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     // Fetch recommendations
-    console.log("ini masuk useEffect");
     const fetchRecommendations = async () => {
       try {
         const response = await axios.get(
@@ -55,6 +53,33 @@ const Rekomendasi = () => {
       setActiveOlahraga(olahraga[1]);
     }
   }, [olahraga]);
+
+  const handleSave = async (e) => {
+    setLoading(true);
+
+    try {
+      const response = await axios.post(
+        `https://i-fit-be.vercel.app/user/save-challenge/${activeOlahraga._id}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        toast.success(response.data.message || "Berhasil menyimpan olahraga");
+      } else {
+        toast.error(response.data.message || "Gagal menyimpan olahraga");
+      }
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Terjadi kesalahan");
+      console.error("Error response:", error.response);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="font-poppins text-c-birdong bg-header-rekom bg-cover min-h-screen">
@@ -103,14 +128,22 @@ const Rekomendasi = () => {
           <p className="text-4xl lg:text-6xl font-kaushan text-center">
             {activeOlahraga ? activeOlahraga.exercise : "Forearm Plank"}
           </p>
-          <button
-            className="font-semibold text-md lg:text-xl text-white bg-gradient-to-br from-[#FEB38E] to-c-orenmuda mt-4 rounded-full p-3 lg:p-4 w-fit"
-            onClick={() =>
-              (window.location.href = `/detail/olahraga/${activeOlahraga._id}`)
-            }
-          >
-            Baca Selengkapnya
-          </button>
+          <div className="flex flex-col lg:flex-row lg:gap-6">
+            <button
+              className="font-semibold text-md lg:text-xl text-white bg-gradient-to-br from-[#FEB38E] to-c-orenmuda mt-4 rounded-full p-3 lg:p-4 w-fit"
+              onClick={() =>
+                (window.location.href = `/detail/olahraga/${activeOlahraga._id}`)
+              }
+            >
+              Baca Selengkapnya
+            </button>
+            <button
+              className="font-semibold text-md lg:text-xl text-white bg-gradient-to-br from-[#FEB38E] to-c-orenmuda mt-4 rounded-full p-3 lg:p-4 w-fit"
+              onClick={handleSave}
+            >
+              {loading ? "Loading..." : "Simpan"}
+            </button>
+          </div>
         </div>
         <div className="w-full lg:w-1/2">
           <Slider picArray={olahraga} setActivePic={setActiveOlahraga} />
