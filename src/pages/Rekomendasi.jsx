@@ -29,7 +29,6 @@ const Rekomendasi = () => {
             },
           }
         );
-        console.log("Response data:", response.data);
         if (response.status === 200) {
           setDiets(response.data.diets);
           setFoods(response.data.foods);

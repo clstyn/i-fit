@@ -3,6 +3,7 @@ import Navbar from "../components/Navbar";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import { AppContext } from "../context/appContext";
+import { Link } from "react-router-dom";
 import {
   NavigateBefore,
   ArrowDropDownCircle,
@@ -51,8 +52,13 @@ const DetailRekom = () => {
         <div className="w-full lg:w-1/2">
           <div className="flex justify-between">
             <div className="text-xl flex items-center gap-2">
-              <NavigateBefore style={{ fontSize: "32px" }}></NavigateBefore>
-              <p className="hidden lg:flex">K E M B A L I</p>
+              <Link
+                to="/rekomendasi"
+                className="flex items-center cursor-pointer"
+              >
+                <NavigateBefore style={{ fontSize: "32px" }}></NavigateBefore>
+                <p className="hidden lg:flex">K E M B A L I</p>
+              </Link>
             </div>
             <h1 className="font-semibold text-4xl">
               {type === "diet" ? item.jenis_diet : item.exercise}
