@@ -34,6 +34,9 @@ module.exports = {
         "bmi-over": "url('/src/assets/bmi-over.png')",
         "bmi-obese": "url('/src/assets/bmi-obese.png')",
         "bg-landing": "url('/src/assets/bg-landing.png')",
+        landingPic1: "url('/src/assets/landingPic1.png')",
+        landingPic2: "url('/src/assets/landingPic2.png')",
+        landingPic3: "url('/src/assets/landingPic3.png')",
         // untuk gambar background taruh di sini
       }),
     },

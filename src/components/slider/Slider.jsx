@@ -54,15 +54,9 @@ const Slider = ({ picArray, setActivePic }) => {
         ))
       ) : (
         <div>
-          <SwiperSlide className="slide" style={{ background: "lightblue" }}>
-            1
-          </SwiperSlide>
-          <SwiperSlide className="slide" style={{ background: "coral" }}>
-            2
-          </SwiperSlide>
-          <SwiperSlide className="slide" style={{ background: "chartreuse" }}>
-            3
-          </SwiperSlide>
+          <SwiperSlide className="slide bg-landingPic1 bg-cover"></SwiperSlide>
+          <SwiperSlide className="slide bg-landingPic2 bg-cover"></SwiperSlide>
+          <SwiperSlide className="slide bg-landingPic3 bg-cover"></SwiperSlide>
         </div>
       )}
     </Swiper>
