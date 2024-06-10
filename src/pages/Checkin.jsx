@@ -197,8 +197,14 @@ const Checkin = () => {
                 Poin Saya
               </div>
               <div className="mt-4 font-semibold w-full flex gap-4 items-center justify-center text-3xl">
-                <img src={Coin} alt="coin" className="w-8" />
-                <p>{point}</p>
+                {point ? (
+                  <>
+                    <img src={Coin} alt="coin" className="w-8" />
+                    <p>{point}</p>
+                  </>
+                ) : (
+                  <p className="text-base font-regular">Loading...</p>
+                )}
               </div>
             </div>
 
@@ -261,8 +267,9 @@ const Checkin = () => {
                     : "Tukar poin dengan voucher menarik!"}
                 </p>
                 <div className="h-[480px] overflow-y-auto">
-                  {mode === "tantangan"
-                    ? challenges.map((challenge) => (
+                  {challenges.length !== 0 && prizes.length !== 0 ? (
+                    mode === "tantangan" ? (
+                      challenges.map((challenge) => (
                         <CardChallenge
                           item={challenge}
                           key={challenge.id}
@@ -270,14 +277,19 @@ const Checkin = () => {
                           loading={loadingChallenge}
                         />
                       ))
-                    : prizes.map((prize) => (
+                    ) : (
+                      prizes.map((prize) => (
                         <CardPrize
                           prize={prize}
                           key={prize.id}
                           redeemPrize={redeemPrize}
                           loading={loadingPrize}
                         />
-                      ))}
+                      ))
+                    )
+                  ) : (
+                    <p>Loading...</p>
+                  )}
                 </div>
               </div>
             </div>

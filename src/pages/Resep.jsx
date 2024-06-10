@@ -15,6 +15,7 @@ import {
 
 const Resep = () => {
   const [loading, setLoading] = useState(false);
+  const [loadingLike, setLoadingLike] = useState(false);
   const [recipes, setRecipes] = useState([]);
   const [selectedTag, setSelectedTag] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
@@ -82,6 +83,7 @@ const Resep = () => {
     }
 
     try {
+      setLoadingLike(true);
       const res = await axios.post(
         `https://i-fit-be.vercel.app/post/${id}/handlelike`,
         {},
@@ -98,6 +100,8 @@ const Resep = () => {
       }
     } catch (err) {
       console.log(err);
+    } finally {
+      setLoadingLike(false);
     }
   };
 
@@ -222,6 +226,7 @@ const Resep = () => {
                 recipe={recipe}
                 handleLike={handleLike}
                 loggedUserId={userId}
+                loading={loadingLike}
               />
             ))
           ) : (
@@ -235,7 +240,7 @@ const Resep = () => {
   );
 };
 
-const CardResep = ({ recipe, handleLike, loggedUserId }) => {
+const CardResep = ({ recipe, handleLike, loggedUserId, loading }) => {
   const calories = recipe.bahan.reduce((acc, curr) => {
     return acc + curr.kalori;
   }, 0);
@@ -281,19 +286,21 @@ const CardResep = ({ recipe, handleLike, loggedUserId }) => {
         </div>
         <div className="absolute -top-8 right-4 p-6 bg-white w-16 h-16 rounded-full text-red-600 shadow-lg flex items-center justify-center right-0 cursor-pointer">
           {recipe.like.includes(loggedUserId) === true ? (
-            <Favorite
-              onClick={() => handleLike(recipe._id)}
-              style={{
-                fontSize: "32px",
-              }}
-            ></Favorite>
+            <button disabled={loading} onClick={() => handleLike(recipe._id)}>
+              <Favorite
+                style={{
+                  fontSize: "32px",
+                }}
+              ></Favorite>
+            </button>
           ) : (
-            <FavoriteBorder
-              onClick={() => handleLike(recipe._id)}
-              style={{
-                fontSize: "32px",
-              }}
-            ></FavoriteBorder>
+            <button disabled={loading} onClick={() => handleLike(recipe._id)}>
+              <FavoriteBorder
+                style={{
+                  fontSize: "32px",
+                }}
+              ></FavoriteBorder>
+            </button>
           )}
         </div>
       </div>
