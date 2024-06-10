@@ -138,10 +138,15 @@ const Rekomendasi = () => {
               Baca Selengkapnya
             </button>
             <button
-              className="font-semibold text-md lg:text-xl text-white bg-gradient-to-br from-[#FEB38E] to-c-orenmuda mt-4 rounded-full p-3 lg:p-4 w-fit"
+              className={`font-semibold text-md lg:text-xl text-white mt-4 rounded-full p-3 lg:p-4 w-fit ${
+                loading
+                  ? "bg-slate-300 cursor-not-allowed"
+                  : "bg-gradient-to-br from-[#FEB38E] to-c-orenmuda"
+              }`}
               onClick={handleSave}
+              disabled={loading}
             >
-              {loading ? "Loading..." : "Simpan"}
+              Simpan
             </button>
           </div>
         </div>
