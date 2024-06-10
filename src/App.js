@@ -33,7 +33,7 @@ function App() {
             <Route path="/profile" element={<Profile />} />{" "}
             <Route path="/kalkulatorBMIAKG" element={<BmiAkgCalculator />} />{" "}
             <Route path="/rekomendasi" element={<Rekomendasi />} />{" "}
-            <Route path="/detail" element={<DetailRekom />} />{" "}
+            <Route path="/detail/:type/:id" element={<DetailRekom />} />{" "}
             <Route path="/check-in" element={<Checkin />} />{" "}
             <Route path="/kalori" element={<Kalori />} />{" "}
             <Route path="/login" element={<Login />} />{" "}
@@ -45,8 +45,8 @@ function App() {
             <Route path="/detail-resep/:id" element={<DetailResep />} />{" "}
             <Route path="/edit-resep/:id" element={<EditResep />} />{" "}
           </Routes>{" "}
-        </Router>
-      </AppProvider>
+        </Router>{" "}
+      </AppProvider>{" "}
     </>
   );
 }

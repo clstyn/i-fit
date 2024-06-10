@@ -29,15 +29,14 @@ const Rekomendasi = () => {
             },
           }
         );
-        console.log("Response data:", response.data);
         if (response.status === 200) {
           setDiets(response.data.diets);
           setFoods(response.data.foods);
           setOlahraga(response.data.olahraga);
-          toast.success("berhasil");
+          toast.success("Berhasil mendapatkan data rekomendasi");
         }
       } catch (error) {
-        toast.error("There was an error fetching the recommendations!", error);
+        toast.error("Terjadi kesalahan", error);
       }
     };
 
@@ -104,7 +103,12 @@ const Rekomendasi = () => {
           <p className="text-4xl lg:text-6xl font-kaushan text-center">
             {activeOlahraga ? activeOlahraga.exercise : "Forearm Plank"}
           </p>
-          <button className="font-semibold text-md lg:text-xl text-white bg-gradient-to-br from-[#FEB38E] to-c-orenmuda mt-4 rounded-full p-3 lg:p-4 w-fit">
+          <button
+            className="font-semibold text-md lg:text-xl text-white bg-gradient-to-br from-[#FEB38E] to-c-orenmuda mt-4 rounded-full p-3 lg:p-4 w-fit"
+            onClick={() =>
+              (window.location.href = `/detail/olahraga/${activeOlahraga._id}`)
+            }
+          >
             Baca Selengkapnya
           </button>
         </div>
@@ -156,7 +160,10 @@ const CardDiet = ({ diet }) => {
         </p>
         <p className="my-4 text-start">{getFirstSentence(diet.diet_desc)}</p>
         <div className="grow content-end">
-          <button className="font-semibold text-md lg:text-xl rounded-full shadow bg-gradient-to-br from-[#AED9DA] to-c-hijaumedium text-white py-2 px-4 w-fit self-center">
+          <button
+            className="font-semibold text-md lg:text-xl rounded-full shadow bg-gradient-to-br from-[#AED9DA] to-c-hijaumedium text-white py-2 px-4 w-fit self-center"
+            onClick={() => (window.location.href = `/detail/diet/${diet._id}`)}
+          >
             Selengkapnya
           </button>
         </div>
