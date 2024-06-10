@@ -76,6 +76,11 @@ const Resep = () => {
   }, 500);
 
   const handleLike = async (id) => {
+    if (isLogged === false) {
+      toast.error("Anda harus login terlebih dahulu");
+      return;
+    }
+
     try {
       const res = await axios.post(
         `https://i-fit-be.vercel.app/post/${id}/handlelike`,

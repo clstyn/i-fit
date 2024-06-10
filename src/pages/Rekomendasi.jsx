@@ -135,7 +135,7 @@ const Rekomendasi = () => {
         <h2 className="font-kaushan text-4xl lg:text-6xl text-center">
           Makanan
         </h2>
-        <div className="grid min-h-fit grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 w-5/6 mx-auto gap-4 mt-12">
+        <div className="grid min-h-fit grid-cols-1 sm:grid-cols-2 md:grid-cols-3  w-5/6 mx-auto gap-4 mt-12">
           {foods.map((food) => (
             <CardFood key={food.id} food={food} />
           ))}
@@ -201,12 +201,12 @@ const CardFood = ({ food }) => {
   const handleMouseLeave = () => {
     setIsHovered(false);
   };
-
+  console.log(food.image);
   return (
     <div
       className="relative h-[150px] rounded-lg p-8 flex flex-col items-center justify-center"
       style={{
-        backgroundImage: `url(${food.image})`,
+        backgroundImage: `url("${food.image.toString()}")`,
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}

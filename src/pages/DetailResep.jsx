@@ -9,7 +9,7 @@ import { Icon } from "@iconify-icon/react";
 import { Favorite, FavoriteBorder, Edit, Delete } from "@mui/icons-material";
 
 const RecipeDetail = () => {
-  const { user, token } = useContext(AppContext);
+  const { user, token, isLogged } = useContext(AppContext);
   const navigate = useNavigate();
   const { id } = useParams();
   const [loading, setLoading] = useState(true);
@@ -27,6 +27,11 @@ const RecipeDetail = () => {
   };
 
   const handleLike = async () => {
+    if (!isLogged) {
+      toast.error("Anda harus login terlebih dahulu");
+      return;
+    }
+
     try {
       const res = await axios.post(
         `https://i-fit-be.vercel.app/post/${id}/handlelike`,
@@ -148,14 +153,18 @@ const RecipeDetail = () => {
             onClick={handleLike}
             className="text-green-600 border-2 border-green-600 rounded-full p-2 font-medium"
           >
-            {recipe.like.includes(user._id) ? (
-              <Favorite className="mr-2"></Favorite>
+            {isLogged ? (
+              recipe.like.includes(user._id) ? (
+                <Favorite className="mr-2"></Favorite>
+              ) : (
+                <FavoriteBorder className="mr-2"></FavoriteBorder>
+              )
             ) : (
               <FavoriteBorder className="mr-2"></FavoriteBorder>
             )}
             Like
           </button>
-          {recipe.author === user._id && (
+          {isLogged && recipe.author === user._id && (
             <>
               <Link
                 to={`/edit-resep/${id}`}

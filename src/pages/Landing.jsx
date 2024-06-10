@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Slider from "../components/slider/Slider";
@@ -11,6 +11,7 @@ import PicRecommend from "../assets/pic-recommend.png";
 import PicRecipe from "../assets/resep.png";
 import CheckInHere from "../assets/cekin.png";
 import BasicButton from "../components/BasicButton";
+import { AppContext } from "../context/appContext";
 
 const features = [
   {
@@ -32,9 +33,9 @@ const features = [
   {
     title: "Dapatkan Rekomendasi",
     description:
-      "Berdasarkan BMI dan AKG yang sudah dihitung, dapatkan rekomendasi program diet, olahraga, dan makanan yang sesuai.",
+      "Berdasarkan BMI dan AKG yang sudah dihitung, dapatkan rekomendasi program diet, olahraga, dan makanan yang sesuai",
     imageUrl: PicRecommend,
-    link: "/rekomendasi",
+    link: "/kalkulatorBMIAKG",
     btnText: "Rekomendasi",
   },
   {
@@ -56,6 +57,7 @@ const features = [
 ];
 
 const Landing = () => {
+  const { isLogged } = useContext(AppContext);
   return (
     <div className="font-poppins text-c-birdong">
       <Navbar />
