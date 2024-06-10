@@ -2,10 +2,13 @@ import { useState, useContext, useEffect, useCallback } from "react";
 import axios from "axios";
 import { Navigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import storage from "../firebase";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { AppContext } from "../context/appContext";
 import Navbar from "../components/Navbar";
 import DummyPp from "../assets/pp-dummy.png";
 import BasicButton from "../components/BasicButton";
+import { Edit, HourglassBottom } from "@mui/icons-material";
 
 const Profile = () => {
   const { logout, userId, isLogged, token, setGlobalUser } =
@@ -14,7 +17,10 @@ const Profile = () => {
   const [myrecipe, setMyrecipe] = useState([]);
   const [loadingEdit, setLoadingEdit] = useState(false);
   const [loadingChangePass, setLoadingChangePass] = useState(false);
+  const [loadingEditFoto, setLoadingEditFoto] = useState(false);
   const [user, setUser] = useState({});
+  const [imgFile, setImgFile] = useState("");
+  const [imgUrl, setImgUrl] = useState("");
 
   const [editForm, setEditForm] = useState({
     fullname: "",
@@ -175,6 +181,42 @@ const Profile = () => {
     toast.success("Anda keluar");
   };
 
+  const handleImageChange = async (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setImgUrl(e.target.result);
+      };
+      reader.readAsDataURL(file);
+      setImgFile(file);
+      setLoadingEditFoto(true);
+      try {
+        const storageRef = ref(storage, `profilePics/${file.name}`);
+        await uploadBytes(storageRef, file);
+        const url = await getDownloadURL(storageRef);
+
+        const response = await axios.post(
+          "https://i-fit-be.vercel.app/auth/changepic",
+          { imageUrl: url },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        if (response.status === 200) {
+          toast.success("Foto berhasil diubah");
+          fetchData();
+        }
+      } catch (err) {
+        toast.error("Gagal mengubah foto");
+      } finally {
+        setLoadingEditFoto(false);
+      }
+    }
+  };
+
   if (!isLogged) {
     return <Navigate replace to="/" />;
   }
@@ -184,11 +226,31 @@ const Profile = () => {
       <Navbar />
 
       <div className="h-[316px] w-full bg-header-profile bg-cover">
-        <div className="bg-white rounded-2xl min-h-fit w-5/6 mx-auto translate-y-40 drop-shadow-md px-12 py-6 flex flex-col lg:flex-row justify-between items-center">
-          <img
-            src={user?.picUrl || DummyPp}
-            alt="Profile"
-            className="rounded-full h-48"
+        <div className="bg-white rounded-2xl min-h-fit w-5/6 mx-auto translate-y-36 drop-shadow-md px-12 py-6 flex flex-col lg:flex-row justify-between items-center">
+          <div className="relative">
+            <img
+              src={user?.picUrl || DummyPp}
+              alt="Profile"
+              className="rounded-full h-48"
+            />
+            <label
+              htmlFor="ppInput"
+              className="absolute right-0 top-0 bg-gradient-to-br from-[#F8905B] to-c-orentua rounded-full font-medium lg:text-md w-fit p-1.5 lg:p-2.5 text-white mx-auto cursor-pointer"
+            >
+              {loadingEditFoto ? (
+                <HourglassBottom className="animate-spin"></HourglassBottom>
+              ) : (
+                <Edit></Edit>
+              )}
+            </label>
+          </div>
+          <input
+            disabled={loadingEditFoto}
+            type="file"
+            id="ppInput"
+            accept="image/*"
+            className="hidden"
+            onChange={handleImageChange}
           />
           <div className="flex flex-col gap-3 items-center lg:items-end">
             <p className="text-2xl lg:text-3xl lg:text-4xl font-semibold">
