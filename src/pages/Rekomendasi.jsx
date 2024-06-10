@@ -135,7 +135,7 @@ const Rekomendasi = () => {
         <h2 className="font-kaushan text-4xl lg:text-6xl text-center">
           Makanan
         </h2>
-        <div className="grid min-h-fit grid-cols-1 sm:grid-cols-2 md:grid-cols-3  w-5/6 mx-auto gap-4 mt-12">
+        <div className="grid min-h-fit grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-3 w-5/6 mx-auto gap-4 mt-12">
           {foods.map((food) => (
             <CardFood key={food.id} food={food} />
           ))}
@@ -172,25 +172,6 @@ const CardDiet = ({ diet }) => {
   );
 };
 
-// const CardFood = ({ food }) => {
-//   return (
-//     <div
-//       className="rounded-lg border border-c-birdong/50 p-8 flex flex-col items-center justify-center"
-//       style={{
-//         backgroundImage: `url(${food.picUrl})`,
-//         backgroundSize: "cover",
-//         backgroundPosition: "center",
-//       }}
-//     >
-//       <p className="font-semibold text-2xl">{food.title}</p>
-
-//       <div className="flex gap-2 items-center">
-//         <img src={CalIcon} alt="icon" className="w-5 h-5" />
-//         <p className="my-4 font-medium">{food.kalori} kal</p>
-//       </div>
-//     </div>
-//   );
-// };
 const CardFood = ({ food }) => {
   const [isHovered, setIsHovered] = useState(false);
 
@@ -204,7 +185,7 @@ const CardFood = ({ food }) => {
   console.log(food.image);
   return (
     <div
-      className="relative h-[150px] rounded-lg p-8 flex flex-col items-center justify-center"
+      className="relative h-[250px] rounded-lg p-8 flex flex-col items-center justify-center"
       style={{
         backgroundImage: `url("${food.image.toString()}")`,
         backgroundSize: "cover",
