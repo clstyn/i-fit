@@ -138,6 +138,16 @@ const EditResep = () => {
       return;
     }
 
+    if (bahan.nama === "" || bahan.satuan === "" || bahan.kalori === 0) {
+      toast.error("Isikan semua kolom");
+      return;
+    }
+
+    if (bahan.kalori < 0) {
+      toast.error("Kalori tidak boleh negatif");
+      return;
+    }
+
     setFormData((prevState) => {
       let newBahan = JSON.parse(JSON.stringify(prevState.bahan));
       newBahan.push(bahan);
@@ -168,6 +178,23 @@ const EditResep = () => {
 
   const submit = async (e) => {
     e.preventDefault();
+    if (
+      formData.title === "" ||
+      formData.desc === "" ||
+      formData.bahan.length === 0 ||
+      formData.langkah.length === 0 ||
+      formData.portion === 0 ||
+      formData.cookmin === 0
+    ) {
+      toast.error("Isikan semua data dengan benar");
+      return;
+    }
+
+    if (formData.portion < 0 || formData.cookmin < 0) {
+      toast.error("Porsi dan waktu tidak boleh negatif");
+      return;
+    }
+
     setLoadingSubmit(true);
     try {
       let updatedFormData = { ...formData };
@@ -405,6 +432,9 @@ const EditResep = () => {
                   handleRemove={() => handleRemoveBahan(bhn.id)}
                 />
               ))}
+              <p className="text-xs font-normal">
+                Klik "Tambahkan" untuk menyimpan data bahan.
+              </p>
               <InputBahan
                 nomor={bahanRowShowed}
                 value={bahan}
@@ -443,6 +473,9 @@ const EditResep = () => {
                   handleRemove={() => handleRemoveLangkah(lkh.id)}
                 />
               ))}
+              <p className="text-xs font-normal">
+                Klik "Tambahkan" untuk menyimpan data langkah.
+              </p>
               <InputLangkah
                 nomor={langkahRowShowed}
                 value={langkah}

@@ -57,7 +57,6 @@ const features = [
 ];
 
 const Landing = () => {
-  const { isLogged } = useContext(AppContext);
   return (
     <div className="font-poppins text-c-birdong">
       <Navbar />

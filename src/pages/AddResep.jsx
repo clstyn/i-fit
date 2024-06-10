@@ -112,6 +112,16 @@ const AddResep = () => {
       return;
     }
 
+    if (bahan.nama === "" || bahan.satuan === "" || bahan.kalori === 0) {
+      toast.error("Isikan semua kolom");
+      return;
+    }
+
+    if (bahan.kalori < 0) {
+      toast.error("Kalori tidak boleh negatif");
+      return;
+    }
+
     setFormData((prevState) => {
       let newBahan = JSON.parse(JSON.stringify(prevState.bahan));
       newBahan.push(bahan);
@@ -142,6 +152,23 @@ const AddResep = () => {
 
   const submit = async (e) => {
     e.preventDefault();
+    if (
+      formData.title === "" ||
+      formData.desc === "" ||
+      formData.bahan.length === 0 ||
+      formData.langkah.length === 0 ||
+      formData.portion === 0 ||
+      formData.cookmin === 0
+    ) {
+      toast.error("Isikan semua data dengan benar");
+      return;
+    }
+
+    if (formData.portion < 0 || formData.cookmin < 0) {
+      toast.error("Porsi dan waktu tidak boleh negatif");
+      return;
+    }
+
     setLoading(true);
     try {
       if (!imageFile) {
@@ -369,6 +396,9 @@ const AddResep = () => {
                   handleRemove={() => handleRemoveBahan(bhn.id)}
                 />
               ))}
+              <p className="text-xs font-normal">
+                Klik "Tambahkan" untuk menyimpan data bahan.
+              </p>
               <InputBahan
                 nomor={bahanRowShowed}
                 value={bahan}
@@ -376,7 +406,6 @@ const AddResep = () => {
               />
             </>
           )}
-
           <div
             onClick={handleAddBahan}
             className="cursor-pointer bg-gradient-to-br from-[#F8905B] to-c-orentua rounded-2xl font-semibold text-md lg:text-xl w-fit p-3 text-white"
@@ -407,6 +436,9 @@ const AddResep = () => {
                   handleRemove={() => handleRemoveLangkah(lkh.id)}
                 />
               ))}
+              <p className="text-xs font-normal">
+                Klik "Tambahkan" untuk menyimpan data langkah.
+              </p>
               <InputLangkah
                 nomor={langkahRowShowed}
                 value={langkah}
