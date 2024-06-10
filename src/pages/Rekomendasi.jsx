@@ -128,7 +128,7 @@ const Rekomendasi = () => {
           <p className="text-4xl lg:text-6xl font-kaushan text-center">
             {activeOlahraga ? activeOlahraga.exercise : "Forearm Plank"}
           </p>
-          <div className="flex flex-col lg:flex-row lg:gap-6">
+          <div className="flex flex-row gap-2 lg:gap-6">
             <button
               className="font-semibold text-md lg:text-xl text-white bg-gradient-to-br from-[#FEB38E] to-c-orenmuda mt-4 rounded-full p-3 lg:p-4 w-fit"
               onClick={() =>
