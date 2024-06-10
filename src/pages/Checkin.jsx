@@ -39,6 +39,7 @@ const Checkin = () => {
   }, [latestCheckin]);
 
   const fetchLatestPoint = useCallback(async () => {
+    console.log("rub");
     try {
       const response = await axios.get(
         "https://i-fit-be.vercel.app/user/point",

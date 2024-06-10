@@ -1,4 +1,4 @@
-import React, { createContext, useReducer } from "react";
+import React, { createContext, useReducer, useCallback } from "react";
 
 const token = JSON.parse(localStorage.getItem("token")) || null;
 
@@ -46,9 +46,9 @@ const AppProvider = ({ children }) => {
     dispatch({ type: "LOGOUT", payload: val });
   };
 
-  const setGlobalUser = (val) => {
+  const setGlobalUser = useCallback((val) => {
     dispatch({ type: "SET_USER", payload: val });
-  };
+  }, []);
 
   return (
     <AppContext.Provider value={{ ...state, login, logout, setGlobalUser }}>

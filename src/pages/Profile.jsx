@@ -28,8 +28,8 @@ const Profile = () => {
   });
 
   const fetchData = useCallback(async () => {
+    console.log("fetching data");
     try {
-      // Fetch user profile
       const userResponse = await fetch(
         "https://i-fit-be.vercel.app/user/profile",
         {
@@ -46,20 +46,6 @@ const Profile = () => {
       });
       localStorage.setItem("user", JSON.stringify(userData.user));
       setGlobalUser(userData.user);
-
-      // Fetch user recipes
-      const recipeResponse = await axios.get(
-        `https://i-fit-be.vercel.app/post/my`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      if (recipeResponse.status === 200) {
-        setMyrecipe(recipeResponse.data.recipes);
-      }
-
       setLoadingData(false);
     } catch (error) {
       console.error(error);
@@ -67,9 +53,25 @@ const Profile = () => {
     }
   }, [token, setGlobalUser]);
 
+  const fetchMyRecipe = useCallback(async () => {
+    console.log("fetching resep");
+    const recipeResponse = await axios.get(
+      `https://i-fit-be.vercel.app/post/my`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    if (recipeResponse.status === 200) {
+      setMyrecipe(recipeResponse.data.recipes);
+    }
+  }, [token]);
+
   useEffect(() => {
     fetchData();
-  }, [fetchData]);
+    fetchMyRecipe();
+  }, [fetchData, fetchMyRecipe]);
 
   const handleEditChange = (e) => {
     const { name, value } = e.target;
