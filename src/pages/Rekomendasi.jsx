@@ -172,22 +172,56 @@ const CardDiet = ({ diet }) => {
   );
 };
 
+// const CardFood = ({ food }) => {
+//   return (
+//     <div
+//       className="rounded-lg border border-c-birdong/50 p-8 flex flex-col items-center justify-center"
+//       style={{
+//         backgroundImage: `url(${food.picUrl})`,
+//         backgroundSize: "cover",
+//         backgroundPosition: "center",
+//       }}
+//     >
+//       <p className="font-semibold text-2xl">{food.title}</p>
+
+//       <div className="flex gap-2 items-center">
+//         <img src={CalIcon} alt="icon" className="w-5 h-5" />
+//         <p className="my-4 font-medium">{food.kalori} kal</p>
+//       </div>
+//     </div>
+//   );
+// };
 const CardFood = ({ food }) => {
+  const [isHovered, setIsHovered] = useState(false);
+
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+  };
+
   return (
     <div
-      className="rounded-lg border border-c-birdong/50 p-8 flex flex-col items-center justify-center"
+      className="relative h-[150px] rounded-lg p-8 flex flex-col items-center justify-center"
       style={{
-        backgroundImage: `url(${food.picUrl})`,
+        backgroundImage: `url(${food.image})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
     >
-      <p className="font-semibold text-2xl">{food.title}</p>
-
-      <div className="flex gap-2 items-center">
-        <img src={CalIcon} alt="icon" className="w-5 h-5" />
-        <p className="my-4 font-medium">{food.kalori} kal</p>
-      </div>
+      {isHovered && (
+        <div className="absolute inset-0 bg-white opacity-80 rounded-lg flex flex-col items-center justify-center">
+          <p className="font-semibold text-lg text-center m-3">{food.name}</p>
+          <div className="flex gap-2 items-center">
+            <img src={CalIcon} alt="icon" className="w-5 h-5" />
+            <p className="font-medium">{food.calories} kal</p>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
