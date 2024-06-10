@@ -4,17 +4,13 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import { AppContext } from "../context/appContext";
 import { Link } from "react-router-dom";
-import {
-  NavigateBefore,
-  ArrowDropDownCircle,
-  Circle,
-} from "@mui/icons-material";
+import { NavigateBefore } from "@mui/icons-material";
 
 const DetailRekom = () => {
   const [item, setItem] = useState({});
   const { type, id } = useParams();
   const [loading, setLoading] = useState(false);
-  const { token, isLogged } = useContext(AppContext);
+  const { token } = useContext(AppContext);
 
   const fetchDetailRecipe = useCallback(async () => {
     setLoading(true);
