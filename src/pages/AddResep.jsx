@@ -146,8 +146,8 @@ const AddResep = () => {
         toast.error("Harus menambahkan gambar");
         return;
       }
-      console.log(imageFile);
-      const storageRef = ref(storage, `imageFiles/${imageFile.name}`);
+
+      const storageRef = ref(storage, `recipeImg/${imageFile.name}`);
       await uploadBytes(storageRef, imageFile);
       const url = await getDownloadURL(storageRef);
 
