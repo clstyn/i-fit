@@ -20,6 +20,7 @@ const EditResep = () => {
   const { id } = useParams();
   const { token, isLogged } = useContext(AppContext);
   const [loading, setLoading] = useState(false);
+  const [loadingSubmit, setLoadingSubmit] = useState(false);
   const [formData, setFormData] = useState({
     title: "",
     desc: "",
@@ -167,6 +168,7 @@ const EditResep = () => {
 
   const submit = async (e) => {
     e.preventDefault();
+    setLoadingSubmit(true);
     try {
       let updatedFormData = { ...formData };
       if (imageFile) {
@@ -194,6 +196,8 @@ const EditResep = () => {
     } catch (err) {
       console.log(err);
       toast.error(err.message);
+    } finally {
+      setLoadingSubmit(false);
     }
   };
 
@@ -213,6 +217,18 @@ const EditResep = () => {
       setImageFile(file);
     }
   };
+
+  if (loading) {
+    return (
+      <div className="font-poppins text-c-birdong pb-10">
+        <Navbar />
+        <div className="relative h-96 bg-c-hijautua bg-center flex justify-center items-center cursor-pointer">
+          <div className="absolute inset-0 bg-black opacity-50"></div>
+          <h1 className="relative text-white text-4xl font-bold">Loading...</h1>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="font-poppins text-c-birdong">
@@ -452,10 +468,13 @@ const EditResep = () => {
         </div>
 
         <button
+          disabled={loadingSubmit}
           onClick={submit}
-          className="bg-gradient-to-br from-[#F8905B] to-c-orentua rounded-2xl font-semibold text-xl w-full py-3 lg:py-6 text-white shadow-xl mt-8"
+          className={`${
+            loadingSubmit && "cursor-not-allowed"
+          } bg-gradient-to-br from-[#F8905B] to-c-orentua rounded-2xl font-semibold text-xl w-full py-3 lg:py-6 text-white shadow-xl mt-8`}
         >
-          Unggah Resep
+          {loading ? "Loading..." : "Simpan Perubahan"}
         </button>
       </div>
     </div>

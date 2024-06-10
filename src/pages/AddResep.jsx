@@ -18,6 +18,7 @@ import { toast } from "react-toastify";
 
 const AddResep = () => {
   const { token, isLogged } = useContext(AppContext);
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     title: "",
     desc: "",
@@ -141,6 +142,7 @@ const AddResep = () => {
 
   const submit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       if (!imageFile) {
         toast.error("Harus menambahkan gambar");
@@ -170,6 +172,8 @@ const AddResep = () => {
     } catch (err) {
       console.log(err);
       toast.error(err.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -429,9 +433,12 @@ const AddResep = () => {
 
         <button
           onClick={submit}
-          className="bg-gradient-to-br from-[#F8905B] to-c-orentua rounded-2xl font-semibold text-xl w-full py-3 lg:py-6 text-white shadow-xl mt-8"
+          disabled={loading}
+          className={`${
+            loading && "cursor-not-allowed"
+          } bg-gradient-to-br from-[#F8905B] to-c-orentua rounded-2xl font-semibold text-xl w-full py-3 lg:py-6 text-white shadow-xl mt-8`}
         >
-          Unggah Resep
+          {loading ? "Loading..." : "Unggah Resep"}
         </button>
       </div>
     </div>
