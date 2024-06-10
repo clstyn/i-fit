@@ -44,7 +44,7 @@ const Login = () => {
         setSuccess(response.data.message);
         localStorage.setItem("token", JSON.stringify(response.data.token));
         localStorage.setItem("userId", response.data.user.id);
-        login(response.data.user.id);
+        login({ userId: response.data.user.id, token: response.data.token });
         toast.success(response.data.message);
       } else {
         setError(response.data.message || "Registration failed");
