@@ -45,7 +45,11 @@ const Slider = ({ picArray, setActivePic }) => {
       {picArray && picArray.length > 0 ? (
         picArray.map((item, index) => (
           <SwiperSlide key={index} className="slide">
-            <img src={item.url} alt={item.exercise} />
+            <img
+              src={item.url}
+              alt={item.exercise}
+              style={{ borderRadius: "10px" }}
+            />
           </SwiperSlide>
         ))
       ) : (
