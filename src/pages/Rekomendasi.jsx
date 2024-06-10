@@ -215,7 +215,7 @@ const CardFood = ({ food }) => {
   const handleMouseLeave = () => {
     setIsHovered(false);
   };
-
+  console.log(food.image);
   return (
     <div
       className="relative h-[250px] rounded-lg p-8 flex flex-col items-center justify-center"
