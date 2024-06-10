@@ -89,6 +89,9 @@ const Kalori = () => {
         </div>
       </div>
 
+      <p className="text-center text-sm text-c-birdong mb-2">
+        Nilai kalori adalah per 100 gram berat menu
+      </p>
       <form
         className="max-w-xl lg:mx-auto mx-10"
         onSubmit={(e) => e.preventDefault()}
