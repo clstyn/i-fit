@@ -19,7 +19,7 @@ const Resep = () => {
   const [selectedTag, setSelectedTag] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [mode, setMode] = useState("all");
-  const { token, isLogged } = useContext(AppContext);
+  const { token, isLogged, userId } = useContext(AppContext);
 
   const fetchRecipes = useCallback(async () => {
     setLoading(true);
@@ -74,6 +74,27 @@ const Resep = () => {
   const handleChange = debounce((query) => {
     setSearchQuery(query);
   }, 500);
+
+  const handleLike = async (id) => {
+    try {
+      const res = await axios.post(
+        `https://i-fit-be.vercel.app/post/${id}/handlelike`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (res.status === 200) {
+        toast.success(res.data.message);
+        fetchRecipes();
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <div className="font-poppins text-c-birdong pb-10">
@@ -191,7 +212,12 @@ const Resep = () => {
         {!loading ? (
           recipes.length > 0 ? (
             recipes.map((recipe, index) => (
-              <CardResep key={index} recipe={recipe} />
+              <CardResep
+                key={index}
+                recipe={recipe}
+                handleLike={handleLike}
+                loggedUserId={userId}
+              />
             ))
           ) : (
             <p className="text-center py-4 text-md">Tidak ada data</p>
@@ -204,7 +230,7 @@ const Resep = () => {
   );
 };
 
-const CardResep = ({ recipe }) => {
+const CardResep = ({ recipe, handleLike, loggedUserId }) => {
   const calories = recipe.bahan.reduce((acc, curr) => {
     return acc + curr.kalori;
   }, 0);
@@ -245,12 +271,22 @@ const CardResep = ({ recipe }) => {
             {recipe.like.length}
           </p>
         </div>
-        <div className="absolute -top-8 right-4 p-6 bg-white w-16 h-16 rounded-full text-red-600 shadow-lg flex items-center justify-center right-0">
-          <FavoriteBorder
-            style={{
-              fontSize: "32px",
-            }}
-          ></FavoriteBorder>
+        <div className="absolute -top-8 right-4 p-6 bg-white w-16 h-16 rounded-full text-red-600 shadow-lg flex items-center justify-center right-0 cursor-pointer">
+          {recipe.like.includes(loggedUserId) === true ? (
+            <Favorite
+              onClick={() => handleLike(recipe._id)}
+              style={{
+                fontSize: "32px",
+              }}
+            ></Favorite>
+          ) : (
+            <FavoriteBorder
+              onClick={() => handleLike(recipe._id)}
+              style={{
+                fontSize: "32px",
+              }}
+            ></FavoriteBorder>
+          )}
         </div>
       </div>
     </div>
