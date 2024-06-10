@@ -1,5 +1,5 @@
 // src/components/Slider.js
-
+import React, { useState, useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectCoverflow } from "swiper/modules";
 
@@ -8,7 +8,22 @@ import "swiper/css/effect-coverflow";
 
 import "./slider.css";
 
-const Slider = ({ image1, image2, image3 }) => {
+const Slider = ({ picArray, setActivePic }) => {
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  useEffect(() => {
+    if (picArray && picArray.length > 0) {
+      setActivePic(picArray[1]);
+    }
+  }, [picArray, setActivePic]);
+
+  const handleSlideChange = (swiper) => {
+    setActiveIndex(swiper.activeIndex);
+    if (picArray && picArray.length > 0) {
+      setActivePic(picArray[swiper.activeIndex]);
+    }
+  };
+
   return (
     <Swiper
       effect="coverflow"
@@ -25,28 +40,27 @@ const Slider = ({ image1, image2, image3 }) => {
       }}
       modules={[EffectCoverflow]}
       className="mySwiper"
+      onSlideChange={handleSlideChange}
     >
-      <SwiperSlide className="slide">
-        <img
-          src={image1}
-          alt="Slide 1"
-          className="object-cover w-full h-full"
-        />
-      </SwiperSlide>
-      <SwiperSlide className="slide">
-        <img
-          src={image2}
-          alt="Slide 2"
-          className="object-cover w-full h-full"
-        />
-      </SwiperSlide>
-      <SwiperSlide className="slide">
-        <img
-          src={image3}
-          alt="Slide 3"
-          className="object-cover w-full h-full"
-        />
-      </SwiperSlide>
+      {picArray && picArray.length > 0 ? (
+        picArray.map((item, index) => (
+          <SwiperSlide key={index} className="slide">
+            <img src={item.url} alt={item.exercise} />
+          </SwiperSlide>
+        ))
+      ) : (
+        <div>
+          <SwiperSlide className="slide" style={{ background: "lightblue" }}>
+            1
+          </SwiperSlide>
+          <SwiperSlide className="slide" style={{ background: "coral" }}>
+            2
+          </SwiperSlide>
+          <SwiperSlide className="slide" style={{ background: "chartreuse" }}>
+            3
+          </SwiperSlide>
+        </div>
+      )}
     </Swiper>
   );
 };

@@ -14,6 +14,7 @@ const Rekomendasi = () => {
   const [foods, setFoods] = useState([]);
 
   const [olahraga, setOlahraga] = useState([]);
+  const [activeOlahraga, setActiveOlahraga] = useState(1);
 
   useEffect(() => {
     // Fetch recommendations
@@ -49,6 +50,12 @@ const Rekomendasi = () => {
       setOlahraga([]);
     };
   }, [token]);
+
+  useEffect(() => {
+    if (olahraga.length > 0) {
+      setActiveOlahraga(olahraga[1]);
+    }
+  }, [olahraga]);
 
   return (
     <div className="font-poppins text-c-birdong bg-header-rekom bg-cover min-h-screen">
@@ -92,17 +99,17 @@ const Rekomendasi = () => {
         id="olahraga"
         className="flex flex-col lg:flex-row gap-5 w-5/6 mx-auto my-20 justify-around"
       >
-        <div className="flex flex-col gap-4 items-center lg:items-start">
+        <div className="flex flex-col gap-4 items-center w-full lg:items-start">
           <h2 className="text-xl lg:text-3xl font-semibold">Olahraga</h2>
           <p className="text-4xl lg:text-6xl font-kaushan text-center">
-            Forearm Plank
+            {activeOlahraga ? activeOlahraga.exercise : "Forearm Plank"}
           </p>
           <button className="font-semibold text-md lg:text-xl text-white bg-gradient-to-br from-[#FEB38E] to-c-orenmuda mt-4 rounded-full p-3 lg:p-4 w-fit">
             Baca Selengkapnya
           </button>
         </div>
         <div className="w-full lg:w-1/2">
-          <Slider />
+          <Slider picArray={olahraga} setActivePic={setActiveOlahraga} />
         </div>
       </div>
 
@@ -142,7 +149,7 @@ const CardDiet = ({ diet }) => {
       : text;
   };
   return (
-    <div className="rounded-lg border border-c-birdong/50 p-8 flex flex-col w-1/3 h-[300px]">
+    <div className="rounded-lg border border-c-birdong/50 p-8 flex flex-col lg:w-1/3 h-[300px]">
       <div className="flex flex-col h-full">
         <p className="font-semibold text-2xl lg:text-3xl text-start">
           {diet.jenis_diet}
