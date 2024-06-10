@@ -21,6 +21,7 @@ const reducer = (state, action) => {
       return {
         ...state,
         userId: null,
+        user: null,
         isLogged: false,
       };
     case "SET_USER":
