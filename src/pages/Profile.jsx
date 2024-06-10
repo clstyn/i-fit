@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext, useEffect, useCallback } from "react";
 import axios from "axios";
 import { Navigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -11,6 +11,7 @@ const Profile = () => {
   const { logout, userId, isLogged, token, setGlobalUser } =
     useContext(AppContext);
   const [loadingData, setLoadingData] = useState(true);
+  const [myrecipe, setMyrecipe] = useState([]);
   const [loadingEdit, setLoadingEdit] = useState(false);
   const [loadingChangePass, setLoadingChangePass] = useState(false);
   const [user, setUser] = useState({});
@@ -26,53 +27,49 @@ const Profile = () => {
     confirmPassword: "",
   });
 
-  const [bmis, setBmis] = useState([
-    {
-      id: 1,
-      bmi: 24.1,
-      category: "Normal",
-      date: "24 April 2024",
-    },
-    {
-      id: 2,
-      bmi: 22.2,
-      category: "Normal",
-      date: "2 April 2024",
-    },
-    {
-      id: 3,
-      bmi: 18.3,
-      category: "Underweight",
-      date: "1 Januari 2024",
-    },
-  ]);
+  const fetchData = useCallback(async () => {
+    try {
+      // Fetch user profile
+      const userResponse = await fetch(
+        "https://i-fit-be.vercel.app/user/profile",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      const userData = await userResponse.json();
+      setUser(userData.user);
+      setEditForm({
+        username: userData.user.username,
+        fullname: userData.user.fullname,
+      });
+      localStorage.setItem("user", JSON.stringify(userData.user));
+      setGlobalUser(userData.user);
+
+      // Fetch user recipes
+      const recipeResponse = await axios.get(
+        `https://i-fit-be.vercel.app/post/my`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (recipeResponse.status === 200) {
+        setMyrecipe(recipeResponse.data.recipes);
+      }
+
+      setLoadingData(false);
+    } catch (error) {
+      console.error(error);
+      toast.error("Gagal mengambil data");
+    }
+  }, [token, setGlobalUser]);
 
   useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const response = await fetch(
-          "https://i-fit-be.vercel.app/user/profile",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        const data = await response.json();
-        setUser(data.user);
-        setEditForm({
-          username: data.user.username,
-          fullname: data.user.fullname,
-        });
-        localStorage.setItem("user", JSON.stringify(data.user));
-        setGlobalUser(data.user);
-        setLoadingData(false);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    fetchUser();
-  }, []);
+    fetchData();
+  }, [fetchData]);
 
   const handleEditChange = (e) => {
     const { name, value } = e.target;
@@ -170,36 +167,6 @@ const Profile = () => {
     }
   };
 
-  const [posts, setPosts] = useState([
-    {
-      id: 1,
-      title: "Ayam Betutu khas Bali versi diet",
-      desc: "Hai semuanya kali ini saya akan membagikan resep ayam betutu khas bali yang terkenal, tetapi dengan menggunakan minyak sedikit...",
-      author: {
-        name: "Siti Nur Khodijah",
-        profilePic: "src/assets/pp-dummy.png",
-      },
-    },
-    {
-      id: 2,
-      title: "Ayam Betutu khas Bali versi diet",
-      desc: "Hai semuanya kali ini saya akan membagikan resep ayam betutu khas bali yang terkenal, tetapi dengan menggunakan minyak sedikit...",
-      author: {
-        name: "Siti Nur Khodijah",
-        profilePic: "src/assets/pp-dummy.png",
-      },
-    },
-    {
-      id: 3,
-      title: "Ayam Betutu khas Bali versi diet",
-      desc: "Hai semuanya kali ini saya akan membagikan resep ayam betutu khas bali yang terkenal, tetapi dengan menggunakan minyak sedikit...",
-      author: {
-        name: "Siti Nur Khodijah",
-        profilePic: "src/assets/pp-dummy.png",
-      },
-    },
-  ]);
-
   const handleLogout = () => {
     localStorage.clear();
     logout(userId);
@@ -216,7 +183,11 @@ const Profile = () => {
 
       <div className="h-[316px] w-full bg-header-profile bg-cover">
         <div className="bg-white rounded-2xl min-h-fit w-5/6 mx-auto translate-y-40 drop-shadow-md px-12 py-6 flex flex-col lg:flex-row justify-between items-center">
-          <img src={DummyPp} alt="Profile" className="rounded-full h-48" />
+          <img
+            src={user?.picUrl || DummyPp}
+            alt="Profile"
+            className="rounded-full h-48"
+          />
           <div className="flex flex-col gap-3 items-center lg:items-end">
             <p className="text-2xl lg:text-3xl lg:text-4xl font-semibold">
               {loadingData ? "Loading data.." : user.fullname}
@@ -312,9 +283,11 @@ const Profile = () => {
           </div>
         </div>
 
-        <div className="col-span-2 flex flex-col gap-20">
+        <div className="col-span-2 flex flex-col gap-20 lg:w-full">
           <div className="w-full">
-            <h3 className="font-semibold text-xl lg:text-2xl">Riwayat BMI Terakhir</h3>
+            <h3 className="font-semibold text-xl lg:text-2xl">
+              Riwayat BMI Terakhir
+            </h3>
             <div className="grid grid-cols-3 gap-4 h-40 mt-4">
               {user?.bmis?.length > 0 ? (
                 user.bmis.map((bmi) => (
@@ -367,8 +340,13 @@ const Profile = () => {
           <div className="w-full">
             <h3 className="font-semibold text-2xl">Postingan Saya</h3>
 
-            {posts.map((post) => (
-              <CardPostingan key={post.id} post={post} />
+            {myrecipe.map((post) => (
+              <CardPostingan
+                key={post.id}
+                post={post}
+                pic={user.picUrl}
+                name={user.fullname}
+              />
             ))}
           </div>
         </div>
@@ -377,22 +355,24 @@ const Profile = () => {
   );
 };
 
-const CardPostingan = ({ post }) => {
+const CardPostingan = ({ post, pic, name }) => {
   return (
     <div className="rounded-xl border border-c-hijautua/75 p-6 flex flex-col lg:flex-row my-4 gap-4">
       <div className="flex-1 content-center">
         <p className="text-xl font-medium">{post.title}</p>
         <p className="my-4">{post.desc}</p>
         <div className="flex gap-4 items-center">
-          <img
-            src={post.author.profilePic}
-            alt="Profile"
-            className="w-10 h-10 rounded-full"
-          />
-          <p className="text-lg">{post.author.name}</p>
+          <img src={pic} alt="Profile" className="w-10 h-10 rounded-full" />
+          <p className="text-lg">{name}</p>
         </div>
       </div>
-      <div className="w-full lg:w-1/3 h-48 rounded-lg bg-gray-500"></div>
+      <div className="w-full lg:w-1/3 h-48 rounded-lg bg-gray-500">
+        <img
+          src={post.picUrl}
+          alt="post"
+          className="w-full h-full object-cover rounded-lg"
+        />
+      </div>
     </div>
   );
 };
@@ -400,7 +380,7 @@ const CardPostingan = ({ post }) => {
 const formatDate = (dateString) => {
   const date = new Date(dateString);
   const day = date.getDate();
-  const month = date.toLocaleString('default', { month: 'long' }); // Get the full month name
+  const month = date.toLocaleString("default", { month: "long" }); // Get the full month name
   const year = date.getFullYear();
   return `${day} ${month} ${year}`;
 };
