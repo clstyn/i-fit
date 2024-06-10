@@ -2,7 +2,9 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Slider from "../components/slider/Slider";
-import WorkOut from "../assets/wo.jpg";
+import image1 from "../assets/pic2.png";
+import image2 from "../assets/bg-recover.jpeg";
+import image3 from "../assets/wo.jpg";
 import bmiInd from "../assets/bmiInd.png";
 import PicKalori from "../assets/pic-kalori.png";
 import PicRecommend from "../assets/pic-recommend.png";
@@ -67,17 +69,16 @@ const Landing = () => {
             Tubuhmu Nomor Satu
           </p>
           <p className="w-3/4 text-md lg:text-xl text-c-birdong font-normal mx-10 lg:mx-28">
-            I-Fit siap untuk mendampingi kalian dalam 
-            menjalankan gaya hidup sehat. 
-            Fitur–fitur yang tersedia di I-Fit dapat membantu kamu
-            dalam memahami diet dan olahraga yang sesuai dengan kebutuhanmu.
+            I-Fit siap untuk mendampingi kalian dalam menjalankan gaya hidup
+            sehat. Fitur–fitur yang tersedia di I-Fit dapat membantu kamu dalam
+            memahami diet dan olahraga yang sesuai dengan kebutuhanmu.
           </p>
         </div>
         <div className="w-full lg:w-1/2">
-          <Slider />
+          <Slider image1={image1} image2={image2} image3={image3} />
         </div>
-      </div>      
-      
+      </div>
+
       <div className="py-16 flex flex-col items-center">
         {features.map((feature, index) => (
           <div

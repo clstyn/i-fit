@@ -8,12 +8,13 @@ import "swiper/css/effect-coverflow";
 
 import "./slider.css";
 
-const Slider = () => {
+const Slider = ({ image1, image2, image3 }) => {
   return (
     <Swiper
       effect="coverflow"
       grabCursor={true}
       centeredSlides={true}
+      initialSlide={1}
       slidesPerView="auto"
       coverflowEffect={{
         rotate: 0,
@@ -25,14 +26,26 @@ const Slider = () => {
       modules={[EffectCoverflow]}
       className="mySwiper"
     >
-      <SwiperSlide className="slide" style={{ background: "lightblue" }}>
-        1
+      <SwiperSlide className="slide">
+        <img
+          src={image1}
+          alt="Slide 1"
+          className="object-cover w-full h-full"
+        />
       </SwiperSlide>
-      <SwiperSlide className="slide" style={{ background: "coral" }}>
-        2
+      <SwiperSlide className="slide">
+        <img
+          src={image2}
+          alt="Slide 2"
+          className="object-cover w-full h-full"
+        />
       </SwiperSlide>
-      <SwiperSlide className="slide" style={{ background: "chartreuse" }}>
-        3
+      <SwiperSlide className="slide">
+        <img
+          src={image3}
+          alt="Slide 3"
+          className="object-cover w-full h-full"
+        />
       </SwiperSlide>
     </Swiper>
   );
