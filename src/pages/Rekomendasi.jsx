@@ -149,7 +149,7 @@ const CardDiet = ({ diet }) => {
       : text;
   };
   return (
-    <div className="rounded-lg border border-c-birdong/50 p-8 flex flex-col lg:w-1/3 h-[300px]">
+    <div className="rounded-lg border border-c-birdong/50 p-8 flex flex-col lg:w-1/3 lg:h-[300px]">
       <div className="flex flex-col h-full">
         <p className="font-semibold text-2xl lg:text-3xl text-start">
           {diet.jenis_diet}
