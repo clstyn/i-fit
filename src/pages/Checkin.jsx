@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, useCallback } from "react";
 import { Navigate } from "react-router-dom";
 import axios from "axios";
 import Navbar from "../components/Navbar";
@@ -38,18 +38,7 @@ const Checkin = () => {
     }
   }, [latestCheckin]);
 
-  useEffect(() => {
-    fetchPrizes();
-    fetchLatestPoint();
-    fetchChallenges();
-  }, []);
-
-  // useEffect(() => {
-  //   setPoint(user?.point);
-  //   setLatestCheckin(user?.latestCheckin);
-  // }, [user]);
-
-  const fetchLatestPoint = async () => {
+  const fetchLatestPoint = useCallback(async () => {
     try {
       const response = await axios.get(
         "https://i-fit-be.vercel.app/user/point",
@@ -59,14 +48,16 @@ const Checkin = () => {
           },
         }
       );
-      setPoint(response.data.point);
-      setLatestCheckin(response.data.latestCheckin);
+      if (response.status === 200) {
+        setPoint(response.data.point);
+        setLatestCheckin(response.data.latestCheckin);
+      }
     } catch (error) {
       console.log(error);
     }
-  };
+  }, [token]);
 
-  const fetchChallenges = async () => {
+  const fetchChallenges = useCallback(async () => {
     try {
       const response = await axios.get(
         "https://i-fit-be.vercel.app/user/challenges",
@@ -82,7 +73,28 @@ const Checkin = () => {
     } catch (error) {
       console.log(error);
     }
-  };
+  }, [token]);
+
+  const fetchPrizes = useCallback(async () => {
+    try {
+      const response = await axios.get("https://i-fit-be.vercel.app/prizes", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (response.status === 200) {
+        setPrizes(response.data.prize);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }, [token]);
+
+  useEffect(() => {
+    fetchPrizes();
+    fetchLatestPoint();
+    fetchChallenges();
+  }, [fetchPrizes, fetchChallenges, fetchLatestPoint]);
 
   const dailyCheckin = async (e) => {
     e.preventDefault();
@@ -114,19 +126,6 @@ const Checkin = () => {
   if (!isLogged) {
     return <Navigate to={"/login"} />;
   }
-
-  const fetchPrizes = async () => {
-    try {
-      const response = await axios.get("https://i-fit-be.vercel.app/prizes", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      setPrizes(response.data.prize);
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   const redeemPrize = async (prizeId) => {
     setLoadingPrize(true);
@@ -189,7 +188,7 @@ const Checkin = () => {
         </div>
       </div>
 
-      <div className="w-5/6 mx-auto flex flex-col lg:flex-row gap-16 my-12 -translate-y-32">
+      <div className="w-5/6 mx-auto flex flex-col lg:flex-row gap-8 max-lg:gap-16 my-12 -translate-y-32">
         <div className="lg:w-1/4">
           <div className="flex flex-col gap-12">
             <div className="rounded-lg bg-white/50 shadow-md p-4 flex flex-col gap-2">
@@ -210,15 +209,15 @@ const Checkin = () => {
                 {getTodayDate()}
               </p>
               <div className="flex justify-between items-center mt-8 w-full">
-                <div className="flex gap-2">
-                  <img src={Coin} alt="coin" className="w-8 h-8" />
-                  <p className="font-medium text-xl">+ 25</p>
+                <div className="flex gap-2 items-center">
+                  <img src={Coin} alt="coin" className="w-6 h-6" />
+                  <p className="font-medium text-lg max-md:text-xl">+ 25</p>
                 </div>
 
                 <button
                   disabled={loadingDaily || !checkinAllowed}
                   onClick={dailyCheckin}
-                  className={`rounded-full p-4 text-white font-bold ${
+                  className={`rounded-full max-md:p-4 p-2 text-white font-bold ${
                     checkinAllowed
                       ? "bg-c-hijautua"
                       : "cursor-not-allowed bg-slate-300"
