@@ -303,17 +303,17 @@ const Checkin = () => {
 const CardChallenge = ({ item, doChallenge, loading }) => {
   return (
     <div className="flex flex-col lg:flex-row justify-around gap-3 w-full border border-c-birdong/50 rounded-xl p-6 mb-4">
-      <div className="w-3/6 flex flex-row lg:flex-col place-self-center gap-2">
+      <div className="lg:w-3/6 flex flex-row lg:flex-col place-self-center gap-2">
         <p className="text-2xl font-medium">{item.name}</p>
         <p className="text-lg opacity-70">{item.keterangan}</p>
       </div>
-      <div className="w-2/6 flex gap-2 place-self-center">
+      <div className="lg:w-2/6 flex gap-2 place-self-center">
         <img src={Coin} alt="coin" className="w-8 h-8" />
         <p className="font-medium text-xl">+ {item.point}</p>
       </div>
       <button
         onClick={() => doChallenge(item._id)}
-        className={`w-1/6 ${
+        className={`lg:w-1/6 ${
           loading || new Date() - new Date(item.lastDone) < 24 * 60 * 60 * 1000
             ? "bg-slate-300 cursor-not-allowed"
             : "bg-gradient-to-br from-[#8BCEC0] to-c-hijautua"
