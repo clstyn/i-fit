@@ -86,6 +86,8 @@ const Landing = () => {
             className={`flex flex-col md:flex-row items-center my-8 max-w-6xl w-full ${
               index % 2 === 0 ? "" : "md:flex-row-reverse"
             }`}
+            data-aos="fade-up"
+            data-aos-delay="500"
           >
             <img
               src={feature.imageUrl}
@@ -113,7 +115,6 @@ const Landing = () => {
                   {feature.description}
                 </p>
               </div>
-
               <div
                 className={`max-w-fit mx-auto ${
                   index % 2 === 0 ? "lg:ml-0 lg:mr-auto" : "lg:ml-auto lg:mr-0"

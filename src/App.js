@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import AOS from "aos";
+import "aos/dist/aos.css";
 import Landing from "./pages/Landing";
 import BmiAkgCalculator from "./pages/BmiAkgCalcPage";
 import Profile from "./pages/Profile";
@@ -23,6 +24,13 @@ import EditResep from "./pages/EditResep";
 import { AppProvider } from "./context/appContext";
 
 function App() {
+  useEffect(() => {
+    AOS.init({
+      duration: 750,
+      offset: 20,
+      easing: "ease",
+    });
+  }, []);
   return (
     <>
       <ToastContainer />
